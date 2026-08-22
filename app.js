@@ -1,4 +1,23 @@
-import { menuCategories, selectionChecklist } from "./menu-data.js";
+async function loadMenuData() {
+  const response = await fetch("./data/menu.json", { cache: "no-store" });
+  if (!response.ok) throw new Error(`Menu data request failed: ${response.status}`);
+  return response.json();
+}
+
+let menuCategories = [];
+let selectionChecklist = [];
+
+try {
+  ({ menuCategories, selectionChecklist } = await loadMenuData());
+} catch (error) {
+  console.error(error);
+  document.querySelector("#menu-sections").innerHTML = `
+    <section class="data-error" role="alert">
+      <h2>Menu temporarily unavailable</h2>
+      <p>Please refresh the page or contact Coco & Toffee directly.</p>
+    </section>`;
+  throw error;
+}
 
 const navList = document.querySelector("#category-nav-list");
 const menuSections = document.querySelector("#menu-sections");

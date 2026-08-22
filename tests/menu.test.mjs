@@ -1,7 +1,11 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
-import { menuCategories, selectionChecklist } from "../menu-data.js";
+
+const menuData = JSON.parse(
+  await readFile(new URL("../data/menu.json", import.meta.url), "utf8"),
+);
+const { menuCategories, selectionChecklist } = menuData;
 
 test("the final PDF menu structure is represented", () => {
   assert.equal(menuCategories.length, 8);
@@ -35,6 +39,12 @@ test("every item is editable and has a unique stable id", () => {
     assert.equal(ids.has(item.id), false, `Duplicate item id: ${item.id}`);
     ids.add(item.id);
   }
+});
+
+test("the repository JSON is the webpage content source", async () => {
+  const app = await readFile(new URL("../app.js", import.meta.url), "utf8");
+  assert.match(app, /\.\/data\/menu\.json/);
+  assert.doesNotMatch(app, /menu-data\.js/);
 });
 
 test("ordering checklist preserves all requested fields", () => {

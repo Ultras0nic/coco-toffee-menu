@@ -1,0 +1,124 @@
+{
+  "schemaVersion": 1,
+  "lastUpdated": "2026-08-22",
+  "editingInstructions": [
+    "Edit this file to update the local preview and GitHub Pages website.",
+    "Keep every id unique and stable so saved product links continue to work.",
+    "Add approved photos to assets/menu and put the relative file path in photo.",
+    "Verify allergen statements before replacing the placeholder text."
+  ],
+  "menuCategories": [
+    {
+      "id": "cookies",
+      "name": "Cookies",
+      "note": "Seasonal & additional flavors available!",
+      "items": [
+        { "id": "oreo", "name": "Oreo", "description": "Flavor notes coming soon.", "texture": "Details coming soon", "allergens": "Allergen details coming soon. Please ask before ordering.", "price": "Custom quote", "photo": "" },
+        { "id": "biscoff", "name": "Biscoff", "description": "Flavor notes coming soon.", "texture": "Details coming soon", "allergens": "Allergen details coming soon. Please ask before ordering.", "price": "Custom quote", "photo": "" },
+        { "id": "smores", "name": "S’mores", "description": "Flavor notes coming soon.", "texture": "Details coming soon", "allergens": "Allergen details coming soon. Please ask before ordering.", "price": "Custom quote", "photo": "" },
+        { "id": "lucky-charms", "name": "Lucky Charms", "description": "Flavor notes coming soon.", "texture": "Details coming soon", "allergens": "Allergen details coming soon. Please ask before ordering.", "price": "Custom quote", "photo": "" },
+        { "id": "chocolate-chip", "name": "Chocolate Chip", "description": "Flavor notes coming soon.", "texture": "Details coming soon", "allergens": "Allergen details coming soon. Please ask before ordering.", "price": "Custom quote", "photo": "" },
+        { "id": "oatmeal-raisin-cookie", "name": "Oatmeal Raisin", "description": "Flavor notes coming soon.", "texture": "Details coming soon", "allergens": "Allergen details coming soon. Please ask before ordering.", "price": "Custom quote", "photo": "" },
+        { "id": "white-chocolate-macadamia", "name": "White Chocolate Macadamia", "description": "Flavor notes coming soon.", "texture": "Details coming soon", "allergens": "Allergen details coming soon. Please ask before ordering.", "price": "Custom quote", "photo": "" },
+        { "id": "snickerdoodle", "name": "Snickerdoodle", "description": "Flavor notes coming soon.", "texture": "Details coming soon", "allergens": "Allergen details coming soon. Please ask before ordering.", "price": "Custom quote", "photo": "" },
+        { "id": "peanut-butter-blossoms", "name": "Peanut Butter Blossoms", "description": "Flavor notes coming soon.", "texture": "Details coming soon", "allergens": "Allergen details coming soon. Please ask before ordering.", "price": "Custom quote", "photo": "" },
+        { "id": "crinkle", "name": "Crinkle", "description": "Flavor notes coming soon.", "texture": "Details coming soon", "allergens": "Allergen details coming soon. Please ask before ordering.", "price": "Custom quote", "photo": "" },
+        { "id": "sprinkle-funfetti-cookie", "name": "Sprinkle/Funfetti", "description": "Flavor notes coming soon.", "texture": "Details coming soon", "allergens": "Allergen details coming soon. Please ask before ordering.", "price": "Custom quote", "photo": "" },
+        { "id": "snowball", "name": "Snowball", "description": "Flavor notes coming soon.", "texture": "Details coming soon", "allergens": "Allergen details coming soon. Please ask before ordering.", "price": "Custom quote", "photo": "" }
+      ]
+    },
+    {
+      "id": "bars-brownies",
+      "name": "Bars & Brownies",
+      "note": "Seasonal & additional flavors available!",
+      "items": [
+        { "id": "fudge-brownies", "name": "Fudge Brownies", "description": "Flavor notes coming soon.", "texture": "Details coming soon", "allergens": "Allergen details coming soon. Please ask before ordering.", "price": "Custom quote", "photo": "" },
+        { "id": "funfetti-blondies", "name": "Funfetti Blondies", "description": "Flavor notes coming soon.", "texture": "Details coming soon", "allergens": "Allergen details coming soon. Please ask before ordering.", "price": "Custom quote", "photo": "" },
+        { "id": "lemon-bars", "name": "Lemon Bars", "description": "Flavor notes coming soon.", "texture": "Details coming soon", "allergens": "Allergen details coming soon. Please ask before ordering.", "price": "Custom quote", "photo": "" },
+        { "id": "cereal-marshmallow-bars", "name": "Cereal Marshmallow Bars (Rice Krispie Treats)", "description": "Flavor notes coming soon.", "texture": "Details coming soon", "allergens": "Allergen details coming soon. Please ask before ordering.", "price": "Custom quote", "photo": "" }
+      ]
+    },
+    {
+      "id": "muffins",
+      "name": "Muffins",
+      "note": "Seasonal & additional flavors available!",
+      "items": [
+        { "id": "chocolate-chip-muffin", "name": "Chocolate Chip", "description": "Flavor notes coming soon.", "texture": "Details coming soon", "allergens": "Allergen details coming soon. Please ask before ordering.", "price": "Custom quote", "photo": "" },
+        { "id": "double-chocolate-muffin", "name": "Double Chocolate", "description": "Flavor notes coming soon.", "texture": "Details coming soon", "allergens": "Allergen details coming soon. Please ask before ordering.", "price": "Custom quote", "photo": "" },
+        { "id": "blueberry-muffin", "name": "Blueberry", "description": "Flavor notes coming soon.", "texture": "Details coming soon", "allergens": "Allergen details coming soon. Please ask before ordering.", "price": "Custom quote", "photo": "" },
+        { "id": "banana-nut-muffin", "name": "Banana Nut", "description": "Flavor notes coming soon.", "texture": "Details coming soon", "allergens": "Allergen details coming soon. Please ask before ordering.", "price": "Custom quote", "photo": "" },
+        { "id": "oatmeal-raisin-muffin", "name": "Oatmeal Raisin", "description": "Flavor notes coming soon.", "texture": "Details coming soon", "allergens": "Allergen details coming soon. Please ask before ordering.", "price": "Custom quote", "photo": "" },
+        { "id": "coffee-cake-muffin", "name": "Coffee Cake", "description": "Flavor notes coming soon.", "texture": "Details coming soon", "allergens": "Allergen details coming soon. Please ask before ordering.", "price": "Custom quote", "photo": "" },
+        { "id": "lemon-poppy-seed-muffin", "name": "Lemon Poppy Seed", "description": "Flavor notes coming soon.", "texture": "Details coming soon", "allergens": "Allergen details coming soon. Please ask before ordering.", "price": "Custom quote", "photo": "" },
+        { "id": "cornbread-muffin", "name": "Cornbread", "description": "Flavor notes coming soon.", "texture": "Details coming soon", "allergens": "Allergen details coming soon. Please ask before ordering.", "price": "Custom quote", "photo": "" }
+      ]
+    },
+    {
+      "id": "sweet-yeasted-breads",
+      "name": "Sweet Yeasted Breads",
+      "note": "Seasonal & additional flavors available!",
+      "items": [
+        { "id": "cinnamon-rolls", "name": "Cinnamon Rolls", "description": "Flavor notes coming soon.", "texture": "Details coming soon", "allergens": "Allergen details coming soon. Please ask before ordering.", "price": "Custom quote", "photo": "" },
+        { "id": "donuts", "name": "Donuts", "description": "Flavor notes coming soon.", "texture": "Details coming soon", "allergens": "Allergen details coming soon. Please ask before ordering.", "price": "Custom quote", "photo": "" },
+        { "id": "sticky-buns", "name": "Sticky Buns", "description": "Flavor notes coming soon.", "texture": "Details coming soon", "allergens": "Allergen details coming soon. Please ask before ordering.", "price": "Custom quote", "photo": "" },
+        { "id": "nutella-brioche-buns", "name": "Nutella Brioche Buns", "description": "Flavor notes coming soon.", "texture": "Details coming soon", "allergens": "Allergen details coming soon. Please ask before ordering.", "price": "Custom quote", "photo": "" }
+      ]
+    },
+    {
+      "id": "little-treats",
+      "name": "Little Treats",
+      "note": "Seasonal & additional flavors available!",
+      "items": [
+        { "id": "cake-pops", "name": "Cake Pops", "description": "Flavor notes coming soon.", "texture": "Details coming soon", "allergens": "Allergen details coming soon. Please ask before ordering.", "price": "Custom quote", "photo": "" },
+        { "id": "madeleines", "name": "Madeleines", "description": "Flavor notes coming soon.", "texture": "Details coming soon", "allergens": "Allergen details coming soon. Please ask before ordering.", "price": "Custom quote", "photo": "" },
+        { "id": "brigadgeiros", "name": "Brigadgeiros", "description": "Flavor notes coming soon.", "texture": "Details coming soon", "allergens": "Allergen details coming soon. Please ask before ordering.", "price": "Custom quote", "photo": "" },
+        { "id": "chocolate-covered-strawberries", "name": "Chocolate Covered Strawberries", "description": "Flavor notes coming soon.", "texture": "Details coming soon", "allergens": "Allergen details coming soon. Please ask before ordering.", "price": "Custom quote", "photo": "" }
+      ]
+    },
+    {
+      "id": "savory",
+      "name": "Savory",
+      "note": "Seasonal & additional flavors available!",
+      "items": [
+        { "id": "quiche", "name": "Quiche", "description": "Flavor notes coming soon.", "texture": "Details coming soon", "allergens": "Allergen details coming soon. Please ask before ordering.", "price": "Custom quote", "photo": "" },
+        { "id": "salt-bread", "name": "Salt Bread", "description": "Flavor notes coming soon.", "texture": "Details coming soon", "allergens": "Allergen details coming soon. Please ask before ordering.", "price": "Custom quote", "photo": "" }
+      ]
+    },
+    {
+      "id": "cakes-large-desserts",
+      "name": "Cakes & Large Desserts",
+      "note": "Whole cakes and large desserts can be provided pre-sliced for convenient service.",
+      "items": [
+        { "id": "tiramisu", "name": "Tiramisu", "description": "Flavor notes coming soon.", "texture": "Details coming soon", "allergens": "Allergen details coming soon. Please ask before ordering.", "price": "Custom quote", "photo": "" },
+        { "id": "flan", "name": "Flan", "description": "Flavor notes coming soon.", "texture": "Details coming soon", "allergens": "Allergen details coming soon. Please ask before ordering.", "price": "Custom quote", "photo": "" },
+        { "id": "cream-pies", "name": "Cream Pies", "description": "Flavor notes coming soon.", "texture": "Details coming soon", "allergens": "Allergen details coming soon. Please ask before ordering.", "price": "Custom quote", "photo": "" },
+        { "id": "custard-pies", "name": "Custard Pies", "description": "Flavor notes coming soon.", "texture": "Details coming soon", "allergens": "Allergen details coming soon. Please ask before ordering.", "price": "Custom quote", "photo": "" },
+        { "id": "sweet-rice-arroz-doce", "name": "Sweet Rice (Arroz Doce)", "description": "Flavor notes coming soon.", "texture": "Details coming soon", "allergens": "Allergen details coming soon. Please ask before ordering.", "price": "Custom quote", "photo": "" },
+        { "id": "tres-leches", "name": "Tres Leches", "description": "Flavor notes coming soon.", "texture": "Details coming soon", "allergens": "Allergen details coming soon. Please ask before ordering.", "price": "Custom quote", "photo": "" },
+        { "id": "tarts-tartlets", "name": "Tarts/Tartlets", "description": "Flavor notes coming soon.", "texture": "Details coming soon", "allergens": "Allergen details coming soon. Please ask before ordering.", "price": "Custom quote", "photo": "" },
+        { "id": "cheesecake", "name": "Cheesecake", "description": "Flavor notes coming soon.", "texture": "Details coming soon", "allergens": "Allergen details coming soon. Please ask before ordering.", "price": "Custom quote", "photo": "" },
+        { "id": "whole-cakes", "name": "Whole Cakes", "description": "Available flavors: Chocolate, Vanilla, Marble, Funfetti, Carrot and seasonal flavors.", "texture": "Details coming soon", "allergens": "Allergen details coming soon. Please ask before ordering.", "price": "Custom quote", "photo": "" }
+      ]
+    },
+    {
+      "id": "individual-refrigerated-desserts",
+      "name": "Individual Refrigerated Desserts",
+      "note": "Seasonal & additional desserts available",
+      "items": [
+        { "id": "cupcakes", "name": "Cupcakes", "description": "Flavor notes coming soon.", "texture": "Details coming soon", "allergens": "Allergen details coming soon. Please ask before ordering.", "price": "Custom quote", "photo": "" },
+        { "id": "mousse-cups", "name": "Mousse Cups", "description": "Flavor notes coming soon.", "texture": "Details coming soon", "allergens": "Allergen details coming soon. Please ask before ordering.", "price": "Custom quote", "photo": "" },
+        { "id": "dessert-cups", "name": "Dessert Cups", "description": "Flavor notes coming soon.", "texture": "Details coming soon", "allergens": "Allergen details coming soon. Please ask before ordering.", "price": "Custom quote", "photo": "" },
+        { "id": "panna-cotta", "name": "Panna Cotta", "description": "Flavor notes coming soon.", "texture": "Details coming soon", "allergens": "Allergen details coming soon. Please ask before ordering.", "price": "Custom quote", "photo": "" },
+        { "id": "egg-tarts-pasteis-de-nata", "name": "Egg Tarts (Pasteis De Nata)", "description": "Flavor notes coming soon.", "texture": "Details coming soon", "allergens": "Allergen details coming soon. Please ask before ordering.", "price": "Custom quote", "photo": "" }
+      ]
+    }
+  ],
+  "selectionChecklist": [
+    "Products & flavors you’re interested in",
+    "Quantity needed for each item",
+    "Preferred order/purchase date",
+    "Preferred delivery/drop-off date and time",
+    "Any specific size, packaging, or presentation preferences",
+    "Any special requests or dietary considerations"
+  ]
+}

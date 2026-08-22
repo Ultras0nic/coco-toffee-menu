@@ -18,18 +18,22 @@ menu layout while adding accessible product detail cards.
 
 ## Edit products later
 
-Open `menu-data.js`. That is the menu's single source of truth.
+Open `data/menu.json`. That JSON file is the menu's single source of truth and acts as a simple
+repository-backed content store. The local preview and the published GitHub Pages website both
+read the same file.
 
 To add details, replace a product line with an expanded version:
 
-```js
-createItem("Biscoff", "biscoff", {
-  description: "Your approved flavor description.",
-  texture: "Your approved texture.",
-  allergens: "Your verified allergen statement.",
-  price: "Your price or Custom quote.",
-  photo: "assets/menu/biscoff.jpg",
-}),
+```json
+{
+  "id": "biscoff",
+  "name": "Biscoff",
+  "description": "Your approved flavor description.",
+  "texture": "Your approved texture.",
+  "allergens": "Your verified allergen statement.",
+  "price": "Your price or Custom quote.",
+  "photo": "assets/menu/biscoff.jpg"
+}
 ```
 
 Put the matching photo in `assets/menu/`. If the photo is missing, the website automatically shows
@@ -56,8 +60,8 @@ The local preview opens at `http://127.0.0.1:4173`. The public build is written 
 5. Open the **Actions** tab and run **Deploy Coco & Toffee menu**, or push a new commit.
 6. GitHub will show the free public URL after deployment succeeds.
 
-The workflow publishes only the allow-listed website files from `dist/`. Drafts, tests and internal
-notes are not included in the public website.
+The workflow publishes only the allow-listed website files from `dist/`, including
+`data/menu.json`. Drafts, tests and internal notes are not included in the public website.
 
 ## Important content note
 
