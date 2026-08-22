@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f3eadc" />
+    <meta
+      name="description"
+      content="Explore the Coco & Toffee bakery menu. Hover on desktop or tap on mobile to view product details."
+    />
+    <title>Coco & Toffee | Menu</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <script type="module" src="./app.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#menu">Skip to menu</a>
+
+    <header class="menu-header page-shell">
+      <div>
+        <p class="eyebrow">Coco & Toffee Bakery & Co.</p>
+        <h1>Menu</h1>
+        <p class="header-note">Hover to discover on desktop. Tap to discover on mobile.</p>
+      </div>
+      <div class="dessert-mark" aria-hidden="true">
+        <span class="dessert-mark__top">Coco & Toffee</span>
+        <span class="dessert-mark__middle">C & T</span>
+        <span class="dessert-mark__bottom">Bakery & Co.</span>
+      </div>
+    </header>
+
+    <nav class="category-nav page-shell" aria-label="Menu categories">
+      <div id="category-nav-list"></div>
+    </nav>
+
+    <main id="menu" class="menu-layout page-shell" tabindex="-1">
+      <div id="menu-sections" class="menu-sections"></div>
+
+      <aside
+        id="product-preview"
+        class="product-preview"
+        aria-live="polite"
+        aria-label="Product details"
+      >
+        <button class="preview-close" type="button" aria-label="Close product details">Close</button>
+        <div class="preview-photo" id="preview-photo">
+          <img id="preview-image" alt="" hidden />
+          <div id="preview-placeholder" class="photo-placeholder">
+            <span>Photo coming soon</span>
+          </div>
+        </div>
+        <p id="preview-category" class="preview-category">Explore the menu</p>
+        <h2 id="preview-title">Choose a menu item</h2>
+        <p id="preview-description" class="preview-description">
+          Product photos, flavor notes, textures and allergen details can be added at any time.
+        </p>
+        <dl class="preview-facts">
+          <div>
+            <dt>Texture</dt>
+            <dd id="preview-texture">Details coming soon</dd>
+          </div>
+          <div>
+            <dt>Allergens</dt>
+            <dd id="preview-allergens">Please ask before ordering</dd>
+          </div>
+          <div>
+            <dt>Pricing</dt>
+            <dd id="preview-price">Custom quote</dd>
+          </div>
+        </dl>
+      </aside>
+    </main>
+
+    <section class="selection page-shell" aria-labelledby="selection-title">
+      <p class="section-kicker">Let&rsquo;s create your selection</p>
+      <h2 id="selection-title">Tell us what you&rsquo;re looking for</h2>
+      <p>
+        Once we have these details, we can put together a customized selection and wholesale
+        pricing based on your needs.
+      </p>
+      <ul id="selection-list"></ul>
+      <button id="copy-checklist" class="copy-button" type="button">Copy selection checklist</button>
+      <p id="copy-status" class="copy-status" role="status" aria-live="polite"></p>
+    </section>
+
+    <footer class="site-footer page-shell">
+      <p>Thank you for considering us. We look forward to hearing from you.</p>
+      <p class="footer-mark">Coco & Toffee</p>
+    </footer>
+
+    <div id="mobile-scrim" class="mobile-scrim" hidden></div>
+
+    <noscript>
+      <div class="noscript-message">
+        Please enable JavaScript to explore the interactive menu. The printable menu remains
+        available from Coco & Toffee.
+      </div>
+    </noscript>
+  </body>
+</html>
