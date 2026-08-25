@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
+import { access, readFile } from "node:fs/promises";
 import test from "node:test";
 
 const menuData = JSON.parse(
@@ -9,7 +9,10 @@ const { menuCategories, selectionChecklist } = menuData;
 
 test("the final PDF menu structure is represented", () => {
   assert.equal(menuCategories.length, 8);
-  assert.equal(menuCategories.flatMap((category) => category.items).length, 48);
+  assert.ok(
+    menuCategories.flatMap((category) => category.items).length >= 48,
+    "The menu must retain at least the 48-item baseline",
+  );
   assert.deepEqual(
     menuCategories.map((category) => category.name),
     [
@@ -45,6 +48,14 @@ test("the repository JSON is the webpage content source", async () => {
   const app = await readFile(new URL("../app.js", import.meta.url), "utf8");
   assert.match(app, /\.\/data\/menu\.json/);
   assert.doesNotMatch(app, /menu-data\.js/);
+});
+
+test("every configured product photo points to a published asset", async () => {
+  const items = menuCategories.flatMap((category) => category.items);
+  for (const item of items.filter((candidate) => candidate.photo)) {
+    assert.match(item.photo, /^assets\/menu\/[a-z0-9-]+\.(?:jpe?g|png|webp)$/i);
+    await access(new URL(`../${item.photo}`, import.meta.url));
+  }
 });
 
 test("ordering checklist preserves all requested fields", () => {

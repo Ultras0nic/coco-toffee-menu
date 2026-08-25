@@ -16,6 +16,11 @@ menu layout while adding accessible product detail cards.
 - GitHub Pages deployment workflow
 - No paid service, database, server or third-party tracking
 
+## Brand logo
+
+The header and browser icon use `assets/brand/coco-toffee-logo.jpg`. Keep replacement artwork
+square so the circular presentation remains correctly cropped on desktop and mobile.
+
 ## Edit products later
 
 Open `data/menu.json`. That JSON file is the menu's single source of truth and acts as a simple
