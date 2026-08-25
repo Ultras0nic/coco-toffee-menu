@@ -57,8 +57,10 @@ test("the repository JSON is the webpage content source", async () => {
 test("every configured product photo points to a published asset", async () => {
   const items = menuCategories.flatMap((category) => category.items);
   for (const item of items.filter((candidate) => candidate.photo)) {
-    assert.match(item.photo, /^assets\/menu\/[a-z0-9-]+\.(?:jpe?g|png|webp)$/i);
-    await access(new URL(`../${item.photo}`, import.meta.url));
+    const photoUrl = new URL(item.photo, "https://example.test/");
+    assert.match(photoUrl.pathname, /^\/assets\/menu\/[a-z0-9-]+\.(?:jpe?g|png|webp)$/i);
+    assert.equal(photoUrl.searchParams.get("v"), menuData.assetVersion);
+    await access(new URL(`..${photoUrl.pathname}`, import.meta.url));
   }
 });
 
