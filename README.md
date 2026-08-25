@@ -44,6 +44,9 @@ To add details, replace a product line with an expanded version:
 Put the matching photo in `assets/menu/`. If the photo is missing, the website automatically shows
 the designed **Photo coming soon** placeholder.
 
+When replacing a photo without changing its filename, increment `assetVersion` in `data/menu.json`.
+This ensures browsers and the GitHub Pages CDN request the new image instead of a cached copy.
+
 ## Preview and verify
 
 Node.js 20 or newer is the only requirement.

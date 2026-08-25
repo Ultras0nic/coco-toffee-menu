@@ -6,9 +6,10 @@ async function loadMenuData() {
 
 let menuCategories = [];
 let selectionChecklist = [];
+let menuAssetVersion = "";
 
 try {
-  ({ menuCategories, selectionChecklist } = await loadMenuData());
+  ({ menuCategories, selectionChecklist, assetVersion: menuAssetVersion } = await loadMenuData());
 } catch (error) {
   console.error(error);
   document.querySelector("#menu-sections").innerHTML = `
@@ -102,7 +103,9 @@ function updateImage(item) {
     previewPlaceholder.hidden = false;
   };
   previewImage.alt = item.name;
-  previewImage.src = item.photo;
+  const photoUrl = new URL(item.photo, document.baseURI);
+  if (menuAssetVersion) photoUrl.searchParams.set("v", menuAssetVersion);
+  previewImage.src = photoUrl.href;
 }
 
 function activateItem(button, openCompact = false) {

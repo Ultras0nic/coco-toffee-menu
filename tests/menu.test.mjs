@@ -7,6 +7,10 @@ const menuData = JSON.parse(
 );
 const { menuCategories, selectionChecklist } = menuData;
 
+test("photo replacements have an explicit cache version", () => {
+  assert.match(menuData.assetVersion, /^\d{4}-\d{2}-\d{2}-\d+$/);
+});
+
 test("the final PDF menu structure is represented", () => {
   assert.equal(menuCategories.length, 8);
   assert.ok(

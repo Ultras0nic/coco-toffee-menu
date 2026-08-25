@@ -1,10 +1,12 @@
 {
   "schemaVersion": 1,
-  "lastUpdated": "2026-08-24",
+  "lastUpdated": "2026-08-25",
+  "assetVersion": "2026-08-25-1",
   "editingInstructions": [
     "Edit this file to update the local preview and GitHub Pages website.",
     "Keep every id unique and stable so saved product links continue to work.",
     "Add approved photos to assets/menu and put the relative file path in photo.",
+    "Increment assetVersion whenever an existing photo file is replaced so browsers load the new image.",
     "Verify allergen statements before replacing the placeholder text."
   ],
   "menuCategories": [
