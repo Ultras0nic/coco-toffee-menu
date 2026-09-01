@@ -1,12 +1,14 @@
 # Coco & Toffee Interactive Menu
 
-A future-ready, dependency-free menu website based on the final three-page Coco & Toffee menu.
+A future-ready, dependency-free menu website based on the current Silver Stone Castle recipe collection.
 It preserves the warm beige paper, hand-drawn typography, black rules and spacious two-column
 menu layout while adding accessible product detail cards.
 
 ## What is already included
 
-- All 8 menu categories and 48 products from the final PDF
+- All 8 menu categories and 26 customer-facing products from the current recipe collection
+- Approved product photography for COCO’s cookie, TOFFEE’s cookie, cranberry oatmeal,
+  classic chocolate chip and the jumbo cinnamon roll
 - Desktop hover and keyboard-focus product details
 - Mobile tap-to-open details with close, outside-tap and Escape support
 - Photo, description, texture, allergen and pricing placeholders
@@ -27,17 +29,17 @@ Open `data/menu.json`. That JSON file is the menu's single source of truth and a
 repository-backed content store. The local preview and the published GitHub Pages website both
 read the same file.
 
-To add details, replace a product line with an expanded version:
+To add or revise details, update the matching product object:
 
 ```json
 {
-  "id": "biscoff",
-  "name": "Biscoff",
+  "id": "classic-chocolate-chip",
+  "name": "Classic Chocolate Chip Cookie",
   "description": "Your approved flavor description.",
   "texture": "Your approved texture.",
   "allergens": "Your verified allergen statement.",
   "price": "Your price or Custom quote.",
-  "photo": "assets/menu/biscoff.jpg"
+  "photo": "assets/menu/classic-chocolate-chip-cookie.jpg"
 }
 ```
 
@@ -69,7 +71,8 @@ The local preview opens at `http://127.0.0.1:4173`. The public build is written 
 6. GitHub will show the free public URL after deployment succeeds.
 
 The workflow publishes only the allow-listed website files from `dist/`, including
-`data/menu.json`. Drafts, tests and internal notes are not included in the public website.
+`data/menu.json`. Drafts, tests, recipe formulas and internal notes are not included in the
+public website.
 
 ## Important content note
 

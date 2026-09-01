@@ -4,14 +4,14 @@ Place approved product photos in this folder. JPG, PNG and WebP files are suppor
 
 Recommended naming uses the stable item id from `data/menu.json`, for example:
 
-- `biscoff.jpg`
-- `fudge-brownies.jpg`
-- `tiramisu.jpg`
+- `classic-chocolate-chip-cookie.jpg`
+- `classic-fudge-brownie.jpg`
+- `classic-tiramisu.jpg`
 
 Then set the item's `photo` field in `data/menu.json`:
 
 ```json
-"photo": "assets/menu/biscoff.jpg"
+"photo": "assets/menu/classic-chocolate-chip-cookie.jpg"
 ```
 
 Recommended source size: at least 1200 x 900 pixels. Keep the main product near the center so it

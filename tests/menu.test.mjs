@@ -11,24 +11,48 @@ test("photo replacements have an explicit cache version", () => {
   assert.match(menuData.assetVersion, /^\d{4}-\d{2}-\d{2}-\d+$/);
 });
 
-test("the final PDF menu structure is represented", () => {
+test("the recipe collection menu structure is represented", () => {
   assert.equal(menuCategories.length, 8);
-  assert.ok(
-    menuCategories.flatMap((category) => category.items).length >= 48,
-    "The menu must retain at least the 48-item baseline",
-  );
+  assert.equal(menuCategories.flatMap((category) => category.items).length, 26);
   assert.deepEqual(
     menuCategories.map((category) => category.name),
     [
       "Cookies",
-      "Bars & Brownies",
-      "Muffins",
-      "Sweet Yeasted Breads",
-      "Little Treats",
-      "Savory",
-      "Cakes & Large Desserts",
-      "Individual Refrigerated Desserts",
+      "Brownies & Blondies",
+      "Muffins & Cinnamon Rolls",
+      "Savory Baking",
+      "Tartlets",
+      "Tiramisu & Flans",
+      "Cakes & Cupcakes",
+      "Portuguese Pastries",
     ],
+  );
+});
+
+test("the supplied product photos are assigned to the requested products", () => {
+  const items = new Map(
+    menuCategories
+      .flatMap((category) => category.items)
+      .map((item) => [item.id, item.photo]),
+  );
+
+  assert.deepEqual(
+    Object.fromEntries(
+      [
+        "coco-double-chocolate",
+        "toffee-brown-butter-espresso",
+        "cranberry-white-chocolate-oatmeal",
+        "classic-chocolate-chip",
+        "jumbo-cinnamon-roll",
+      ].map((id) => [id, items.get(id)]),
+    ),
+    {
+      "coco-double-chocolate": "assets/menu/coco-double-chocolate.jpg?v=2026-09-01-1",
+      "toffee-brown-butter-espresso": "assets/menu/toffee-brown-butter-espresso.jpg?v=2026-09-01-1",
+      "cranberry-white-chocolate-oatmeal": "assets/menu/cranberry-white-chocolate-oatmeal.jpg?v=2026-09-01-1",
+      "classic-chocolate-chip": "assets/menu/classic-chocolate-chip-cookie.jpg?v=2026-09-01-1",
+      "jumbo-cinnamon-roll": "assets/menu/jumbo-cinnamon-roll.jpg?v=2026-09-01-1",
+    },
   );
 });
 
