@@ -332,16 +332,63 @@ h1 {
 }
 
 @media (min-width: 821px) and (hover: hover) and (pointer: fine) {
+  .menu-layout {
+    display: block;
+  }
+
   .product-preview {
-    max-height: calc(100vh - 102px);
-    max-height: calc(100dvh - 102px);
+    position: fixed;
+    z-index: 20;
+    top: 50%;
+    left: 50%;
+    width: min(620px, calc(100vw - 48px));
+    max-height: min(88vh, 760px);
+    max-height: min(88dvh, 760px);
     overflow-y: auto;
     overscroll-behavior: contain;
     scrollbar-gutter: stable;
+    border: 1px solid var(--ink);
+    background: var(--paper-light);
+    box-shadow: 0 24px 80px rgb(81 71 64 / 28%);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translate(-50%, -46%) scale(0.98);
+    transition:
+      opacity 160ms ease,
+      transform 180ms ease,
+      visibility 0s linear 180ms;
+  }
+
+  .product-preview.is-open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translate(-50%, -50%) scale(1);
+    transition-delay: 0s;
+  }
+
+  .preview-close {
+    position: sticky;
+    z-index: 2;
+    top: 12px;
+    display: block;
+    float: right;
+    min-width: 48px;
+    min-height: 44px;
+    margin: 12px 12px -56px 0;
+    padding: 8px 11px;
+    border: 1px solid var(--ink);
+    color: var(--ink);
+    background: var(--paper-light);
+    font-size: 0.72rem;
+    font-weight: 700;
+    cursor: pointer;
   }
 
   .preview-photo {
-    aspect-ratio: 16 / 9;
+    height: clamp(170px, 28dvh, 240px);
+    aspect-ratio: auto;
   }
 
   .product-preview h2 {
@@ -432,6 +479,10 @@ h1 {
   z-index: 19;
   inset: 0;
   background: rgb(81 71 64 / 48%);
+}
+
+.preview-open {
+  overflow: hidden;
 }
 
 .noscript-message {

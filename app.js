@@ -108,7 +108,7 @@ function updateImage(item) {
   previewImage.src = photoUrl.href;
 }
 
-function activateItem(button, openCompact = false) {
+function activateItem(button, openOnClick = false) {
   const record = itemIndex.get(button.dataset.itemId);
   if (!record) return;
 
@@ -130,11 +130,13 @@ function activateItem(button, openCompact = false) {
   updateImage(record.item);
   history.replaceState(null, "", `#product-${record.item.id}`);
 
-  if (openCompact && isCompactInteraction()) openPreview();
+  if (openOnClick) openPreview();
 }
 
 function openPreview() {
+  preview.scrollTop = 0;
   preview.classList.add("is-open");
+  preview.setAttribute("aria-hidden", "false");
   scrim.hidden = false;
   document.body.classList.add("preview-open");
   requestAnimationFrame(() => previewClose.focus());
@@ -142,30 +144,40 @@ function openPreview() {
 
 function closePreview({ returnFocus = true } = {}) {
   preview.classList.remove("is-open");
+  preview.setAttribute("aria-hidden", "true");
   scrim.hidden = true;
   document.body.classList.remove("preview-open");
+  if (activeButton) activeButton.setAttribute("aria-expanded", "false");
   if (returnFocus && activeButton) activeButton.focus();
+
+  if (!isCompactInteraction() && location.hash.startsWith("#product-")) {
+    history.replaceState(null, "", `${location.pathname}${location.search}`);
+  }
 }
 
 function attachInteractions() {
   document.querySelectorAll(".menu-item").forEach((button) => {
-    button.addEventListener("pointerenter", (event) => {
-      if (event.pointerType === "mouse" && !isCompactInteraction()) activateItem(button);
-    });
-    button.addEventListener("focus", () => {
-      if (!isCompactInteraction()) activateItem(button);
-    });
     button.addEventListener("click", () => activateItem(button, true));
   });
 
   previewClose.addEventListener("click", () => closePreview());
   scrim.addEventListener("click", () => closePreview());
   document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape" && preview.classList.contains("is-open")) closePreview();
+    if (!preview.classList.contains("is-open")) return;
+    if (event.key === "Escape") closePreview();
+    if (event.key === "Tab") {
+      event.preventDefault();
+      previewClose.focus();
+    }
   });
 
+  let compactInteraction = isCompactInteraction();
   window.addEventListener("resize", () => {
-    if (!isCompactInteraction()) closePreview({ returnFocus: false });
+    const nextCompactInteraction = isCompactInteraction();
+    if (nextCompactInteraction !== compactInteraction) {
+      closePreview({ returnFocus: false });
+      compactInteraction = nextCompactInteraction;
+    }
   });
 }
 
@@ -188,7 +200,7 @@ function restoreProductFromHash() {
   const id = location.hash.replace(/^#product-/, "");
   if (!id || !itemIndex.has(id)) return;
   const button = document.querySelector(`[data-item-id="${CSS.escape(id)}"]`);
-  if (button) activateItem(button, false);
+  if (button) activateItem(button, !isCompactInteraction());
 }
 
 renderMenu();

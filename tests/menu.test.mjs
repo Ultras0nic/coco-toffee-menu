@@ -150,21 +150,39 @@ test("page includes key accessible interaction surfaces", async () => {
   const html = await readFile(new URL("../index.html", import.meta.url), "utf8");
   const css = await readFile(new URL("../styles.css", import.meta.url), "utf8");
   assert.match(html, /aria-live="polite"/);
+  assert.match(html, /role="dialog"/);
+  assert.match(html, /aria-modal="true"/);
+  assert.match(html, /aria-hidden="true"/);
   assert.match(html, /Skip to menu/);
   assert.match(html, /Close product details/);
   assert.match(css, /prefers-reduced-motion/);
   assert.match(css, /forced-colors/);
 });
 
-test("desktop product details stay compact and keep pricing visible", async () => {
+test("desktop product details open as a dismissible modal", async () => {
+  const app = await readFile(new URL("../app.js", import.meta.url), "utf8");
   const css = await readFile(new URL("../styles.css", import.meta.url), "utf8");
 
   assert.match(
     css,
     /@media \(min-width: 821px\) and \(hover: hover\) and \(pointer: fine\)/,
   );
-  assert.match(css, /max-height: calc\(100dvh - 102px\)/);
+  assert.match(css, /\.product-preview\.is-open/);
+  assert.match(css, /position: fixed/);
+  assert.match(css, /visibility: hidden/);
   assert.match(css, /overflow-y: auto/);
   assert.match(css, /font-size: clamp\(1\.55rem, 2\.1vw, 2rem\)/);
   assert.match(css, /\.preview-facts > div:last-child\s*{\s*order: -1/);
+  assert.match(app, /if \(openOnClick\) openPreview\(\)/);
+  assert.match(app, /scrim\.addEventListener\("click", \(\) => closePreview\(\)\)/);
+  assert.match(app, /activeButton\.setAttribute\("aria-expanded", "false"\)/);
+  assert.doesNotMatch(app, /pointerenter/);
+});
+
+test("phone product details retain the bottom-sheet interaction", async () => {
+  const css = await readFile(new URL("../styles.css", import.meta.url), "utf8");
+
+  assert.match(css, /@media \(max-width: 820px\), \(hover: none\), \(pointer: coarse\)/);
+  assert.match(css, /bottom: 0/);
+  assert.match(css, /transform: translateY\(105%\)/);
 });
