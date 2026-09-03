@@ -194,24 +194,24 @@ test("desktop hover preview contains only the product image and name", async () 
   assert.match(css, /\.product-peek-photo\s*{\s*aspect-ratio: 16 \/ 9/);
 });
 
-test("the Cult UI-inspired lightboard sits between the menu header and category navigation", async () => {
+test("the warm slogan marquee sits between the menu header and category navigation", async () => {
   const html = await readFile(new URL("../index.html", import.meta.url), "utf8");
   const app = await readFile(new URL("../app.js", import.meta.url), "utf8");
   const css = await readFile(new URL("../styles.css", import.meta.url), "utf8");
 
-  assert.match(html, /<\/header>\s*<section class="slogan-lightboard"/);
-  assert.doesNotMatch(html, /class="slogan-lightboard page-shell"/);
-  assert.match(html, /<canvas id="slogan-lightboard" aria-hidden="true"><\/canvas>/);
+  assert.match(html, /<\/header>\s*<section class="slogan-band"/);
   assert.match(html, /A little gift in every bite/);
-  assert.match(app, /function initSloganLightboard\(\)/);
-  assert.match(app, /new ResizeObserver/);
-  assert.match(app, /prefers-reduced-motion: reduce/);
-  assert.match(app, /const updateInterval = 70/);
-  assert.match(app, /pointerenter/);
-  assert.match(css, /\.slogan-lightboard canvas\s*{/);
-  assert.match(css, /\.slogan-lightboard\s*{\s*width: 100%/);
-  assert.match(css, /linear-gradient\(100deg, #321b14, #58311e 48%, #422117\)/);
-  assert.doesNotMatch(css, /lightboard-glow/);
+  assert.match(html, /class="slogan-band-track" aria-hidden="true"/);
+  assert.match(html, /class="slogan-band-group" aria-hidden="true"/);
+  assert.doesNotMatch(html, /<canvas/);
+  assert.doesNotMatch(app, /LightBoard|lightboardFont|initSloganLightboard/);
+  assert.match(css, /\.slogan-band\s*{\s*width: 100%/);
+  assert.match(css, /background-color: #decbb7/);
+  assert.match(css, /animation: slogan-marquee 12s linear infinite/);
+  assert.match(css, /\.slogan-band:hover \.slogan-band-track\s*{\s*animation-play-state: paused/);
+  assert.match(css, /@keyframes slogan-marquee/);
+  assert.match(css, /@media \(prefers-reduced-motion: reduce\)/);
+  assert.match(css, /animation: none !important/);
 });
 
 test("phone product details retain the bottom-sheet interaction", async () => {

@@ -31,7 +31,6 @@ const productPeek = document.querySelector("#product-peek");
 const productPeekImage = document.querySelector("#product-peek-image");
 const productPeekPlaceholder = document.querySelector("#product-peek-placeholder");
 const productPeekName = document.querySelector("#product-peek-name");
-const sloganLightboard = document.querySelector("#slogan-lightboard");
 const selectionList = document.querySelector("#selection-list");
 const copyButton = document.querySelector("#copy-checklist");
 const copyStatus = document.querySelector("#copy-status");
@@ -50,161 +49,6 @@ function escapeHtml(value) {
 
 function isCompactInteraction() {
   return window.matchMedia("(max-width: 820px), (hover: none), (pointer: coarse)").matches;
-}
-
-// Framework-free adaptation of Cult UI's MIT-licensed LightBoard component.
-const lightboardFont = {
-  " ": ["0000", "0000", "0000", "0000", "0000"],
-  A: ["0110", "1001", "1111", "1001", "1001"],
-  B: ["1110", "1001", "1110", "1001", "1110"],
-  E: ["1111", "1000", "1110", "1000", "1111"],
-  F: ["1111", "1000", "1110", "1000", "1000"],
-  G: ["0111", "1000", "1011", "1001", "0111"],
-  I: ["111", "010", "010", "010", "111"],
-  L: ["1000", "1000", "1000", "1000", "1111"],
-  N: ["1001", "1101", "1011", "1001", "1001"],
-  R: ["1110", "1001", "1110", "1010", "1001"],
-  T: ["11111", "00100", "00100", "00100", "00100"],
-  V: ["10001", "10001", "01010", "01010", "00100"],
-  Y: ["10001", "01010", "00100", "00100", "00100"],
-  "🌼": ["00200", "02220", "22222", "02220", "00200"],
-  "✨": ["00300", "00300", "33333", "00300", "00300"],
-};
-
-function initSloganLightboard() {
-  if (!sloganLightboard) return;
-
-  const context = sloganLightboard.getContext("2d");
-  if (!context) return;
-
-  const accessibleText = sloganLightboard.nextElementSibling?.textContent.trim() || "";
-  const rows = 9;
-  const updateInterval = 70;
-  const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
-  const colors = {
-    background: "rgba(215, 157, 104, 0.2)",
-    text: "#ffd58f",
-    flower: "#efa882",
-    sparkle: "#fff4ce",
-  };
-
-  let columns = 0;
-  let cssWidth = 0;
-  let cssHeight = 0;
-  let lightPitch = 0;
-  let lightRadius = 0;
-  let offset = 0;
-  let pattern = [];
-  let lastUpdate = 0;
-  let isHovered = false;
-
-  function buildPattern() {
-    const normalizedText = `   ${accessibleText.toUpperCase()}   `.replace(/\s+/g, "   ");
-    const glyphs = [...normalizedText].map(
-      (character) => lightboardFont[character] || lightboardFont[" "],
-    );
-    const textRows = Array.from({ length: 5 }, (_, rowIndex) =>
-      glyphs.flatMap((glyph) => [
-        ...glyph[rowIndex].split("").map(Number),
-        0,
-      ]),
-    );
-    const emptyRow = Array(textRows[0].length).fill(0);
-    const topPadding = Math.floor((rows - textRows.length) / 2);
-    const bottomPadding = rows - textRows.length - topPadding;
-
-    pattern = [
-      ...Array.from({ length: topPadding }, () => [...emptyRow]),
-      ...textRows,
-      ...Array.from({ length: bottomPadding }, () => [...emptyRow]),
-    ];
-
-    pattern = pattern.map((row) => {
-      const repeatedRow = [...row];
-      while (repeatedRow.length < columns * 2) repeatedRow.push(...row);
-      return repeatedRow;
-    });
-    offset %= pattern[0].length;
-  }
-
-  function drawLightboard() {
-    if (!pattern.length || !columns) return;
-
-    context.clearRect(0, 0, cssWidth, cssHeight);
-    const patternWidth = pattern[0].length;
-
-    for (let rowIndex = 0; rowIndex < rows; rowIndex += 1) {
-      for (let columnIndex = 0; columnIndex < columns; columnIndex += 1) {
-        const state = pattern[rowIndex][(columnIndex + offset) % patternWidth];
-        const fillColor =
-          state === 1
-            ? colors.text
-            : state === 2
-              ? colors.flower
-              : state === 3
-                ? colors.sparkle
-                : colors.background;
-
-        context.fillStyle = fillColor;
-        context.shadowColor = state === 0 ? "transparent" : fillColor;
-        context.shadowBlur = state === 0 ? 0 : 5;
-        context.beginPath();
-        context.arc(
-          columnIndex * lightPitch + lightPitch / 2,
-          rowIndex * lightPitch + lightPitch / 2,
-          lightRadius,
-          0,
-          Math.PI * 2,
-        );
-        context.fill();
-      }
-    }
-
-    context.shadowBlur = 0;
-  }
-
-  function resizeLightboard() {
-    const bounds = sloganLightboard.getBoundingClientRect();
-    const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
-    cssWidth = bounds.width;
-    cssHeight = bounds.height;
-    lightPitch = cssHeight / rows;
-    lightRadius = Math.max(1.75, lightPitch * 0.34);
-    columns = Math.max(1, Math.ceil(cssWidth / lightPitch));
-
-    sloganLightboard.width = Math.max(1, Math.round(cssWidth * pixelRatio));
-    sloganLightboard.height = Math.max(1, Math.round(cssHeight * pixelRatio));
-    context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
-    buildPattern();
-    drawLightboard();
-  }
-
-  function animate(timestamp) {
-    if (
-      !motionPreference.matches &&
-      !isHovered &&
-      timestamp - lastUpdate >= updateInterval
-    ) {
-      offset = (offset + 1) % pattern[0].length;
-      lastUpdate = timestamp;
-      drawLightboard();
-    }
-    requestAnimationFrame(animate);
-  }
-
-  sloganLightboard.addEventListener("pointerenter", () => {
-    isHovered = true;
-  });
-  sloganLightboard.addEventListener("pointerleave", () => {
-    isHovered = false;
-    lastUpdate = performance.now();
-  });
-  motionPreference.addEventListener("change", drawLightboard);
-
-  const resizeObserver = new ResizeObserver(resizeLightboard);
-  resizeObserver.observe(sloganLightboard);
-  resizeLightboard();
-  requestAnimationFrame(animate);
 }
 
 function renderMenu() {
@@ -427,5 +271,4 @@ function restoreProductFromHash() {
 renderMenu();
 attachInteractions();
 restoreProductFromHash();
-initSloganLightboard();
 copyButton.addEventListener("click", copyChecklist);
