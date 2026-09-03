@@ -155,3 +155,16 @@ test("page includes key accessible interaction surfaces", async () => {
   assert.match(css, /prefers-reduced-motion/);
   assert.match(css, /forced-colors/);
 });
+
+test("desktop product details stay compact and keep pricing visible", async () => {
+  const css = await readFile(new URL("../styles.css", import.meta.url), "utf8");
+
+  assert.match(
+    css,
+    /@media \(min-width: 821px\) and \(hover: hover\) and \(pointer: fine\)/,
+  );
+  assert.match(css, /max-height: calc\(100dvh - 102px\)/);
+  assert.match(css, /overflow-y: auto/);
+  assert.match(css, /font-size: clamp\(1\.55rem, 2\.1vw, 2rem\)/);
+  assert.match(css, /\.preview-facts > div:last-child\s*{\s*order: -1/);
+});

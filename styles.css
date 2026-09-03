@@ -331,6 +331,34 @@ h1 {
   font-size: 0.82rem;
 }
 
+@media (min-width: 821px) and (hover: hover) and (pointer: fine) {
+  .product-preview {
+    max-height: calc(100vh - 102px);
+    max-height: calc(100dvh - 102px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-gutter: stable;
+  }
+
+  .preview-photo {
+    aspect-ratio: 16 / 9;
+  }
+
+  .product-preview h2 {
+    font-size: clamp(1.55rem, 2.1vw, 2rem);
+    line-height: 1;
+  }
+
+  .preview-facts {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .preview-facts > div:last-child {
+    order: -1;
+  }
+}
+
 .selection {
   margin-bottom: clamp(72px, 12vw, 150px);
   padding: clamp(34px, 6vw, 74px);
