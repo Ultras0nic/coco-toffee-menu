@@ -176,7 +176,32 @@ test("desktop product details open as a dismissible modal", async () => {
   assert.match(app, /if \(openOnClick\) openPreview\(\)/);
   assert.match(app, /scrim\.addEventListener\("click", \(\) => closePreview\(\)\)/);
   assert.match(app, /activeButton\.setAttribute\("aria-expanded", "false"\)/);
-  assert.doesNotMatch(app, /pointerenter/);
+  assert.match(app, /pointerenter/);
+});
+
+test("desktop hover preview contains only the product image and name", async () => {
+  const html = await readFile(new URL("../index.html", import.meta.url), "utf8");
+  const app = await readFile(new URL("../app.js", import.meta.url), "utf8");
+  const css = await readFile(new URL("../styles.css", import.meta.url), "utf8");
+
+  assert.match(html, /id="product-peek"[^>]*aria-hidden="true"/);
+  assert.match(html, /id="product-peek-image"/);
+  assert.match(html, /id="product-peek-name"/);
+  assert.match(app, /function showProductPeek\(button\)/);
+  assert.match(app, /button\.addEventListener\("pointerleave"/);
+  assert.match(css, /\.product-peek\.is-visible/);
+  assert.match(css, /pointer-events: none/);
+  assert.match(css, /\.product-peek-photo\s*{\s*aspect-ratio: 16 \/ 9/);
+});
+
+test("the illuminated slogan sits between the menu header and category navigation", async () => {
+  const html = await readFile(new URL("../index.html", import.meta.url), "utf8");
+  const css = await readFile(new URL("../styles.css", import.meta.url), "utf8");
+
+  assert.match(html, /<\/header>\s*<section class="slogan-sign page-shell"/);
+  assert.match(html, /A little gift in every bite/);
+  assert.match(css, /@keyframes lightboard-glow/);
+  assert.match(css, /text-shadow:/);
 });
 
 test("phone product details retain the bottom-sheet interaction", async () => {

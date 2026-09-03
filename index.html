@@ -20,7 +20,9 @@
       <div>
         <p class="eyebrow">Coco & Toffee Bakery & Co.</p>
         <h1>Menu</h1>
-        <p class="header-note">Hover to discover on desktop. Tap to discover on mobile.</p>
+        <p class="header-note">
+          Hover for a quick preview and click for full details. Tap to discover on mobile.
+        </p>
       </div>
       <div class="brand-mark">
         <img
@@ -32,6 +34,10 @@
         />
       </div>
     </header>
+
+    <section class="slogan-sign page-shell" aria-label="Coco and Toffee slogan">
+      <p>A little gift in every bite<span aria-hidden="true">🌼✨</span></p>
+    </section>
 
     <nav class="category-nav page-shell" aria-label="Menu categories">
       <div id="category-nav-list"></div>
@@ -78,6 +84,16 @@
         </dl>
       </aside>
     </main>
+
+    <aside id="product-peek" class="product-peek" aria-hidden="true">
+      <div class="product-peek-photo">
+        <img id="product-peek-image" alt="" hidden />
+        <div id="product-peek-placeholder" class="photo-placeholder">
+          <span>Photo coming soon</span>
+        </div>
+      </div>
+      <p id="product-peek-name" class="product-peek-name"></p>
+    </aside>
 
     <section class="selection page-shell" aria-labelledby="selection-title">
       <p class="section-kicker">Let&rsquo;s create your selection</p>

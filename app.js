@@ -27,12 +27,17 @@ const previewClose = document.querySelector(".preview-close");
 const scrim = document.querySelector("#mobile-scrim");
 const previewImage = document.querySelector("#preview-image");
 const previewPlaceholder = document.querySelector("#preview-placeholder");
+const productPeek = document.querySelector("#product-peek");
+const productPeekImage = document.querySelector("#product-peek-image");
+const productPeekPlaceholder = document.querySelector("#product-peek-placeholder");
+const productPeekName = document.querySelector("#product-peek-name");
 const selectionList = document.querySelector("#selection-list");
 const copyButton = document.querySelector("#copy-checklist");
 const copyStatus = document.querySelector("#copy-status");
 
 const itemIndex = new Map();
 let activeButton = null;
+let peekButton = null;
 
 function escapeHtml(value) {
   return String(value)
@@ -86,26 +91,74 @@ function renderMenu() {
     .join("");
 }
 
-function updateImage(item) {
-  previewImage.hidden = true;
-  previewPlaceholder.hidden = false;
-  previewImage.removeAttribute("src");
-  previewImage.alt = "";
+function updateImageElements(image, placeholder, item) {
+  image.hidden = true;
+  placeholder.hidden = false;
+  image.removeAttribute("src");
+  image.alt = "";
 
   if (!item.photo) return;
 
-  previewImage.onload = () => {
-    previewImage.hidden = false;
-    previewPlaceholder.hidden = true;
+  image.onload = () => {
+    image.hidden = false;
+    placeholder.hidden = true;
   };
-  previewImage.onerror = () => {
-    previewImage.hidden = true;
-    previewPlaceholder.hidden = false;
+  image.onerror = () => {
+    image.hidden = true;
+    placeholder.hidden = false;
   };
-  previewImage.alt = item.name;
+  image.alt = item.name;
   const photoUrl = new URL(item.photo, document.baseURI);
   if (menuAssetVersion) photoUrl.searchParams.set("v", menuAssetVersion);
-  previewImage.src = photoUrl.href;
+  image.src = photoUrl.href;
+}
+
+function updateImage(item) {
+  updateImageElements(previewImage, previewPlaceholder, item);
+}
+
+function showProductPeek(button) {
+  if (isCompactInteraction() || preview.classList.contains("is-open")) return;
+
+  const record = itemIndex.get(button.dataset.itemId);
+  if (!record) return;
+
+  peekButton = button;
+  productPeekName.textContent = record.item.name;
+  updateImageElements(productPeekImage, productPeekPlaceholder, record.item);
+
+  const buttonRect = button.getBoundingClientRect();
+  const viewportPadding = 16;
+  const gap = 16;
+  const peekWidth = Math.min(300, window.innerWidth - viewportPadding * 2);
+  const peekHeight = productPeek.offsetHeight;
+  let left = buttonRect.right + gap;
+
+  if (left + peekWidth > window.innerWidth - viewportPadding) {
+    left = buttonRect.left - peekWidth - gap;
+  }
+
+  left = Math.max(
+    viewportPadding,
+    Math.min(left, window.innerWidth - peekWidth - viewportPadding),
+  );
+  const top = Math.max(
+    viewportPadding,
+    Math.min(
+      buttonRect.top + buttonRect.height / 2 - peekHeight / 2,
+      window.innerHeight - peekHeight - viewportPadding,
+    ),
+  );
+
+  productPeek.style.setProperty("--peek-left", `${left}px`);
+  productPeek.style.setProperty("--peek-top", `${top}px`);
+  productPeek.classList.add("is-visible");
+}
+
+function hideProductPeek(button = null) {
+  if (button && peekButton !== button) return;
+  productPeek.classList.remove("is-visible");
+  peekButton = null;
 }
 
 function activateItem(button, openOnClick = false) {
@@ -134,6 +187,7 @@ function activateItem(button, openOnClick = false) {
 }
 
 function openPreview() {
+  hideProductPeek();
   preview.scrollTop = 0;
   preview.classList.add("is-open");
   preview.setAttribute("aria-hidden", "false");
@@ -157,7 +211,16 @@ function closePreview({ returnFocus = true } = {}) {
 
 function attachInteractions() {
   document.querySelectorAll(".menu-item").forEach((button) => {
-    button.addEventListener("click", () => activateItem(button, true));
+    button.addEventListener("pointerenter", (event) => {
+      if (event.pointerType === "mouse") showProductPeek(button);
+    });
+    button.addEventListener("pointerleave", () => hideProductPeek(button));
+    button.addEventListener("focus", () => showProductPeek(button));
+    button.addEventListener("blur", () => hideProductPeek(button));
+    button.addEventListener("click", () => {
+      hideProductPeek();
+      activateItem(button, true);
+    });
   });
 
   previewClose.addEventListener("click", () => closePreview());
@@ -173,12 +236,14 @@ function attachInteractions() {
 
   let compactInteraction = isCompactInteraction();
   window.addEventListener("resize", () => {
+    hideProductPeek();
     const nextCompactInteraction = isCompactInteraction();
     if (nextCompactInteraction !== compactInteraction) {
       closePreview({ returnFocus: false });
       compactInteraction = nextCompactInteraction;
     }
   });
+  window.addEventListener("scroll", () => hideProductPeek(), { passive: true });
 }
 
 async function copyChecklist() {
