@@ -149,12 +149,17 @@ h1 {
 }
 
 .slogan-lightboard {
+  width: 100%;
   margin-bottom: clamp(34px, 6vw, 68px);
   overflow: hidden;
-  border: 1px solid #4f3a4c;
-  border-radius: 12px;
-  background: #171118;
-  box-shadow: 0 14px 34px rgb(81 71 64 / 18%);
+  border-block: 1px solid #79523c;
+  background:
+    linear-gradient(90deg, rgb(37 19 14 / 86%), transparent 18% 82%, rgb(37 19 14 / 86%)),
+    linear-gradient(100deg, #321b14, #58311e 48%, #422117);
+  box-shadow:
+    0 12px 30px rgb(81 52 36 / 20%),
+    inset 0 1px rgb(255 222 167 / 17%),
+    inset 0 -1px rgb(26 12 8 / 55%);
 }
 
 .slogan-lightboard canvas {
@@ -596,7 +601,6 @@ h1 {
 
   .slogan-lightboard {
     margin-bottom: 28px;
-    border-radius: 10px;
   }
 
   .slogan-lightboard canvas {

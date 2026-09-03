@@ -79,13 +79,13 @@ function initSloganLightboard() {
 
   const accessibleText = sloganLightboard.nextElementSibling?.textContent.trim() || "";
   const rows = 9;
-  const updateInterval = 110;
+  const updateInterval = 70;
   const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
   const colors = {
-    background: "rgba(179, 137, 171, 0.18)",
-    text: "#f6d58a",
-    flower: "#ef9fbd",
-    sparkle: "#fff8d8",
+    background: "rgba(215, 157, 104, 0.2)",
+    text: "#ffd58f",
+    flower: "#efa882",
+    sparkle: "#fff4ce",
   };
 
   let columns = 0;

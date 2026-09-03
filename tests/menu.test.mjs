@@ -199,14 +199,18 @@ test("the Cult UI-inspired lightboard sits between the menu header and category 
   const app = await readFile(new URL("../app.js", import.meta.url), "utf8");
   const css = await readFile(new URL("../styles.css", import.meta.url), "utf8");
 
-  assert.match(html, /<\/header>\s*<section class="slogan-lightboard page-shell"/);
+  assert.match(html, /<\/header>\s*<section class="slogan-lightboard"/);
+  assert.doesNotMatch(html, /class="slogan-lightboard page-shell"/);
   assert.match(html, /<canvas id="slogan-lightboard" aria-hidden="true"><\/canvas>/);
   assert.match(html, /A little gift in every bite/);
   assert.match(app, /function initSloganLightboard\(\)/);
   assert.match(app, /new ResizeObserver/);
   assert.match(app, /prefers-reduced-motion: reduce/);
+  assert.match(app, /const updateInterval = 70/);
   assert.match(app, /pointerenter/);
   assert.match(css, /\.slogan-lightboard canvas\s*{/);
+  assert.match(css, /\.slogan-lightboard\s*{\s*width: 100%/);
+  assert.match(css, /linear-gradient\(100deg, #321b14, #58311e 48%, #422117\)/);
   assert.doesNotMatch(css, /lightboard-glow/);
 });
 
