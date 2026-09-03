@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "lastUpdated": "2026-09-01",
+  "lastUpdated": "2026-09-03",
   "assetVersion": "2026-09-01-1",
   "editingInstructions": [
     "Edit this file to update the local preview and GitHub Pages website.",
@@ -21,7 +21,7 @@
           "description": "Dark cocoa and fine Oreo cookie powder create a deep cookies-and-cream base, finished with Oreo pieces, creamy white chocolate and melted semi-sweet chocolate.",
           "texture": "Thick and fudgy with a brownie-like center and crisp cookie pieces.",
           "allergens": "Contains wheat, milk, egg and soy. Made in a home kitchen that also handles peanuts and tree nuts.",
-          "price": "Custom quote",
+          "price": "$4.50 each · 6-pack $26 · dozen $51",
           "photo": "assets/menu/coco-double-chocolate.jpg?v=2026-09-01-1"
         },
         {
@@ -30,7 +30,7 @@
           "description": "Nutty brown butter and espresso meet semi-sweet and milk chocolate, with generous pieces of homemade crunchy caramelized toffee.",
           "texture": "Thick and chewy with melted chocolate and crisp toffee throughout.",
           "allergens": "Contains wheat, milk, egg and soy. Contains caffeine. Made in a home kitchen that also handles peanuts and tree nuts.",
-          "price": "Custom quote",
+          "price": "$5 each · 6-pack $28.50 · dozen $57",
           "photo": "assets/menu/toffee-brown-butter-espresso.jpg?v=2026-09-01-1"
         },
         {
@@ -39,7 +39,7 @@
           "description": "A buttery, vanilla-forward cookie loaded with semi-sweet and milk chocolate for a rich chocolate flavor without excessive sweetness.",
           "texture": "Thick and chewy with golden edges, a soft center and pools of melted chocolate.",
           "allergens": "Contains wheat, milk, egg and soy. Made in a home kitchen that also handles peanuts and tree nuts.",
-          "price": "Custom quote",
+          "price": "$4 each · 6-pack $23 · dozen $45",
           "photo": "assets/menu/classic-chocolate-chip-cookie.jpg?v=2026-09-01-1"
         },
         {
@@ -48,7 +48,7 @@
           "description": "Old-fashioned oats, tart dried cranberries and white chocolate are brightened with fresh orange zest and warm cinnamon.",
           "texture": "Thick and chewy with crisp edges, a soft center and a hearty oat crumb.",
           "allergens": "Contains wheat, milk, egg, soy and oats. Made in a home kitchen that also handles peanuts and tree nuts.",
-          "price": "Custom quote",
+          "price": "$4.50 each · 6-pack $26 · dozen $51",
           "photo": "assets/menu/cranberry-white-chocolate-oatmeal.jpg?v=2026-09-01-1"
         },
         {
@@ -57,7 +57,7 @@
           "description": "Creamy white chocolate and roasted macadamia pieces fill a rich vanilla cookie designed for a premium bakery-style bite.",
           "texture": "Thick and chunky with a soft center, crisp golden edges and crunchy roasted nuts.",
           "allergens": "Contains wheat, milk, egg, soy and tree nuts (macadamia). Made in a home kitchen that also handles peanuts and other tree nuts.",
-          "price": "Custom quote",
+          "price": "$5.50 each · 6-pack $32.50 · dozen $64.50",
           "photo": ""
         },
         {
@@ -66,7 +66,7 @@
           "description": "Graham-flavored cookie dough surrounds a gooey marshmallow center with milk and semi-sweet chocolate, visible graham pieces and a toasted graham base.",
           "texture": "Thick and soft-centered with gooey marshmallow, melted chocolate and crisp graham accents.",
           "allergens": "Contains wheat, milk, egg and soy. Made in a home kitchen that also handles peanuts and tree nuts.",
-          "price": "Custom quote",
+          "price": "$4.50 each · 6-pack $26 · dozen $51",
           "photo": ""
         },
         {
@@ -75,7 +75,7 @@
           "description": "A peanut-butter-forward cookie with a light sugar coating and one decorative molded chocolate centerpiece.",
           "texture": "Thick, soft and chewy with a lightly crackled exterior.",
           "allergens": "Contains wheat, milk, egg, peanuts and soy. Made in a home kitchen that also handles tree nuts.",
-          "price": "Custom quote",
+          "price": "$5 each · 6-pack $29 · dozen $57",
           "photo": ""
         }
       ]
@@ -91,7 +91,7 @@
           "description": "Dark chocolate, Dutch-process cocoa, a touch of coffee and semi-sweet chocolate chips create a deeply chocolate brownie.",
           "texture": "Dense and fudgy with chewy edges and a shiny top.",
           "allergens": "Contains wheat, milk, egg and soy. Contains caffeine. Made in a home kitchen that also handles peanuts and tree nuts.",
-          "price": "Custom quote",
+          "price": "$4.50 each · 4-pack $17 · dozen $51",
           "photo": ""
         },
         {
@@ -100,7 +100,7 @@
           "description": "A vanilla birthday-cake blondie built on white chocolate, filled with white chocolate chips and bright rainbow sprinkles.",
           "texture": "Thick, chewy, buttery and soft with a rich white-chocolate crumb.",
           "allergens": "Contains wheat, milk, egg and soy. Made in a home kitchen that also handles peanuts and tree nuts.",
-          "price": "Custom quote",
+          "price": "$4.50 each · 4-pack $17 · dozen $51",
           "photo": ""
         }
       ]
@@ -116,7 +116,7 @@
           "description": "A large bakery-style vanilla muffin with chocolate throughout and a tall golden dome.",
           "texture": "Moist and buttery with a tender crumb and melted chocolate chips.",
           "allergens": "Contains wheat, milk, egg and soy. Made in a home kitchen that also handles peanuts and tree nuts.",
-          "price": "Custom quote",
+          "price": "$7.50 each · 6-pack $44",
           "photo": ""
         },
         {
@@ -125,7 +125,7 @@
           "description": "Fresh blueberries fill a lightly lemon-scented vanilla muffin finished with a sparkling coarse-sugar top.",
           "texture": "Tall and tender with distinct berries, a moist crumb and a lightly crunchy top.",
           "allergens": "Contains wheat, milk and egg. Made in a home kitchen that also handles peanuts, tree nuts and soy.",
-          "price": "Custom quote",
+          "price": "$7.50 each · 6-pack $44",
           "photo": ""
         },
         {
@@ -134,7 +134,7 @@
           "description": "A sour-cream muffin layered with a cinnamon ribbon and topped generously with buttery bakery-style streusel.",
           "texture": "Moist and tender with a substantial crunchy crumb topping.",
           "allergens": "Contains wheat, milk and egg. Made in a home kitchen that also handles peanuts, tree nuts and soy.",
-          "price": "Custom quote",
+          "price": "$7.50 each · 6-pack $44",
           "photo": ""
         },
         {
@@ -143,7 +143,7 @@
           "description": "A large individual roll with a defined cinnamon-brown-sugar spiral and a generous layer of smooth vanilla butter icing.",
           "texture": "Tall, soft and fluffy with a moist, gooey center and lightly caramelized edges.",
           "allergens": "Contains wheat, milk and egg. Made in a home kitchen that also handles peanuts, tree nuts and soy.",
-          "price": "Custom quote",
+          "price": "$10.50 each · 6-pack $62",
           "photo": "assets/menu/jumbo-cinnamon-roll.jpg?v=2026-09-01-1"
         }
       ]
@@ -159,7 +159,7 @@
           "description": "A French-style individual quiche with smoky bacon, sweet caramelized onion, Gruyère and a silky seasoned custard.",
           "texture": "Thin crisp buttery pastry with a creamy custard that holds a clean shape.",
           "allergens": "Contains wheat, milk and egg. Made in a home kitchen that also handles peanuts, tree nuts and soy.",
-          "price": "Custom quote",
+          "price": "$6.50 each · 6-pack $38 · dozen $76",
           "photo": ""
         }
       ]
@@ -175,7 +175,7 @@
           "description": "An assortment of vanilla custard and fresh berry, lemon cream with vanilla cream, and chocolate hazelnut tartlets in crisp almond pâte sucrée shells.",
           "texture": "Thin crisp shells with silky fillings and distinct fruit, citrus and chocolate finishes.",
           "allergens": "The assortment contains wheat, milk, egg, soy and tree nuts (almond and hazelnut). Made in a home kitchen that also handles peanuts.",
-          "price": "Custom quote",
+          "price": "4-count assortment from $30.50",
           "photo": ""
         },
         {
@@ -184,7 +184,7 @@
           "description": "A crisp almond pâte sucrée shell filled with silky vanilla custard, generously topped with fresh berries and finished with a light glaze.",
           "texture": "Crisp pastry, smooth custard and fresh juicy berries.",
           "allergens": "Contains wheat, milk, egg and tree nuts (almond). Made in a home kitchen that also handles peanuts, other tree nuts and soy.",
-          "price": "Custom quote",
+          "price": "$7.75 each · 4-pack $30.50",
           "photo": ""
         },
         {
@@ -193,7 +193,7 @@
           "description": "A crisp almond pâte sucrée shell filled with bright lemon cream and finished with a neat ring of stabilized vanilla mascarpone cream.",
           "texture": "Crisp pastry with silky lemon filling and light, creamy vanilla accents.",
           "allergens": "Contains wheat, milk, egg and tree nuts (almond). Made in a home kitchen that also handles peanuts, other tree nuts and soy.",
-          "price": "Custom quote",
+          "price": "$11 each · 4-pack $43.50",
           "photo": ""
         },
         {
@@ -202,7 +202,7 @@
           "description": "A crisp almond pâte sucrée shell with silky dark chocolate ganache, light hazelnut whipped ganache and toasted hazelnuts.",
           "texture": "Crisp pastry with smooth rich chocolate and airy hazelnut cream.",
           "allergens": "Contains wheat, milk, egg, soy and tree nuts (almond and hazelnut). Made in a home kitchen that also handles peanuts.",
-          "price": "Custom quote",
+          "price": "$14.25 each · 4-pack $56",
           "photo": ""
         }
       ]
@@ -279,7 +279,7 @@
           "description": "Vanilla and vanilla bean create a full-flavored cupcake topped with a tall swirl of smooth vanilla buttercream.",
           "texture": "Soft, fine and moist with enough structure to support generous frosting.",
           "allergens": "Contains wheat, milk and egg. Made in a home kitchen that also handles peanuts, tree nuts and soy.",
-          "price": "Custom quote",
+          "price": "$6.50 each · 6-pack $37 · dozen $72",
           "photo": ""
         }
       ]
@@ -295,7 +295,7 @@
           "description": "Portuguese custard tarts with a crisp laminated shell, silky lemon-and-cinnamon-scented custard and characteristic dark caramelized spots.",
           "texture": "Shattering flaky pastry with a fully baked bottom and tender creamy custard.",
           "allergens": "Contains wheat, milk and egg. Made in a home kitchen that also handles peanuts, tree nuts and soy.",
-          "price": "Custom quote",
+          "price": "$6 each · 6-pack $35 · dozen $69",
           "photo": ""
         }
       ]
