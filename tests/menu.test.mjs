@@ -194,14 +194,20 @@ test("desktop hover preview contains only the product image and name", async () 
   assert.match(css, /\.product-peek-photo\s*{\s*aspect-ratio: 16 \/ 9/);
 });
 
-test("the illuminated slogan sits between the menu header and category navigation", async () => {
+test("the Cult UI-inspired lightboard sits between the menu header and category navigation", async () => {
   const html = await readFile(new URL("../index.html", import.meta.url), "utf8");
+  const app = await readFile(new URL("../app.js", import.meta.url), "utf8");
   const css = await readFile(new URL("../styles.css", import.meta.url), "utf8");
 
-  assert.match(html, /<\/header>\s*<section class="slogan-sign page-shell"/);
+  assert.match(html, /<\/header>\s*<section class="slogan-lightboard page-shell"/);
+  assert.match(html, /<canvas id="slogan-lightboard" aria-hidden="true"><\/canvas>/);
   assert.match(html, /A little gift in every bite/);
-  assert.match(css, /@keyframes lightboard-glow/);
-  assert.match(css, /text-shadow:/);
+  assert.match(app, /function initSloganLightboard\(\)/);
+  assert.match(app, /new ResizeObserver/);
+  assert.match(app, /prefers-reduced-motion: reduce/);
+  assert.match(app, /pointerenter/);
+  assert.match(css, /\.slogan-lightboard canvas\s*{/);
+  assert.doesNotMatch(css, /lightboard-glow/);
 });
 
 test("phone product details retain the bottom-sheet interaction", async () => {

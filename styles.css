@@ -137,57 +137,32 @@ h1 {
   object-fit: cover;
 }
 
-.slogan-sign {
-  position: relative;
-  isolation: isolate;
-  margin-bottom: clamp(34px, 6vw, 68px);
-  padding: clamp(16px, 2.4vw, 24px) clamp(24px, 5vw, 56px);
-  overflow: hidden;
-  border: 2px solid #7b5d76;
-  border-radius: 18px;
-  background:
-    radial-gradient(circle at 12px 12px, #fff8cf 0 2px, #f0c978 3px, transparent 6px)
-      0 0 / 28px 28px,
-    linear-gradient(135deg, #332030, #4b2d43 52%, #2f1b2c);
-  box-shadow:
-    0 14px 34px rgb(81 71 64 / 18%),
-    inset 0 0 30px rgb(255 220 138 / 10%),
-    0 0 24px rgb(240 201 120 / 22%);
-  text-align: center;
-}
-
-.slogan-sign::after {
+.visually-hidden {
   position: absolute;
-  z-index: -1;
-  inset: 8px;
-  border: 1px solid rgb(255 241 190 / 42%);
-  border-radius: 11px;
-  box-shadow: inset 0 0 18px rgb(255 226 145 / 18%);
-  content: "";
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
-.slogan-sign p {
-  margin: 0;
-  color: #fff8dc;
-  font-family: var(--font-hand);
-  font-size: clamp(1.35rem, 3vw, 2.25rem);
-  letter-spacing: 0.055em;
-  line-height: 1.2;
-  text-shadow:
-    0 0 5px rgb(255 255 255 / 78%),
-    0 0 13px rgb(255 219 128 / 85%),
-    0 0 28px rgb(255 205 100 / 52%);
-  animation: lightboard-glow 2.8s ease-in-out infinite alternate;
+.slogan-lightboard {
+  margin-bottom: clamp(34px, 6vw, 68px);
+  overflow: hidden;
+  border: 1px solid #4f3a4c;
+  border-radius: 12px;
+  background: #171118;
+  box-shadow: 0 14px 34px rgb(81 71 64 / 18%);
 }
 
-@keyframes lightboard-glow {
-  from {
-    filter: brightness(0.96);
-  }
-
-  to {
-    filter: brightness(1.1);
-  }
+.slogan-lightboard canvas {
+  display: block;
+  width: 100%;
+  height: 88px;
+  cursor: default;
+  touch-action: pan-y;
 }
 
 .category-nav {
@@ -619,9 +594,13 @@ h1 {
     padding-block: 46px 34px;
   }
 
-  .slogan-sign {
+  .slogan-lightboard {
     margin-bottom: 28px;
-    border-radius: 14px;
+    border-radius: 10px;
+  }
+
+  .slogan-lightboard canvas {
+    height: 72px;
   }
 
   .eyebrow {
@@ -767,7 +746,7 @@ h1 {
 
 @media (forced-colors: active) {
   .category-nav,
-  .slogan-sign,
+  .slogan-lightboard,
   .product-preview,
   .selection,
   .copy-button {
@@ -777,5 +756,21 @@ h1 {
 
   .menu-item.is-active {
     outline: 2px solid Highlight;
+  }
+
+  .slogan-lightboard canvas {
+    display: none;
+  }
+
+  .slogan-lightboard .visually-hidden {
+    position: static;
+    display: block;
+    width: auto;
+    height: auto;
+    padding: 18px;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
+    text-align: center;
   }
 }
