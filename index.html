@@ -6,6 +6,8 @@
     <meta name="theme-color" content="#f3eaf2" />
     <meta name="order-endpoint" content="" />
     <meta name="turnstile-site-key" content="" />
+    <!-- Optional E.164 business number. When blank, SMS opens with no recipient selected. -->
+    <meta name="sms-recipient" content="" />
     <meta
       name="description"
       content="Explore the Coco & Toffee bakery menu. Hover on desktop or tap on mobile to view product details."
@@ -312,6 +314,7 @@
         <p id="order-submit-status" class="copy-status" role="status" aria-live="polite"></p>
         <button id="order-copy-draft" class="secondary-button" type="button" hidden>Copy request details</button>
         <a id="order-email-draft" class="secondary-button" href="mailto:jericholi334677@gmail.com" hidden>Email this request instead</a>
+        <a id="order-sms-draft" class="secondary-button sms-action" href="sms:" hidden>Text this request instead</a>
       </form>
 
       <div id="order-result" class="order-result" hidden>
@@ -323,6 +326,7 @@
         <div class="result-actions">
           <a id="checkout-payment-link" class="primary-button" href="#" hidden>Continue to secure payment</a>
           <a id="order-email-link" class="primary-button" href="mailto:jericholi334677@gmail.com" hidden>Email this request</a>
+          <a id="order-sms-link" class="primary-button sms-action" href="sms:" hidden>Text this request</a>
           <button id="copy-order" class="secondary-button" type="button">Copy order details</button>
           <button id="order-result-close" class="text-button" type="button">Return to menu</button>
         </div>
@@ -378,6 +382,7 @@
         <button id="contact-submit" class="primary-button" type="submit">Send message</button>
         <div id="contact-turnstile" class="turnstile-slot form-wide" hidden></div>
         <a id="contact-email-link" class="secondary-button form-wide" href="mailto:jericholi334677@gmail.com" hidden>Email this message</a>
+        <a id="contact-sms-link" class="secondary-button form-wide sms-action" href="sms:" hidden>Text this message</a>
         <p id="contact-status" class="copy-status form-wide" role="status" aria-live="polite"></p>
       </form>
     </section>

@@ -29,7 +29,9 @@ require the separately deployed Supabase functions and configured providers. See
 
 The empty `order-endpoint` and `turnstile-site-key` meta tags in `index.html` intentionally leave
 automatic sending disabled until setup is complete. Customers can prepare an order and use the
-provided email link; the page never claims an unsent request was received. `owner-config.js` contains
+provided email or phone-only text link; the page never claims an unsent request was received. Add an
+E.164 business number (for example, `+16175550123`) to the `sms-recipient` meta tag to pre-address text
+messages. When it is blank, the customer chooses the recipient in their messaging app. `owner-config.js` contains
 only public configuration placeholders. Never put server secrets in browser files.
 
 The owner approves availability, delivery fees and custom pricing before sending a Stripe link.

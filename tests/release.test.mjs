@@ -30,6 +30,33 @@ test("unconfigured storefront does not pretend requests were sent", async () => 
   assert.match(app, /mailto:jericholi334677@gmail\.com/);
 });
 
+test("cart lines include product thumbnails with a graceful placeholder", async () => {
+  const [app, css] = await Promise.all([
+    readFile(new URL("app.js", root), "utf8"),
+    readFile(new URL("styles.css", root), "utf8"),
+  ]);
+  assert.match(app, /function cartLineMedia/);
+  assert.match(app, /class="cart-thumb-image"/);
+  assert.match(app, /cart-thumb-fallback/);
+  assert.match(css, /\.cart-line-product\s*\{/);
+  assert.match(css, /\.cart-thumb-image\s*\{/);
+});
+
+test("phone fallback offers prefilled SMS for orders and questions", async () => {
+  const [html, app, css] = await Promise.all([
+    readFile(new URL("index.html", root), "utf8"),
+    readFile(new URL("app.js", root), "utf8"),
+    readFile(new URL("styles.css", root), "utf8"),
+  ]);
+  assert.match(html, /meta name="sms-recipient" content=""/);
+  for (const id of ["order-sms-draft", "order-sms-link", "contact-sms-link"]) {
+    assert.match(html, new RegExp(`id="${id}"`));
+  }
+  assert.match(app, /function smsHref/);
+  assert.match(app, /`sms:\$\{recipient\}\$\{separator\}body=/);
+  assert.match(css, /\.sms-action:not\(\[hidden\]\)/);
+});
+
 test("private setup and secrets are not inside public content folders", async () => {
   const files = await readdir(new URL("data/", root));
   assert.deepEqual(files, ["menu.json"]);

@@ -20,6 +20,8 @@ Automatic sending and payment are deliberately disabled until the following setu
    request and an expired payment link too.
 8. **Enable:** set the public backend URL and Turnstile site key in the storefront, set the owner-page
    public configuration, rebuild, and publish. Keep all secret keys in Supabase's secret settings.
+9. **Optional order texts:** put the public business phone number in the storefront's `sms-recipient`
+   meta tag using E.164 format. Leave it blank if customers should choose a recipient themselves.
 
 Detailed deployment instructions are in [the backend setup guide](supabase/README.md).
 

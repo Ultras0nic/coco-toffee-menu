@@ -36,8 +36,8 @@ const el = Object.fromEntries([
   "order-result-title", "order-result-message", "order-code", "checkout-payment-link", "copy-order",
   "order-result-close", "copy-order-status", "contact-form", "contact-submit", "contact-status",
   "order-turnstile", "contact-turnstile",
-  "order-email-link", "contact-email-link",
-  "order-copy-draft", "order-email-draft", "order-summary-text",
+  "order-email-link", "order-sms-link", "contact-email-link", "contact-sms-link",
+  "order-copy-draft", "order-email-draft", "order-sms-draft", "order-summary-text",
   "product-view-bag", "order-lead-time",
 ].map((id) => [id, byId(id)]));
 
@@ -78,6 +78,13 @@ function endpointFor(path) {
   const base = document.querySelector('meta[name="order-endpoint"]')?.content.trim();
   if (!base) return null;
   try { return new URL(path, base.endsWith("/") ? base : `${base}/`).href; } catch { return null; }
+}
+
+function smsHref(message) {
+  const configuredRecipient = document.querySelector('meta[name="sms-recipient"]')?.content.trim() || "";
+  const recipient = /^\+?[1-9]\d{7,14}$/.test(configuredRecipient) ? configuredRecipient : "";
+  const separator = /iPad|iPhone|iPod/.test(navigator.userAgent) ? "&" : "?";
+  return `sms:${recipient}${separator}body=${encodeURIComponent(message)}`;
 }
 
 function turnstileSiteKey() {
@@ -493,6 +500,30 @@ function lineTitle(line, record) {
   return `${groupNames[record.pricing.mixGroup] || "Mixed box"} — ${record.offer.units}-pack`;
 }
 
+function cartMediaItems(line, record) {
+  if (!line.components) return [record.item];
+  return line.components
+    .map((component) => itemIndex.get(component.productId)?.item)
+    .filter(Boolean)
+    .slice(0, 3);
+}
+
+function cartThumbnail(item) {
+  const initial = item.name.match(/[A-Za-z0-9]/)?.[0]?.toUpperCase() || "✦";
+  let image = "";
+  if (item.photo) {
+    const url = new URL(item.photo, document.baseURI);
+    if (menuAssetVersion) url.searchParams.set("v", menuAssetVersion);
+    image = `<img class="cart-thumb-image" src="${escapeHtml(url.href)}" alt="" loading="lazy" />`;
+  }
+  return `<span class="cart-thumb${item.photo ? " has-photo" : ""}"><span class="cart-thumb-fallback" aria-hidden="true">${escapeHtml(initial)}</span>${image}</span>`;
+}
+
+function cartLineMedia(line, record) {
+  const items = cartMediaItems(line, record);
+  return `<span class="cart-line-media${items.length > 1 ? " is-mixed" : ""}" aria-hidden="true">${items.map(cartThumbnail).join("")}</span>`;
+}
+
 function componentText(line) {
   return line.components?.map((component) => `${component.units} × ${itemIndex.get(component.productId)?.item.name || component.productId}`).join(" · ") || "";
 }
@@ -559,8 +590,12 @@ function renderCart() {
     const upgrade = upgradeFor(line, record);
     const mixedNames = componentText(line);
     const note = line.quote ? [line.quote.servings, line.quote.occasion, line.quote.details].filter(Boolean).join(" · ") : mixedNames || "";
-    return `<li class="cart-line" data-line-id="${escapeHtml(line.lineId)}"><div class="cart-line-heading"><div><strong>${escapeHtml(lineTitle(line, record))}</strong><span>${escapeHtml(record.offer.label)} · ${physicalUnits} item${physicalUnits === 1 ? "" : "s"}</span></div><strong>${escapeHtml(price)}</strong></div>${note ? `<p class="cart-line-note">${escapeHtml(note)}</p>` : ""}${upgrade ? `<button class="saving-prompt" type="button" data-upgrade="${escapeHtml(upgrade.offer.fullId)}">Switch to ${escapeHtml(upgrade.offer.label)} and save ${escapeHtml(formatMoney(upgrade.saving))}</button>` : ""}<div class="cart-line-actions"><span class="stepper"><button type="button" data-action="decrease" aria-label="Decrease ${escapeHtml(record.item.name)} quantity">−</button><output aria-live="polite">${line.quantity}</output><button type="button" data-action="increase" aria-label="Increase ${escapeHtml(record.item.name)} quantity">+</button></span><button class="text-button" type="button" data-action="edit">Edit</button><button class="text-button" type="button" data-action="remove">Remove</button></div></li>`;
+    return `<li class="cart-line" data-line-id="${escapeHtml(line.lineId)}"><div class="cart-line-product">${cartLineMedia(line, record)}<div class="cart-line-copy"><div class="cart-line-heading"><div><strong>${escapeHtml(lineTitle(line, record))}</strong><span>${escapeHtml(record.offer.label)} · ${physicalUnits} item${physicalUnits === 1 ? "" : "s"}</span></div><strong>${escapeHtml(price)}</strong></div>${note ? `<p class="cart-line-note">${escapeHtml(note)}</p>` : ""}</div></div>${upgrade ? `<button class="saving-prompt" type="button" data-upgrade="${escapeHtml(upgrade.offer.fullId)}">Switch to ${escapeHtml(upgrade.offer.label)} and save ${escapeHtml(formatMoney(upgrade.saving))}</button>` : ""}<div class="cart-line-actions"><span class="stepper"><button type="button" data-action="decrease" aria-label="Decrease ${escapeHtml(record.item.name)} quantity">−</button><output aria-live="polite">${line.quantity}</output><button type="button" data-action="increase" aria-label="Increase ${escapeHtml(record.item.name)} quantity">+</button></span><button class="text-button" type="button" data-action="edit">Edit</button><button class="text-button" type="button" data-action="remove">Remove</button></div></li>`;
   }).join("");
+  el["cart-items"].querySelectorAll(".cart-thumb-image").forEach((image) => {
+    image.addEventListener("error", () => { image.hidden = true; }, { once: true });
+    if (image.complete && !image.naturalWidth) image.hidden = true;
+  });
   const sum = totals();
   el["cart-subtotal"].textContent = formatMoney(sum.subtotal);
   el["cart-savings"].textContent = sum.savings ? `−${formatMoney(sum.savings)}` : formatMoney(0);
@@ -732,6 +767,8 @@ function showOrderResult(submitted, data, message) {
   el["checkout-payment-link"].hidden = !checkout;
   if (checkout) el["checkout-payment-link"].href = checkout;
   el["order-email-link"].hidden = submitted;
+  el["order-sms-link"].hidden = submitted;
+  if (!submitted) el["order-sms-link"].href = smsHref(lastOrderSummary);
   if (submitted) { cart = []; saveCart(); renderCart(); orderIdempotencyKey = null; clearDraft("coco-order-draft-v1"); el["order-form"].reset(); toggleDelivery(); }
   requestAnimationFrame(() => el["copy-order"].focus());
 }
@@ -751,6 +788,9 @@ async function submitOrder(event) {
   el["order-submit"].disabled = true;
   el["order-submit"].textContent = "Sending…";
   el["order-submit-status"].textContent = "";
+  el["order-copy-draft"].hidden = true;
+  el["order-email-draft"].hidden = true;
+  el["order-sms-draft"].hidden = true;
   if (!endpoint) {
     el["order-email-link"].href = `mailto:jericholi334677@gmail.com?subject=${encodeURIComponent("Coco & Toffee order request")}&body=${encodeURIComponent(lastOrderSummary)}`;
     showOrderResult(false, null, "Online sending is not connected yet. Copy the request details below and send them directly to Coco & Toffee.");
@@ -766,7 +806,9 @@ async function submitOrder(event) {
       resetTurnstile("order");
       el["order-copy-draft"].hidden = false;
       el["order-email-draft"].hidden = false;
+      el["order-sms-draft"].hidden = false;
       el["order-email-draft"].href = `mailto:jericholi334677@gmail.com?subject=${encodeURIComponent("Coco & Toffee order request")}&body=${encodeURIComponent(lastOrderSummary)}`;
+      el["order-sms-draft"].href = smsHref(lastOrderSummary);
     }
   }
   el["order-submit"].disabled = false;
@@ -786,23 +828,28 @@ async function submitContact(event) {
   if (!form.checkValidity()) { form.reportValidity(); return; }
   const values = new FormData(form);
   const payload = { schemaVersion: 1, requestType: "contact", idempotencyKey: contactIdempotencyKey ||= createKey(), customer: { name: values.get("name").trim(), email: values.get("email").trim(), phone: values.get("phone").trim() }, subject: values.get("subject"), message: values.get("message").trim(), submittedAt: new Date().toISOString() };
+  const contactMessage = `Coco & Toffee message\n\nName: ${payload.customer.name}\nEmail: ${payload.customer.email}\nPhone: ${payload.customer.phone}\nTopic: ${payload.subject}\n\n${payload.message}`;
   if (endpointFor("contact") && turnstileSiteKey() && !turnstile.contact.token) { el["contact-status"].textContent = "Please complete the security check before sending."; return; }
   if (turnstile.contact.token) payload.turnstileToken = turnstile.contact.token;
   const endpoint = endpointFor("contact");
   if (!endpoint) {
     el["contact-email-link"].href = `mailto:jericholi334677@gmail.com?subject=${encodeURIComponent(payload.subject)}&body=${encodeURIComponent(`Name: ${payload.customer.name}\nEmail: ${payload.customer.email}\nPhone: ${payload.customer.phone}\n\n${payload.message}`)}`;
     el["contact-email-link"].hidden = false;
-    await copyText(`Coco & Toffee message\n\nName: ${payload.customer.name}\nEmail: ${payload.customer.email}\n\n${payload.message}`, el["contact-status"], "Online sending is not connected yet, so your message was copied. Paste it into your preferred email or message app.");
+    el["contact-sms-link"].href = smsHref(contactMessage);
+    el["contact-sms-link"].hidden = false;
+    await copyText(contactMessage, el["contact-status"], "Online sending is not connected yet, so your message was copied. Paste it into your preferred email or message app.");
     return;
   }
   el["contact-submit"].disabled = true;
   el["contact-submit"].textContent = "Sending…";
   contactSubmitting = true;
-  try { await postJson(endpoint, payload); form.reset(); clearDraft("coco-contact-draft-v1"); contactIdempotencyKey = null; el["contact-email-link"].hidden = true; el["contact-status"].textContent = "Message received. We’ll reply using the email you provided."; resetTurnstile("contact"); }
+  try { await postJson(endpoint, payload); form.reset(); clearDraft("coco-contact-draft-v1"); contactIdempotencyKey = null; el["contact-email-link"].hidden = true; el["contact-sms-link"].hidden = true; el["contact-status"].textContent = "Message received. We’ll reply using the email you provided."; resetTurnstile("contact"); }
   catch (error) {
     el["contact-status"].textContent = `${error.message} Your message is still here so you can retry or email it directly.`;
     el["contact-email-link"].href = `mailto:jericholi334677@gmail.com?subject=${encodeURIComponent(payload.subject)}&body=${encodeURIComponent(`Name: ${payload.customer.name}\nEmail: ${payload.customer.email}\nPhone: ${payload.customer.phone}\n\n${payload.message}`)}`;
     el["contact-email-link"].hidden = false;
+    el["contact-sms-link"].href = smsHref(contactMessage);
+    el["contact-sms-link"].hidden = false;
     resetTurnstile("contact");
   }
   finally { el["contact-submit"].disabled = false; el["contact-submit"].textContent = "Send message"; contactSubmitting = false; }
