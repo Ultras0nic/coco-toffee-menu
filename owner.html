@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex,nofollow,noarchive" />
+    <meta name="referrer" content="same-origin" />
+    <title>Coco &amp; Toffee Owner Inbox</title>
+    <link rel="stylesheet" href="owner.css" />
+  </head>
+  <body>
+    <main class="owner-shell">
+      <header class="owner-header">
+        <div>
+          <p class="eyebrow">Private operations</p>
+          <h1>Coco &amp; Toffee Owner Inbox</h1>
+        </div>
+        <button id="sign-out" type="button" class="secondary" hidden>Sign out</button>
+      </header>
+
+      <section id="setup-warning" class="notice notice-error" hidden>
+        Owner configuration is incomplete. Follow the Supabase setup guide before signing in.
+      </section>
+
+      <section id="login-panel" class="panel" aria-labelledby="login-title">
+        <h2 id="login-title">Owner sign in</h2>
+        <p>No password is stored on this website. A one-time sign-in link will be sent to the authorized owner email.</p>
+        <form id="login-form">
+          <label>Authorized email
+            <input id="owner-email" name="email" type="email" autocomplete="username" readonly />
+          </label>
+          <button type="submit">Email me a sign-in link</button>
+        </form>
+        <p id="login-status" class="notice" role="status" aria-live="polite"></p>
+      </section>
+
+      <section id="inbox-panel" hidden>
+        <div class="inbox-tools">
+          <label>Inbox
+            <select id="inbox-kind">
+              <option value="orders">Order requests</option>
+              <option value="contacts">General questions</option>
+            </select>
+          </label>
+          <label id="status-filter-wrap">Status
+            <select id="status-filter">
+              <option value="">All</option>
+              <option value="pending_approval">Pending approval</option>
+              <option value="quote_requested">Quote requested</option>
+              <option value="changes_requested">Changes requested</option>
+              <option value="payment_setup_pending">Preparing payment</option>
+              <option value="pending_payment">Awaiting payment</option>
+              <option value="confirmed">Confirmed</option>
+              <option value="fulfilled">Fulfilled</option>
+              <option value="payment_failed">Payment failed</option>
+              <option value="payment_expired">Payment expired</option>
+              <option value="declined">Declined</option>
+              <option value="cancelled">Cancelled</option>
+              <option value="refunded">Refunded</option>
+            </select>
+          </label>
+          <button id="refresh-orders" type="button">Refresh</button>
+          <button id="retry-notifications" type="button" class="secondary">Retry email queue</button>
+        </div>
+        <p id="owner-status" class="notice" role="status" aria-live="polite"></p>
+        <div id="orders" class="orders"></div>
+      </section>
+    </main>
+    <script src="owner-config.js"></script>
+    <script type="module" src="owner.js"></script>
+  </body>
+</html>

@@ -1,0 +1,29 @@
+:root { color-scheme: light; font-family: Georgia, serif; background: #f4ede3; color: #20170f; }
+* { box-sizing: border-box; }
+body { margin: 0; }
+button, input, select, textarea { font: inherit; }
+button, .button-link { cursor: pointer; border: 1px solid #20170f; border-radius: .35rem; background: #20170f; color: white; padding: .65rem .9rem; text-decoration: none; }
+button.secondary { background: transparent; color: #20170f; }
+button.danger { background: #742d24; }
+button:disabled { cursor: wait; opacity: .55; }
+.owner-shell { width: min(1100px, calc(100% - 2rem)); margin: 0 auto; padding: 2rem 0 5rem; }
+.owner-header, .inbox-tools, .order-heading, .actions { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+.eyebrow { text-transform: uppercase; letter-spacing: .12em; font: 700 .75rem system-ui, sans-serif; }
+h1, h2, h3, p { margin-top: 0; }
+.panel, .order-card { background: #fffaf3; border: 1px solid #cab9a5; border-radius: .7rem; padding: 1.25rem; box-shadow: 0 .2rem .8rem rgb(54 37 24 / 8%); }
+#login-form { display: grid; gap: 1rem; max-width: 30rem; }
+label { display: grid; gap: .35rem; font-family: system-ui, sans-serif; }
+input, select, textarea { width: 100%; border: 1px solid #8d7964; border-radius: .3rem; padding: .6rem; background: white; color: #20170f; }
+.notice { min-height: 1.5rem; padding: .6rem 0; }
+.notice-error { color: #742d24; font-weight: 700; }
+.orders { display: grid; gap: 1rem; }
+.order-meta, .line-items, .notification-list, .message-body { font-family: system-ui, sans-serif; font-size: .93rem; }
+.order-meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); gap: .4rem 1rem; }
+.line-items small { display: block; margin-top: .25rem; color: #6e5b49; }
+.status-pill { display: inline-block; border-radius: 999px; background: #e5d6c4; padding: .25rem .55rem; font: 700 .78rem system-ui, sans-serif; text-transform: uppercase; }
+.actions { justify-content: flex-start; margin-top: 1rem; }
+.approval-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr)); gap: .8rem; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #cab9a5; }
+.approval-grid .full-field { grid-column: 1 / -1; }
+.approval-grid small { color: #6e5b49; }
+.muted { color: #6e5b49; }
+@media (max-width: 600px) { .owner-shell { width: min(100% - 1rem, 1100px); padding-top: 1rem; } .panel, .order-card { padding: .9rem; } }

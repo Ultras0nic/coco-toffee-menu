@@ -1,4 +1,4 @@
-# Coco & Toffee Interactive Menu
+# Coco & Toffee Menu & Order Requests
 
 A future-ready, dependency-free menu website based on the current Silver Stone Castle recipe collection.
 It preserves the warm beige paper, hand-drawn typography, black rules and spacious two-column
@@ -11,12 +11,30 @@ menu layout while adding accessible product detail cards.
   classic chocolate chip and the jumbo cinnamon roll
 - Desktop hover and keyboard-focus product details
 - Mobile tap-to-open details with close, outside-tap and Escape support
-- Photo, description, texture, allergen and pricing placeholders
+- Product details and approved individual/package prices
+- Persistent order bag, mixed boxes, package savings, and custom-dessert requests
+- Pickup/delivery request forms and a contact form
+- An owner-only review interface and Supabase/Stripe/email integration
 - The complete selection-request checklist
 - A one-click checklist copy feature
 - Automated content validation
 - GitHub Pages deployment workflow
-- No paid service, database, server or third-party tracking
+- The public menu works without service credentials; unconfigured forms provide an honest email/copy fallback
+
+## Service activation
+
+The storefront is a static GitHub Pages site. Automatic submission, owner sign-in, email and payment
+require the separately deployed Supabase functions and configured providers. See
+[`supabase/README.md`](supabase/README.md) for the deployment checklist.
+
+The empty `order-endpoint` and `turnstile-site-key` meta tags in `index.html` intentionally leave
+automatic sending disabled until setup is complete. Customers can prepare an order and use the
+provided email link; the page never claims an unsent request was received. `owner-config.js` contains
+only public configuration placeholders. Never put server secrets in browser files.
+
+The owner approves availability, delivery fees and custom pricing before sending a Stripe link.
+Payment webhooks—not the browser success URL—confirm payment. Do not enable live payments before
+testing the full flow and confirming tax and food-business requirements.
 
 ## Brand logo
 
@@ -25,9 +43,10 @@ square so the circular presentation remains correctly cropped on desktop and mob
 
 ## Edit products later
 
-Open `data/menu.json`. That JSON file is the menu's single source of truth and acts as a simple
-repository-backed content store. The local preview and the published GitHub Pages website both
-read the same file.
+Open `data/menu.json`. The local preview and published website both read this content file.
+Its numeric `pricing` offers are the storefront pricing source; displayed price text is not parsed.
+When changing offers, update the authoritative Supabase catalog seed/deployed catalog as well.
+Tests compare the public offers with the SQL seed to catch pricing drift.
 
 To add or revise details, update the matching product object:
 
@@ -71,8 +90,9 @@ The local preview opens at `http://127.0.0.1:4173`. The public build is written 
 6. GitHub will show the free public URL after deployment succeeds.
 
 The workflow publishes only the allow-listed website files from `dist/`, including
-`data/menu.json`. Drafts, tests, recipe formulas and internal notes are not included in the
-public website.
+`data/menu.json` and the owner-interface assets. Backend code is deployed separately.
+The GitHub repository itself is public: excluding a file from `dist/` does not make it private.
+Keep credentials, production costs, and internal quote guides outside this repository.
 
 ## Important content note
 

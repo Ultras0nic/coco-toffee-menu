@@ -4,6 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#f3eaf2" />
+    <meta name="order-endpoint" content="" />
+    <meta name="turnstile-site-key" content="" />
     <meta
       name="description"
       content="Explore the Coco & Toffee bakery menu. Hover on desktop or tap on mobile to view product details."
@@ -53,8 +55,18 @@
       </div>
     </section>
 
-    <nav class="category-nav page-shell" aria-label="Menu categories">
+    <nav class="category-nav page-shell" aria-label="Menu categories and order bag">
       <div id="category-nav-list"></div>
+      <button
+        id="cart-toggle"
+        class="cart-toggle"
+        type="button"
+        aria-controls="cart-drawer"
+        aria-expanded="false"
+      >
+        <span>Order bag</span>
+        <span id="cart-count" class="cart-count" aria-label="0 items">0</span>
+      </button>
     </nav>
 
     <main id="menu" class="menu-layout page-shell" tabindex="-1">
@@ -96,6 +108,59 @@
             <dd id="preview-price">Custom quote</dd>
           </div>
         </dl>
+        <form id="product-order-form" class="product-order-form" novalidate>
+          <fieldset id="offer-fieldset" class="offer-fieldset">
+            <legend>Choose an option</legend>
+            <div id="offer-options" class="offer-options"></div>
+          </fieldset>
+          <section id="mix-builder" class="mix-builder" hidden aria-labelledby="mix-builder-title">
+            <label id="mix-toggle-label" class="mix-toggle">
+              <input id="mix-toggle" type="checkbox" />
+              <span>Mix flavors in this box</span>
+            </label>
+            <div id="mix-builder-fields" hidden>
+              <h3 id="mix-builder-title">Build your box</h3>
+              <p id="mix-builder-help" class="fine-print"></p>
+              <div id="mix-components" class="mix-components"></div>
+              <p id="mix-total" class="mix-total" role="status" aria-live="polite"></p>
+            </div>
+          </section>
+          <div id="quote-fields" class="quote-fields" hidden>
+            <label>
+              Servings or size needed
+              <input id="quote-servings" name="quoteServings" autocomplete="off" />
+            </label>
+            <label>
+              Occasion
+              <input id="quote-occasion" name="quoteOccasion" autocomplete="off" />
+            </label>
+            <label>
+              Design or flavor ideas
+              <textarea id="quote-details" name="quoteDetails" rows="3"></textarea>
+            </label>
+          </div>
+          <div class="product-add-row">
+            <label class="quantity-control">
+              <span>Quantity</span>
+              <span class="stepper">
+                <button id="product-quantity-minus" type="button" aria-label="Decrease quantity">−</button>
+                <input
+                  id="product-quantity"
+                  name="quantity"
+                  type="number"
+                  min="1"
+                  max="20"
+                  value="1"
+                  inputmode="numeric"
+                />
+                <button id="product-quantity-plus" type="button" aria-label="Increase quantity">+</button>
+              </span>
+            </label>
+            <button id="add-to-cart" class="primary-button" type="submit">Add to order bag</button>
+          </div>
+          <p id="product-order-note" class="product-order-note" aria-live="polite"></p>
+          <button id="product-view-bag" class="secondary-button full-button" type="button" hidden>View order bag</button>
+        </form>
       </aside>
     </main>
 
@@ -109,11 +174,167 @@
       <p id="product-peek-name" class="product-peek-name"></p>
     </aside>
 
+    <aside
+      id="cart-drawer"
+      class="cart-drawer"
+      role="dialog"
+      aria-modal="true"
+      aria-hidden="true"
+      aria-labelledby="cart-title"
+    >
+      <header class="panel-header">
+        <div>
+          <p class="section-kicker">Your selection</p>
+          <h2 id="cart-title">Order bag</h2>
+        </div>
+        <button id="cart-close" class="panel-close" type="button" aria-label="Close order bag">Close</button>
+      </header>
+      <div id="cart-empty" class="cart-empty">
+        <p>Your order bag is waiting for something delicious.</p>
+        <button id="cart-browse" class="secondary-button" type="button">Browse the menu</button>
+      </div>
+      <div id="cart-content" hidden>
+        <ul id="cart-items" class="cart-items"></ul>
+        <div class="cart-summary">
+          <div><span>Priced items</span><strong id="cart-subtotal">$0.00</strong></div>
+          <div class="savings-line"><span>Bundle savings</span><strong id="cart-savings">$0.00</strong></div>
+          <p id="cart-quote-note" hidden>Custom items will be priced after we review your request.</p>
+          <p class="fine-print">Delivery, tax and final availability are confirmed separately.</p>
+        </div>
+        <button id="checkout-start" class="primary-button full-button" type="button">
+          Continue to order details
+        </button>
+        <button id="cart-continue" class="text-button full-button" type="button">
+          Continue browsing
+        </button>
+      </div>
+    </aside>
+
+    <section
+      id="checkout-panel"
+      class="checkout-panel"
+      role="dialog"
+      aria-modal="true"
+      aria-hidden="true"
+      aria-labelledby="checkout-title"
+    >
+      <header class="panel-header">
+        <div>
+          <p id="checkout-kicker" class="section-kicker">Step 1 of 2</p>
+          <h2 id="checkout-title">Review your request</h2>
+        </div>
+        <button id="checkout-close" class="panel-close" type="button" aria-label="Close order form">Close</button>
+      </header>
+
+      <div id="checkout-review" class="checkout-step">
+        <div id="checkout-review-items"></div>
+        <div id="checkout-review-total" class="checkout-total"></div>
+        <p class="request-notice">
+          This is an order request. Your order is not confirmed until Coco &amp; Toffee replies
+          with availability and the final total. If approved, payment must be completed through
+          the secure link we send before the order is confirmed.
+        </p>
+        <button id="checkout-next" class="primary-button full-button" type="button">
+          Continue to contact details
+        </button>
+        <button id="checkout-edit" class="text-button full-button" type="button">Edit order bag</button>
+      </div>
+
+      <form id="order-form" class="checkout-step" novalidate hidden>
+        <div id="order-error-summary" class="form-error-summary" role="alert" tabindex="-1" hidden></div>
+        <div class="form-grid">
+          <label>
+            Name <span aria-hidden="true">*</span>
+            <input name="name" autocomplete="name" required />
+          </label>
+          <label>
+            Email <span aria-hidden="true">*</span>
+            <input name="email" type="email" autocomplete="email" required />
+          </label>
+          <label>
+            Phone
+            <input name="phone" type="tel" autocomplete="tel" />
+          </label>
+          <label>
+            Requested date <span aria-hidden="true">*</span>
+            <input name="requestedDate" type="date" required />
+          </label>
+          <label class="form-wide">
+            Preferred time window
+            <input name="requestedWindow" autocomplete="off" placeholder="For example, 2–4 PM" />
+          </label>
+        </div>
+        <p id="order-lead-time" class="fine-print"></p>
+
+        <fieldset class="fulfillment-fieldset">
+          <legend>How would you like to receive it?</legend>
+          <label><input type="radio" name="fulfillmentType" value="pickup" checked /> Pickup</label>
+          <label><input type="radio" name="fulfillmentType" value="delivery" /> Ask about delivery</label>
+        </fieldset>
+
+        <div id="delivery-address" class="form-grid" hidden>
+          <label class="form-wide">
+            Street address <span aria-hidden="true">*</span>
+            <input name="addressLine1" autocomplete="address-line1" />
+          </label>
+          <label class="form-wide">
+            Apartment or unit
+            <input name="addressLine2" autocomplete="address-line2" />
+          </label>
+          <label>
+            City <span aria-hidden="true">*</span>
+            <input name="city" autocomplete="address-level2" />
+          </label>
+          <label>
+            State <span aria-hidden="true">*</span>
+            <input name="state" autocomplete="address-level1" value="MA" />
+          </label>
+          <label>
+            ZIP code <span aria-hidden="true">*</span>
+            <input name="postalCode" autocomplete="postal-code" inputmode="numeric" />
+          </label>
+        </div>
+
+        <label class="form-block">
+          Notes, dietary concerns or special requests
+          <textarea name="notes" rows="4"></textarea>
+        </label>
+        <label class="acknowledgement">
+          <input name="allergyAcknowledgement" type="checkbox" required />
+          <span>I have reviewed the allergen information and understand that the kitchen handles multiple allergens.</span>
+        </label>
+        <div id="order-turnstile" class="turnstile-slot" hidden></div>
+        <p class="fine-print">Fields marked * are required. Payment is not collected on this website.</p>
+        <div class="checkout-actions">
+          <button id="checkout-back" class="secondary-button" type="button">Back</button>
+          <button id="order-submit" class="primary-button" type="submit">Send order request</button>
+        </div>
+        <p id="order-submit-status" class="copy-status" role="status" aria-live="polite"></p>
+        <button id="order-copy-draft" class="secondary-button" type="button" hidden>Copy request details</button>
+        <a id="order-email-draft" class="secondary-button" href="mailto:jericholi334677@gmail.com" hidden>Email this request instead</a>
+      </form>
+
+      <div id="order-result" class="order-result" hidden>
+        <p class="section-kicker">Request prepared</p>
+        <h2 id="order-result-title">Your request is ready</h2>
+        <p id="order-result-message"></p>
+        <p id="order-code" class="order-code" hidden></p>
+        <details class="request-details"><summary>Review request details</summary><pre id="order-summary-text"></pre></details>
+        <div class="result-actions">
+          <a id="checkout-payment-link" class="primary-button" href="#" hidden>Continue to secure payment</a>
+          <a id="order-email-link" class="primary-button" href="mailto:jericholi334677@gmail.com" hidden>Email this request</a>
+          <button id="copy-order" class="secondary-button" type="button">Copy order details</button>
+          <button id="order-result-close" class="text-button" type="button">Return to menu</button>
+        </div>
+        <p id="copy-order-status" class="copy-status" role="status" aria-live="polite"></p>
+      </div>
+    </section>
+
     <section class="selection page-shell" aria-labelledby="selection-title">
       <p class="section-kicker">Let&rsquo;s create your selection</p>
       <h2 id="selection-title">Tell us what you&rsquo;re looking for</h2>
       <p>
-        Once we have these details, we can put together a customized selection and wholesale
+        Once we have these details, we can put together a customized selection and
         pricing based on your needs.
       </p>
       <ul id="selection-list"></ul>
@@ -121,7 +342,55 @@
       <p id="copy-status" class="copy-status" role="status" aria-live="polite"></p>
     </section>
 
+    <section class="contact-section page-shell" aria-labelledby="contact-title">
+      <div>
+        <p class="section-kicker">Questions before ordering?</p>
+        <h2 id="contact-title">Send us a note</h2>
+        <p>Tell us what you have in mind and how we can reach you.</p>
+        <p class="contact-email">Or email <a href="mailto:jericholi334677@gmail.com">jericholi334677@gmail.com</a>.</p>
+      </div>
+      <form id="contact-form" class="contact-form" novalidate>
+        <label>
+          Name <span aria-hidden="true">*</span>
+          <input name="name" autocomplete="name" required />
+        </label>
+        <label>
+          Email <span aria-hidden="true">*</span>
+          <input name="email" type="email" autocomplete="email" required />
+        </label>
+        <label>
+          Phone
+          <input name="phone" type="tel" autocomplete="tel" />
+        </label>
+        <label>
+          What can we help with?
+          <select name="subject">
+            <option value="General question">General question</option>
+            <option value="Product or allergen question">Product or allergen question</option>
+            <option value="Event or custom order">Event or custom order</option>
+            <option value="Wholesale inquiry">Wholesale inquiry</option>
+          </select>
+        </label>
+        <label class="form-wide">
+          Message <span aria-hidden="true">*</span>
+          <textarea name="message" rows="5" required></textarea>
+        </label>
+        <button id="contact-submit" class="primary-button" type="submit">Send message</button>
+        <div id="contact-turnstile" class="turnstile-slot form-wide" hidden></div>
+        <a id="contact-email-link" class="secondary-button form-wide" href="mailto:jericholi334677@gmail.com" hidden>Email this message</a>
+        <p id="contact-status" class="copy-status form-wide" role="status" aria-live="polite"></p>
+      </form>
+    </section>
+
     <footer class="site-footer page-shell">
+      <details id="order-policies" class="order-policies">
+        <summary>Ordering, cancellations &amp; privacy</summary>
+        <p>All requests are subject to availability. Allow at least 3 days for regular items and 7 days for whole cakes and custom desserts. We aim to reply within 24 hours. Pickup details and any delivery charge are confirmed during approval.</p>
+        <p>Your order is confirmed only after approval and completed payment. Applicable tax and the final total are shown before payment. Card details are handled by Stripe, never collected in these forms.</p>
+        <p>For a full refund, email your cancellation request at least 72 hours before regular-item fulfillment or 7 days before custom-dessert fulfillment. Later cancellations are non-refundable unless Coco &amp; Toffee cancels. Refunds are reviewed and processed by the owner.</p>
+        <p>Please review each product’s allergens. Our kitchen handles multiple allergens; we cannot promise an allergen-free environment. Refrigerated and other restricted products are subject to an appropriately approved kitchen and safe handling.</p>
+        <p>We use the contact and fulfillment details you provide to review requests, communicate with you and fulfill approved orders. The order bag is saved on this browser; form drafts are saved for this browser session. When online sending is enabled, requests are processed with Supabase and transactional email, and payments with Stripe. Submitting a request does not subscribe you to marketing. Email us with questions about your information.</p>
+      </details>
       <p>Thank you for considering us. We look forward to hearing from you.</p>
       <p class="footer-mark">Coco & Toffee</p>
     </footer>

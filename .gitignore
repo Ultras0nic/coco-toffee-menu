@@ -1,4 +1,8 @@
 dist/
+.env
+.env.*
+!.env.example
+.supabase/
 .DS_Store
 Thumbs.db
 *.log
