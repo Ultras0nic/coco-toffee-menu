@@ -24,7 +24,10 @@ insert into public.products(id, name, pricing_mode, sort_order) values
   ('four-layer-chocolate-cake', 'Classic 4-Layer Chocolate Cake', 'quote', 230),
   ('carrot-cake', 'Carrot Cake with Vanilla-Almond Cream Cheese Frosting', 'quote', 240),
   ('classic-vanilla-cupcakes', 'Classic Vanilla Cupcakes', 'fixed', 250),
-  ('pasteis-de-nata', 'Pastéis de Nata', 'fixed', 260)
+  ('classic-chocolate-cupcakes', 'Classic Chocolate Cupcakes', 'fixed', 260),
+  ('red-velvet-cupcakes', 'Red Velvet Cupcakes', 'fixed', 270),
+  ('carrot-cupcakes', 'Carrot Cupcakes', 'fixed', 280),
+  ('pasteis-de-nata', 'Pastéis de Nata', 'fixed', 290)
 on conflict (id) do update set
   name = excluded.name,
   pricing_mode = excluded.pricing_mode,
@@ -94,6 +97,15 @@ insert into public.offers(id, product_id, offer_key, label, quantity_units, amou
   ('classic-vanilla-cupcakes:single', 'classic-vanilla-cupcakes', 'single', 'Each', 1, 650, 10),
   ('classic-vanilla-cupcakes:6-pack', 'classic-vanilla-cupcakes', '6-pack', '6-pack', 6, 3700, 20),
   ('classic-vanilla-cupcakes:dozen', 'classic-vanilla-cupcakes', 'dozen', 'Dozen', 12, 7200, 30),
+  ('classic-chocolate-cupcakes:single', 'classic-chocolate-cupcakes', 'single', 'Each', 1, 650, 10),
+  ('classic-chocolate-cupcakes:6-pack', 'classic-chocolate-cupcakes', '6-pack', '6-pack', 6, 3700, 20),
+  ('classic-chocolate-cupcakes:dozen', 'classic-chocolate-cupcakes', 'dozen', 'Dozen', 12, 7200, 30),
+  ('red-velvet-cupcakes:single', 'red-velvet-cupcakes', 'single', 'Each', 1, 700, 10),
+  ('red-velvet-cupcakes:6-pack', 'red-velvet-cupcakes', '6-pack', '6-pack', 6, 4000, 20),
+  ('red-velvet-cupcakes:dozen', 'red-velvet-cupcakes', 'dozen', 'Dozen', 12, 7800, 30),
+  ('carrot-cupcakes:single', 'carrot-cupcakes', 'single', 'Each', 1, 700, 10),
+  ('carrot-cupcakes:6-pack', 'carrot-cupcakes', '6-pack', '6-pack', 6, 4000, 20),
+  ('carrot-cupcakes:dozen', 'carrot-cupcakes', 'dozen', 'Dozen', 12, 7800, 30),
   ('pasteis-de-nata:single', 'pasteis-de-nata', 'single', 'Each', 1, 625, 10),
   ('pasteis-de-nata:6-pack', 'pasteis-de-nata', '6-pack', '6-pack', 6, 3500, 20),
   ('pasteis-de-nata:dozen', 'pasteis-de-nata', 'dozen', 'Dozen', 12, 6900, 30)

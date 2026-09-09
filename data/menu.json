@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "lastUpdated": "2026-09-03",
+  "lastUpdated": "2026-09-08",
   "assetVersion": "2026-09-01-1",
   "pricingCatalog": {
     "currency": "USD",
@@ -409,7 +409,7 @@
           "description": "Two layers of espresso-soaked ladyfingers and generous mascarpone cream with subtle vanilla-rum aroma and a chocolate finish.",
           "texture": "Light and silky with fully softened, never soggy ladyfingers and clean bakery-style slices.",
           "allergens": "Contains wheat, milk and egg. Contains caffeine and alcohol. Made in a home kitchen that also handles peanuts, tree nuts and soy.",
-          "price": "Custom quote",
+          "price": "Custom quote · 5-serving pan from $50",
           "pricing": {
             "mode": "quote",
             "offers": [
@@ -424,7 +424,7 @@
           "description": "A classic ring flan with a glossy deep-amber caramel top, abundant caramel sauce, rich egg-and-milk flavor and subtle lemon-vanilla aroma.",
           "texture": "Smooth and silky, firm enough to unmold and slice without becoming dense or rubbery.",
           "allergens": "Contains milk and egg. Made in a home kitchen that also handles wheat, peanuts, tree nuts and soy.",
-          "price": "Custom quote",
+          "price": "Custom quote · whole flan from $50",
           "pricing": {
             "mode": "quote",
             "offers": [
@@ -439,7 +439,7 @@
           "description": "Glossy caramel-topped Portuguese-style flan layered over moist dark chocolate cake for a balanced caramel-and-cocoa dessert.",
           "texture": "Silky creamy custard with clearly defined layers and a moist chocolate cake base.",
           "allergens": "Contains wheat, milk and egg. Contains caffeine. Made in a home kitchen that also handles peanuts, tree nuts and soy.",
-          "price": "Custom quote",
+          "price": "Custom quote · whole dessert from $80",
           "pricing": {
             "mode": "quote",
             "offers": [
@@ -453,7 +453,7 @@
     {
       "id": "cakes-cupcakes",
       "name": "Cakes & Cupcakes",
-      "note": "Whole cakes are available for custom orders and can be pre-sliced.",
+      "note": "Whole cakes are available for custom orders and can be pre-sliced. Other cupcake flavors, fillings and decoration are available by request.",
       "items": [
         {
           "id": "new-york-style-cheesecake",
@@ -461,7 +461,7 @@
           "description": "A rich vanilla cheesecake with balanced cream-cheese tang and a thin graham cracker crust.",
           "texture": "Dense-creamy and smooth, with clean slices after chilling and a creamy finish at serving temperature.",
           "allergens": "Contains wheat, milk and egg. Made in a home kitchen that also handles peanuts, tree nuts and soy.",
-          "price": "Custom quote",
+          "price": "Custom quote · 9-inch cake from $85",
           "pricing": {
             "mode": "quote",
             "offers": [
@@ -476,7 +476,7 @@
           "description": "Four layers of dark, deeply chocolate cake with silky chocolate ganache buttercream and clean bakery-style decoration.",
           "texture": "Tall, moist and tender with smooth rich frosting and enough structure for clean slices.",
           "allergens": "Contains wheat, milk and egg. Contains caffeine. Made in a home kitchen that also handles peanuts, tree nuts and soy.",
-          "price": "Custom quote",
+          "price": "Custom quote · 9-inch cake from $150",
           "pricing": {
             "mode": "quote",
             "offers": [
@@ -491,7 +491,7 @@
           "description": "A four-layer, carrot-forward cake warmed with cinnamon, ginger, cardamom and nutmeg, finished with tangy vanilla-almond cream cheese frosting. No nuts or raisins are added to the cake.",
           "texture": "Soft, very moist and tender without feeling oily or gummy.",
           "allergens": "Contains wheat, milk and egg. Frosting includes almond extract. Made in a home kitchen that also handles peanuts, tree nuts and soy.",
-          "price": "Custom quote",
+          "price": "Custom quote · 9-inch cake from $130",
           "pricing": {
             "mode": "quote",
             "offers": [
@@ -513,6 +513,57 @@
               { "id": "each", "label": "Each", "units": 1, "priceCents": 650, "compareAtCents": null },
               { "id": "pack-6", "label": "6-pack", "units": 6, "priceCents": 3700, "compareAtCents": 3900 },
               { "id": "dozen", "label": "Dozen", "units": 12, "priceCents": 7200, "compareAtCents": 7800 }
+            ]
+          },
+          "photo": ""
+        },
+        {
+          "id": "classic-chocolate-cupcakes",
+          "name": "Classic Chocolate Cupcakes",
+          "description": "Rich chocolate cupcakes topped with a generous swirl of smooth buttercream. Specialty fillings and custom decoration can be discussed for larger orders.",
+          "texture": "Soft, moist and chocolate-forward with enough structure to support generous frosting.",
+          "allergens": "Contains wheat, milk and egg. Contains caffeine. Made in a home kitchen that also handles peanuts, tree nuts and soy.",
+          "price": "$6.50 each · 6-pack $37 · dozen $72",
+          "pricing": {
+            "mode": "fixed",
+            "offers": [
+              { "id": "each", "label": "Each", "units": 1, "priceCents": 650, "compareAtCents": null },
+              { "id": "pack-6", "label": "6-pack", "units": 6, "priceCents": 3700, "compareAtCents": 3900 },
+              { "id": "dozen", "label": "Dozen", "units": 12, "priceCents": 7200, "compareAtCents": 7800 }
+            ]
+          },
+          "photo": ""
+        },
+        {
+          "id": "red-velvet-cupcakes",
+          "name": "Red Velvet Cupcakes",
+          "description": "Classic red velvet cupcakes with a light cocoa flavor and a generous swirl of cream cheese frosting. Custom decoration can be discussed for larger orders.",
+          "texture": "Soft, moist and tender with a smooth, tangy frosting finish.",
+          "allergens": "Contains wheat, milk and egg. Contains caffeine. Made in a home kitchen that also handles peanuts, tree nuts and soy.",
+          "price": "$7 each · 6-pack $40 · dozen $78",
+          "pricing": {
+            "mode": "fixed",
+            "offers": [
+              { "id": "each", "label": "Each", "units": 1, "priceCents": 700, "compareAtCents": null },
+              { "id": "pack-6", "label": "6-pack", "units": 6, "priceCents": 4000, "compareAtCents": 4200 },
+              { "id": "dozen", "label": "Dozen", "units": 12, "priceCents": 7800, "compareAtCents": 8400 }
+            ]
+          },
+          "photo": ""
+        },
+        {
+          "id": "carrot-cupcakes",
+          "name": "Carrot Cupcakes",
+          "description": "Spiced carrot cupcakes finished with vanilla-almond cream cheese frosting. No nuts or raisins are added to the cupcake batter.",
+          "texture": "Soft, very moist and tender with a smooth, tangy frosting finish.",
+          "allergens": "Contains wheat, milk and egg. Frosting includes almond extract. Made in a home kitchen that also handles peanuts, tree nuts and soy.",
+          "price": "$7 each · 6-pack $40 · dozen $78",
+          "pricing": {
+            "mode": "fixed",
+            "offers": [
+              { "id": "each", "label": "Each", "units": 1, "priceCents": 700, "compareAtCents": null },
+              { "id": "pack-6", "label": "6-pack", "units": 6, "priceCents": 4000, "compareAtCents": 4200 },
+              { "id": "dozen", "label": "Dozen", "units": 12, "priceCents": 7800, "compareAtCents": 8400 }
             ]
           },
           "photo": ""

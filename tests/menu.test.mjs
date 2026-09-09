@@ -22,7 +22,7 @@ test("photo replacements have an explicit cache version", () => {
 
 test("the recipe collection menu structure is represented", () => {
   assert.equal(menuCategories.length, 8);
-  assert.equal(menuCategories.flatMap((category) => category.items).length, 26);
+  assert.equal(menuCategories.flatMap((category) => category.items).length, 29);
   assert.deepEqual(
     menuCategories.map((category) => category.name),
     [
@@ -107,13 +107,16 @@ test("every product has the approved direct-customer price", () => {
     "vanilla-custard-fresh-berry-tartlet": "$8.25 each · 4-pack $30.75",
     "lemon-cream-tartlet": "$11.50 each · 4-pack $43.75",
     "chocolate-hazelnut-tartlet": "$14.50 each · 4-pack $56",
-    "classic-tiramisu": "Custom quote",
-    "traditional-portuguese-flan": "Custom quote",
-    chocoflan: "Custom quote",
-    "new-york-style-cheesecake": "Custom quote",
-    "four-layer-chocolate-cake": "Custom quote",
-    "carrot-cake": "Custom quote",
+    "classic-tiramisu": "Custom quote · 5-serving pan from $50",
+    "traditional-portuguese-flan": "Custom quote · whole flan from $50",
+    chocoflan: "Custom quote · whole dessert from $80",
+    "new-york-style-cheesecake": "Custom quote · 9-inch cake from $85",
+    "four-layer-chocolate-cake": "Custom quote · 9-inch cake from $150",
+    "carrot-cake": "Custom quote · 9-inch cake from $130",
     "classic-vanilla-cupcakes": "$6.50 each · 6-pack $37 · dozen $72",
+    "classic-chocolate-cupcakes": "$6.50 each · 6-pack $37 · dozen $72",
+    "red-velvet-cupcakes": "$7 each · 6-pack $40 · dozen $78",
+    "carrot-cupcakes": "$7 each · 6-pack $40 · dozen $78",
     "pasteis-de-nata": "$6.25 each · 6-pack $35 · dozen $69",
   });
 });
@@ -240,6 +243,21 @@ test("every product exposes the approved structured pricing contract", () => {
       ["pack-6", "6-pack", 6, 3700, 3900],
       ["dozen", "Dozen", 12, 7200, 7800],
     ]),
+    "classic-chocolate-cupcakes": fixed(null, [
+      ["each", "Each", 1, 650, null],
+      ["pack-6", "6-pack", 6, 3700, 3900],
+      ["dozen", "Dozen", 12, 7200, 7800],
+    ]),
+    "red-velvet-cupcakes": fixed(null, [
+      ["each", "Each", 1, 700, null],
+      ["pack-6", "6-pack", 6, 4000, 4200],
+      ["dozen", "Dozen", 12, 7800, 8400],
+    ]),
+    "carrot-cupcakes": fixed(null, [
+      ["each", "Each", 1, 700, null],
+      ["pack-6", "6-pack", 6, 4000, 4200],
+      ["dozen", "Dozen", 12, 7800, 8400],
+    ]),
     "pasteis-de-nata": fixed(null, [
       ["each", "Each", 1, 625, null],
       ["pack-6", "6-pack", 6, 3500, 3750],
@@ -248,10 +266,10 @@ test("every product exposes the approved structured pricing contract", () => {
   });
 });
 
-test("exactly the six whole desserts remain custom quotes", () => {
+test("exactly the six whole desserts retain the custom-quote workflow", () => {
   const quoteOnlyIds = menuCategories
     .flatMap((category) => category.items)
-    .filter((item) => item.price === "Custom quote")
+    .filter((item) => item.pricing.mode === "quote")
     .map((item) => item.id)
     .sort();
 
