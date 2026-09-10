@@ -78,6 +78,20 @@ test("phone fallback offers prefilled SMS for orders and questions", async () =>
   assert.match(css, /\.sms-action:not\(\[hidden\]\)/);
 });
 
+test("contact submissions show persistent, prominent success feedback", async () => {
+  const [html, app, css] = await Promise.all([
+    readFile(new URL("index.html", root), "utf8"),
+    readFile(new URL("app.js", root), "utf8"),
+    readFile(new URL("styles.css", root), "utf8"),
+  ]);
+  assert.ok(html.indexOf('id="contact-status"') < html.indexOf('id="contact-submit"'));
+  assert.match(html, /id="contact-status"[^>]+aria-atomic="true"/);
+  assert.match(app, /Message sent! Thank you/);
+  assert.match(app, /contact-submit"\]\.dataset\.sent = "true"/);
+  assert.match(css, /\.contact-feedback\[data-state="success"\]/);
+  assert.match(css, /#contact-submit\[data-sent="true"\]/);
+});
+
 test("private setup and secrets are not inside public content folders", async () => {
   const files = await readdir(new URL("data/", root));
   assert.deepEqual(files, ["menu.json"]);

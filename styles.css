@@ -644,6 +644,38 @@ button:disabled { opacity:.55; cursor:wait; }
 .contact-section h2 { margin:0; font-size:clamp(2.3rem,5vw,4.3rem); line-height:1; }
 .contact-form { align-content:start; }
 
+.contact-feedback {
+  display:grid;
+  grid-template-columns:auto minmax(0,1fr);
+  align-items:center;
+  gap:11px;
+  margin:0;
+  padding:13px 15px;
+  border:1px solid rgb(81 71 64 / 42%);
+  color:var(--ink);
+  background:rgb(247 234 220 / 88%);
+  font-size:.86rem;
+  font-weight:700;
+  line-height:1.45;
+}
+.contact-feedback:empty { display:none; }
+.contact-feedback::before {
+  content:"i";
+  display:grid;
+  width:28px;
+  height:28px;
+  place-items:center;
+  border:1px solid currentColor;
+  border-radius:50%;
+  font-family:Georgia,serif;
+  font-size:.9rem;
+}
+.contact-feedback[data-state="success"] { border-color:#657052; background:#e2e6d1; }
+.contact-feedback[data-state="success"]::before { content:"✓"; font-family:inherit; }
+.contact-feedback[data-state="error"] { border-color:#8a2f34; background:#f5dfe1; }
+.contact-feedback[data-state="error"]::before { content:"!"; font-family:inherit; }
+#contact-submit[data-sent="true"] { border-color:#586247; color:#fffdf7; background:#657052; }
+
 .copy-status {
   min-height: 1.5em;
   color: var(--muted);

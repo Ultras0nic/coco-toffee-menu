@@ -121,7 +121,7 @@ function initTurnstile() {
   };
   script.onerror = () => {
     el["order-submit-status"].textContent = "The security check could not load. Please refresh and try again.";
-    el["contact-status"].textContent = "The security check could not load. Please refresh and try again.";
+    setContactStatus("The security check could not load. Please refresh and try again.", "error");
   };
   document.head.append(script);
 }
@@ -836,6 +836,22 @@ async function copyText(text, status, success) {
   catch { status.textContent = "Copy was unavailable. Please select and copy the details manually."; }
 }
 
+function setContactStatus(message = "", state = "") {
+  const status = el["contact-status"];
+  status.textContent = message;
+  if (state) status.dataset.state = state;
+  else delete status.dataset.state;
+  if (message) requestAnimationFrame(() => status.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "nearest" }));
+}
+
+function contactFormChanged() {
+  contactIdempotencyKey = null;
+  saveDraft(el["contact-form"], "coco-contact-draft-v1");
+  if (el["contact-status"].textContent) setContactStatus();
+  el["contact-submit"].textContent = "Send message";
+  delete el["contact-submit"].dataset.sent;
+}
+
 async function submitContact(event) {
   event.preventDefault();
   if (contactSubmitting) return;
@@ -844,7 +860,7 @@ async function submitContact(event) {
   const values = new FormData(form);
   const payload = { schemaVersion: 1, requestType: "contact", idempotencyKey: contactIdempotencyKey ||= createKey(), customer: { name: values.get("name").trim(), email: values.get("email").trim(), phone: values.get("phone").trim() }, subject: values.get("subject"), message: values.get("message").trim(), submittedAt: new Date().toISOString() };
   const contactMessage = `Coco & Toffee message\n\nName: ${payload.customer.name}\nEmail: ${payload.customer.email}\nPhone: ${payload.customer.phone}\nTopic: ${payload.subject}\n\n${payload.message}`;
-  if (endpointFor("contact") && turnstileSiteKey() && !turnstile.contact.token) { el["contact-status"].textContent = "Please complete the security check before sending."; return; }
+  if (endpointFor("contact") && turnstileSiteKey() && !turnstile.contact.token) { setContactStatus("Please complete the security check before sending.", "error"); return; }
   if (turnstile.contact.token) payload.turnstileToken = turnstile.contact.token;
   const endpoint = endpointFor("contact");
   if (!endpoint) {
@@ -853,21 +869,24 @@ async function submitContact(event) {
     el["contact-sms-link"].href = smsHref(contactMessage);
     el["contact-sms-link"].hidden = false;
     await copyText(contactMessage, el["contact-status"], "Online sending is not connected yet, so your message was copied. Paste it into your preferred email or message app.");
+    el["contact-status"].dataset.state = "info";
     return;
   }
+  setContactStatus();
+  delete el["contact-submit"].dataset.sent;
   el["contact-submit"].disabled = true;
   el["contact-submit"].textContent = "Sending…";
   contactSubmitting = true;
-  try { await postJson(endpoint, payload); form.reset(); clearDraft("coco-contact-draft-v1"); contactIdempotencyKey = null; el["contact-email-link"].hidden = true; el["contact-sms-link"].hidden = true; el["contact-status"].textContent = "Message received. We’ll reply using the email you provided."; resetTurnstile("contact"); }
+  try { await postJson(endpoint, payload); form.reset(); clearDraft("coco-contact-draft-v1"); contactIdempotencyKey = null; el["contact-email-link"].hidden = true; el["contact-sms-link"].hidden = true; setContactStatus("Message sent! Thank you — we received your note and will reply using the email you provided.", "success"); el["contact-submit"].textContent = "Message sent ✓"; el["contact-submit"].dataset.sent = "true"; resetTurnstile("contact"); }
   catch (error) {
-    el["contact-status"].textContent = `${error.message} Your message is still here so you can retry or email it directly.`;
+    setContactStatus(`${error.message} Your message is still here so you can retry or email it directly.`, "error");
     el["contact-email-link"].href = `mailto:jericholi334677@gmail.com?subject=${encodeURIComponent(payload.subject)}&body=${encodeURIComponent(`Name: ${payload.customer.name}\nEmail: ${payload.customer.email}\nPhone: ${payload.customer.phone}\n\n${payload.message}`)}`;
     el["contact-email-link"].hidden = false;
     el["contact-sms-link"].href = smsHref(contactMessage);
     el["contact-sms-link"].hidden = false;
     resetTurnstile("contact");
   }
-  finally { el["contact-submit"].disabled = false; el["contact-submit"].textContent = "Send message"; contactSubmitting = false; }
+  finally { el["contact-submit"].disabled = false; if (el["contact-status"].dataset.state !== "success") el["contact-submit"].textContent = "Send message"; contactSubmitting = false; }
 }
 
 function focusable(panel) {
@@ -908,8 +927,8 @@ function attachInteractions() {
   el["order-copy-draft"].addEventListener("click", () => copyText(lastOrderSummary, el["order-submit-status"], "Order details copied."));
   el["order-result-close"].addEventListener("click", () => closeOverlay(el["checkout-panel"]));
   el["contact-form"].addEventListener("submit", submitContact);
-  el["contact-form"].addEventListener("input", () => { contactIdempotencyKey = null; saveDraft(el["contact-form"], "coco-contact-draft-v1"); });
-  el["contact-form"].addEventListener("change", () => { contactIdempotencyKey = null; saveDraft(el["contact-form"], "coco-contact-draft-v1"); });
+  el["contact-form"].addEventListener("input", contactFormChanged);
+  el["contact-form"].addEventListener("change", contactFormChanged);
   scrim.addEventListener("click", () => closePreview());
   scrim.addEventListener("click", () => { if (activeOverlay && activeOverlay !== el["product-preview"]) closeOverlay(); });
   document.addEventListener("keydown", (event) => {
