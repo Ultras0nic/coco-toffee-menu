@@ -77,7 +77,7 @@ begin
     raise exception 'order is not approvable' using errcode='23514';
   end if;
   if p_total_cents<100 or p_total_cents>1000000 or p_tax_cents<0 or p_delivery_cents<0
-     or p_date<(now() at time zone 'America/New_York')::date + case when v_has_quote then 7 else 3 end
+     or p_date<(now() at time zone 'America/New_York')::date + (case when v_has_quote then 7 else 3 end)
      or length(trim(p_window))<1 then
     raise exception 'invalid approval details' using errcode='22023';
   end if;

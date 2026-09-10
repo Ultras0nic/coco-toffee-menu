@@ -2,7 +2,7 @@
 window.COCO_OWNER_CONFIG = {
   ownerEmail: "jericholi334677@gmail.com",
   supabaseUrl: "https://syoqhpsjjmkdkgpvrqlz.supabase.co",
-  supabaseAnonKey: "YOUR_SUPABASE_PUBLISHABLE_OR_ANON_KEY",
+  supabaseAnonKey: "sb_publishable_6NxoM7DVZok0gNb6IkIlCg_ByIVjyWz",
   functionsBaseUrl: "https://syoqhpsjjmkdkgpvrqlz.supabase.co/functions/v1",
   paymentsEnabled: false,
 };

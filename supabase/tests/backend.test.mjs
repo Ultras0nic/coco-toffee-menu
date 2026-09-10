@@ -95,10 +95,11 @@ test("owner access is magic-link only and payment controls are disabled for requ
 });
 
 test("notification worker sends owner alerts and suppresses customer mail until a domain is verified", async () => {
-  const [worker, notification, requestOnlyMigration] = await Promise.all([
+  const [worker, notification, requestOnlyMigration, cronMigration] = await Promise.all([
     read("supabase/functions/process-notifications/index.ts"),
     read("supabase/functions/_shared/notifications.ts"),
     read("supabase/migrations/202609100001_request_only_mode.sql"),
+    read("supabase/migrations/202609100002_notification_cron.sql"),
   ]);
   assert.match(worker, /rpc\("claim_notifications"/);
   assert.match(worker, /owner\.email !== OWNER_EMAIL/);
@@ -106,6 +107,10 @@ test("notification worker sends owner alerts and suppresses customer mail until 
   assert.match(worker, /optionalEnv\("CUSTOMER_EMAIL_ENABLED", "false"\)/);
   assert.match(worker, /status: "suppressed"/);
   assert.match(requestOnlyMigration, /'suppressed'/);
+  assert.match(cronMigration, /cron\.schedule/);
+  assert.match(cronMigration, /vault\.decrypted_secrets/);
+  assert.match(cronMigration, /x-cron-secret/);
+  assert.doesNotMatch(cronMigration, /(?:sb_secret_|re_[A-Za-z0-9]{20}|whsec_)/);
   assert.match(notification, /requestedWindow \?\? fulfillment\.preferredTime/);
   assert.match(notification, /This is an order request, not a confirmed order/i);
 });
