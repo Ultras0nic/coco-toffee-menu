@@ -200,11 +200,18 @@ function getRecord(line) {
 function renderMenu() {
   el["category-nav-list"].innerHTML = menuCategories.map((category) => `<a href="#${escapeHtml(category.id)}">${escapeHtml(category.name)}</a>`).join("");
   el["menu-sections"].innerHTML = menuCategories.map((category) => {
+    const illustration = category.illustration;
+    let illustrationMarkup = "";
+    if (illustration?.src && Number.isInteger(illustration.width) && Number.isInteger(illustration.height)) {
+      const illustrationUrl = new URL(illustration.src, document.baseURI);
+      if (menuAssetVersion) illustrationUrl.searchParams.set("v", menuAssetVersion);
+      illustrationMarkup = `<img class="category-illustration" src="${escapeHtml(illustrationUrl.href)}" width="${illustration.width}" height="${illustration.height}" alt="" aria-hidden="true" loading="lazy" decoding="async" />`;
+    }
     const items = category.items.map((item) => {
       itemIndex.set(item.id, { item, category });
       return `<li><button class="menu-item" type="button" data-item-id="${escapeHtml(item.id)}" aria-controls="product-preview" aria-expanded="false"><span>${escapeHtml(item.name)}</span><span class="item-cue" aria-hidden="true">View</span></button></li>`;
     }).join("");
-    return `<section class="menu-category" id="${escapeHtml(category.id)}" aria-labelledby="${escapeHtml(category.id)}-title"><h2 id="${escapeHtml(category.id)}-title">${escapeHtml(category.name)}</h2><ul class="item-grid">${items}</ul><p class="category-note">${escapeHtml(category.note)}</p></section>`;
+    return `<section class="menu-category" id="${escapeHtml(category.id)}" aria-labelledby="${escapeHtml(category.id)}-title"><div class="category-heading"><h2 id="${escapeHtml(category.id)}-title">${escapeHtml(category.name)}</h2>${illustrationMarkup}</div><ul class="item-grid">${items}</ul><p class="category-note">${escapeHtml(category.note)}</p></section>`;
   }).join("");
   el["selection-list"].innerHTML = selectionChecklist.map((item) => `<li>${escapeHtml(item)}</li>`).join("");
 }

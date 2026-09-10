@@ -38,6 +38,35 @@ test("the recipe collection menu structure is represented", () => {
   );
 });
 
+test("every category has one unique optimized transparent illustration", async () => {
+  const expected = {
+    cookies: { src: "assets/categories/category-cookies.webp", width: 640, height: 329 },
+    "brownies-blondies": { src: "assets/categories/category-brownies-blondies.webp", width: 640, height: 510 },
+    "muffins-cinnamon-rolls": { src: "assets/categories/category-muffins-cinnamon-rolls.webp", width: 640, height: 591 },
+    "savory-baking": { src: "assets/categories/category-savory-baking.webp", width: 640, height: 479 },
+    tartlets: { src: "assets/categories/category-tartlets.webp", width: 640, height: 514 },
+    "tiramisu-flans": { src: "assets/categories/category-tiramisu-flans.webp", width: 640, height: 500 },
+    "cakes-cupcakes": { src: "assets/categories/category-cakes-cupcakes.webp", width: 640, height: 452 },
+    "portuguese-pastries": { src: "assets/categories/category-portuguese-pastries.webp", width: 640, height: 469 },
+  };
+
+  assert.deepEqual(
+    Object.fromEntries(menuCategories.map(({ id, illustration }) => [id, illustration])),
+    expected,
+  );
+  assert.equal(new Set(menuCategories.map(({ illustration }) => illustration.src)).size, 8);
+
+  for (const { illustration } of menuCategories) {
+    const assetUrl = new URL(`../${illustration.src}`, import.meta.url);
+    await access(assetUrl);
+    const asset = await readFile(assetUrl);
+    assert.ok(asset.byteLength <= 120 * 1024, `${illustration.src} exceeds 120KB`);
+    assert.equal(asset.toString("ascii", 0, 4), "RIFF");
+    assert.equal(asset.toString("ascii", 8, 12), "WEBP");
+    assert.ok(asset.includes(Buffer.from("ALPH")), `${illustration.src} has no alpha channel`);
+  }
+});
+
 test("the supplied product photos are assigned to the requested products", () => {
   const items = new Map(
     menuCategories
@@ -704,6 +733,21 @@ test("desktop hover preview contains only the product image and name", async () 
   assert.match(css, /\.product-peek\.is-visible/);
   assert.match(css, /pointer-events: none/);
   assert.match(css, /\.product-peek-photo\s*{\s*aspect-ratio: 16 \/ 9/);
+});
+
+test("category stamps render responsively without entering the sticky navigation", async () => {
+  const app = await readFile(new URL("../app.js", import.meta.url), "utf8");
+  const css = await readFile(new URL("../styles.css", import.meta.url), "utf8");
+
+  assert.match(app, /class="category-heading"/);
+  assert.match(app, /class="category-illustration"/);
+  assert.match(app, /alt="" aria-hidden="true" loading="lazy" decoding="async"/);
+  assert.doesNotMatch(app, /category-nav-list[^\n]*category-illustration/);
+  assert.match(css, /\.category-heading\s*{[^}]*grid-template-columns: minmax\(0, 1fr\) auto/s);
+  assert.match(css, /\.category-illustration\s*{[^}]*width: clamp\(96px, 10vw, 124px\)[^}]*max-width: 124px/s);
+  assert.match(css, /padding-block: clamp\(40px, 6vw, 64px\) clamp\(56px, 9vw, 112px\)/);
+  assert.match(css, /@media \(max-width: 820px\), \(hover: none\), \(pointer: coarse\)[^]*?\.category-illustration\s*{[^}]*width: clamp\(64px, 20vw, 78px\)/);
+  assert.match(css, /@media \(forced-colors: active\)[^]*?\.category-illustration\s*{\s*display: none/);
 });
 
 test("the warm slogan marquee sits between the menu header and category navigation", async () => {

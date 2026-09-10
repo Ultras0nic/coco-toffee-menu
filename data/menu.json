@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "lastUpdated": "2026-09-08",
+  "lastUpdated": "2026-09-09",
   "assetVersion": "2026-09-01-1",
   "pricingCatalog": {
     "currency": "USD",
@@ -49,6 +49,7 @@
       "id": "cookies",
       "name": "Cookies",
       "note": "Large bakery-style cookies. Seasonal availability may vary.",
+      "illustration": { "src": "assets/categories/category-cookies.webp", "width": 640, "height": 329 },
       "items": [
         {
           "id": "coco-double-chocolate",
@@ -182,6 +183,7 @@
       "id": "brownies-blondies",
       "name": "Brownies & Blondies",
       "note": "Available as large bakery squares or smaller portions.",
+      "illustration": { "src": "assets/categories/category-brownies-blondies.webp", "width": 640, "height": 510 },
       "items": [
         {
           "id": "classic-fudge-brownie",
@@ -225,6 +227,7 @@
       "id": "muffins-cinnamon-rolls",
       "name": "Muffins & Cinnamon Rolls",
       "note": "Jumbo bakery muffins and large individual cinnamon rolls.",
+      "illustration": { "src": "assets/categories/category-muffins-cinnamon-rolls.webp", "width": 640, "height": 591 },
       "items": [
         {
           "id": "chocolate-chip-jumbo-muffin",
@@ -299,6 +302,7 @@
       "id": "savory-baking",
       "name": "Savory Baking",
       "note": "Individual savory pastries are available by custom order.",
+      "illustration": { "src": "assets/categories/category-savory-baking.webp", "width": 640, "height": 479 },
       "items": [
         {
           "id": "bacon-gruyere-onion-quiche",
@@ -323,6 +327,7 @@
       "id": "tartlets",
       "name": "Tartlets",
       "note": "Available as an assorted selection or by flavor.",
+      "illustration": { "src": "assets/categories/category-tartlets.webp", "width": 640, "height": 514 },
       "items": [
         {
           "id": "assorted-individual-tartlets",
@@ -402,6 +407,7 @@
       "id": "tiramisu-flans",
       "name": "Tiramisu & Flans",
       "note": "Large desserts can be portioned for convenient service.",
+      "illustration": { "src": "assets/categories/category-tiramisu-flans.webp", "width": 640, "height": 500 },
       "items": [
         {
           "id": "classic-tiramisu",
@@ -454,6 +460,7 @@
       "id": "cakes-cupcakes",
       "name": "Cakes & Cupcakes",
       "note": "Whole cakes are available for custom orders and can be pre-sliced. Other cupcake flavors, fillings and decoration are available by request.",
+      "illustration": { "src": "assets/categories/category-cakes-cupcakes.webp", "width": 640, "height": 452 },
       "items": [
         {
           "id": "new-york-style-cheesecake",
@@ -574,6 +581,7 @@
       "id": "portuguese-pastries",
       "name": "Portuguese Pastries",
       "note": "Traditional pastries made in small batches.",
+      "illustration": { "src": "assets/categories/category-portuguese-pastries.webp", "width": 640, "height": 469 },
       "items": [
         {
           "id": "pasteis-de-nata",
