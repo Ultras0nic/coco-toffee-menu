@@ -15,8 +15,6 @@ menu layout while adding accessible product detail cards.
 - Persistent order bag, mixed boxes, package savings, and custom-dessert requests
 - Pickup/delivery request forms and a contact form
 - An owner-only review interface and Supabase/Stripe/email integration
-- The complete selection-request checklist
-- A one-click checklist copy feature
 - Automated content validation
 - GitHub Pages deployment workflow
 - The public menu works without service credentials; unconfigured forms provide an honest email/copy fallback

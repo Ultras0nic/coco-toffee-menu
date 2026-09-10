@@ -9,12 +9,11 @@ async function loadMenuData() {
 const DEFAULT_EMPTY_CART_MESSAGE = "Your order bag is waiting for something delicious.";
 const EXPIRED_CART_MESSAGE = "Your saved order bag expired after 3 days of inactivity. Please choose your items again.";
 let menuCategories = [];
-let selectionChecklist = [];
 let menuAssetVersion = "";
 let pricingCatalog = {};
 
 try {
-  ({ menuCategories, selectionChecklist, assetVersion: menuAssetVersion, pricingCatalog } = await loadMenuData());
+  ({ menuCategories, assetVersion: menuAssetVersion, pricingCatalog } = await loadMenuData());
 } catch (error) {
   console.error(error);
   document.querySelector("#menu-sections").innerHTML = `<section class="data-error" role="alert"><h2>Menu temporarily unavailable</h2><p>Please refresh the page or contact Coco & Toffee directly.</p></section>`;
@@ -25,7 +24,7 @@ const byId = (id) => document.querySelector(`#${id}`);
 const el = Object.fromEntries([
   "category-nav-list", "menu-sections", "product-preview", "mobile-scrim", "preview-image",
   "preview-placeholder", "product-peek", "product-peek-image", "product-peek-placeholder",
-  "product-peek-name", "selection-list", "copy-checklist", "copy-status", "product-order-form",
+  "product-peek-name", "product-order-form",
   "offer-fieldset", "offer-options", "quote-fields", "quote-servings", "quote-occasion",
   "quote-details", "product-quantity", "product-quantity-minus", "product-quantity-plus",
   "add-to-cart", "product-order-note", "cart-toggle", "cart-count", "cart-drawer", "cart-close",
@@ -222,7 +221,6 @@ function renderMenu() {
     }).join("");
     return `<section class="menu-category" id="${escapeHtml(category.id)}" aria-labelledby="${escapeHtml(category.id)}-title"><div class="category-heading"><h2 id="${escapeHtml(category.id)}-title">${escapeHtml(category.name)}</h2>${illustrationMarkup}</div><ul class="item-grid">${items}</ul><p class="category-note">${escapeHtml(category.note)}</p></section>`;
   }).join("");
-  el["selection-list"].innerHTML = selectionChecklist.map((item) => `<li>${escapeHtml(item)}</li>`).join("");
 }
 
 function setImage(image, placeholder, item) {
@@ -928,11 +926,6 @@ function attachInteractions() {
   window.addEventListener("scroll", () => hideProductPeek(), { passive: true });
 }
 
-async function copyChecklist() {
-  const text = ["Coco & Toffee selection request", "", ...selectionChecklist.map((item) => `- ${item}: `)].join("\n");
-  await copyText(text, el["copy-status"], "Checklist copied. Paste it into your message to Coco & Toffee.");
-}
-
 function restoreProductFromHash() {
   const id = location.hash.replace(/^#product-/, "");
   const button = itemIndex.has(id) && document.querySelector(`[data-item-id="${CSS.escape(id)}"]`);
@@ -948,4 +941,3 @@ restoreDraft(el["contact-form"], "coco-contact-draft-v1");
 toggleDelivery();
 initTurnstile();
 restoreProductFromHash();
-el["copy-checklist"].addEventListener("click", copyChecklist);

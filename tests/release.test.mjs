@@ -35,6 +35,18 @@ test("unconfigured storefront does not pretend requests were sent", async () => 
   assert.match(app, /mailto:jericholi334677@gmail\.com/);
 });
 
+test("the redundant selection checklist is not rendered", async () => {
+  const [html, app, css] = await Promise.all([
+    readFile(new URL("index.html", root), "utf8"),
+    readFile(new URL("app.js", root), "utf8"),
+    readFile(new URL("styles.css", root), "utf8"),
+  ]);
+  for (const source of [html, app]) {
+    assert.doesNotMatch(source, /selection-list|copy-checklist|copyChecklist/);
+  }
+  assert.doesNotMatch(css, /\.selection\s*\{/);
+});
+
 test("cart lines include product thumbnails with a graceful placeholder", async () => {
   const [app, css] = await Promise.all([
     readFile(new URL("app.js", root), "utf8"),
