@@ -1,10 +1,13 @@
+import { loadStoredCart, saveStoredCart } from "./cart-storage.mjs";
+
 async function loadMenuData() {
   const response = await fetch("./data/menu.json", { cache: "no-store" });
   if (!response.ok) throw new Error(`Menu data request failed: ${response.status}`);
   return response.json();
 }
 
-const CART_KEY = "coco-toffee-order-bag-v1";
+const DEFAULT_EMPTY_CART_MESSAGE = "Your order bag is waiting for something delicious.";
+const EXPIRED_CART_MESSAGE = "Your saved order bag expired after 3 days of inactivity. Please choose your items again.";
 let menuCategories = [];
 let selectionChecklist = [];
 let menuAssetVersion = "";
@@ -28,7 +31,7 @@ const el = Object.fromEntries([
   "add-to-cart", "product-order-note", "cart-toggle", "cart-count", "cart-drawer", "cart-close",
   "mix-builder", "mix-toggle-label", "mix-toggle", "mix-builder-fields", "mix-builder-help",
   "mix-components", "mix-total",
-  "cart-empty", "cart-content", "cart-items", "cart-subtotal", "cart-savings", "cart-quote-note",
+  "cart-empty", "cart-empty-message", "cart-content", "cart-items", "cart-subtotal", "cart-savings", "cart-quote-note",
   "cart-browse", "cart-continue", "checkout-start", "checkout-panel", "checkout-close",
   "checkout-kicker", "checkout-title", "checkout-review", "checkout-review-items",
   "checkout-review-total", "checkout-next", "checkout-edit", "order-form", "order-error-summary",
@@ -55,7 +58,9 @@ let lastOrderSummary = "";
 let editingLineId = null;
 let orderSubmitting = false;
 let contactSubmitting = false;
-let cart = loadCart();
+const initialCartState = loadStoredCart(localStorage);
+let cartExpiredNotice = initialCartState.expired;
+let cart = initialCartState.lines;
 const turnstile = { order: { token: "", widgetId: null }, contact: { token: "", widgetId: null } };
 
 function escapeHtml(value) {
@@ -122,18 +127,22 @@ function initTurnstile() {
   document.head.append(script);
 }
 
-function loadCart() {
-  try {
-    const value = JSON.parse(localStorage.getItem(CART_KEY));
-    if (value?.schemaVersion !== 1 || !Array.isArray(value.lines)) return [];
-    return value.lines.slice(0, 50).filter((line) => typeof line.productId === "string" && typeof line.offerId === "string" && Number.isInteger(line.quantity) && line.quantity > 0 && line.quantity <= 20);
-  } catch { return []; }
+function saveCart() {
+  cartExpiredNotice = false;
+  if (!saveStoredCart(localStorage, cart)) el["product-order-note"].textContent = "Your bag works in this tab, but this browser could not save it for later.";
+  orderIdempotencyKey = null;
 }
 
-function saveCart() {
-  try { localStorage.setItem(CART_KEY, JSON.stringify({ schemaVersion: 1, lines: cart })); }
-  catch { el["product-order-note"].textContent = "Your bag works in this tab, but this browser could not save it for later."; }
-  orderIdempotencyKey = null;
+function renewCartActivity() {
+  const state = loadStoredCart(localStorage);
+  if (state.expired) {
+    cart = [];
+    cartExpiredNotice = true;
+    renderCart();
+    return false;
+  }
+  if (cart.length) saveCart();
+  return Boolean(cart.length);
 }
 
 function saveDraft(form, key) {
@@ -468,6 +477,7 @@ function closeOverlay(panel = activeOverlay, returnFocus = true) {
 }
 
 function addActiveProduct() {
+  renewCartActivity();
   const pricing = activeProduct && normalizedPricing(activeProduct);
   if (!pricing) return;
   const offerId = el["product-order-form"].elements.offerId?.value || `${activeProduct.id}:quote`;
@@ -587,6 +597,7 @@ function renderCart() {
   el["cart-count"].textContent = String(count);
   el["cart-toggle"].setAttribute("aria-label", `Open order bag, ${count} item${count === 1 ? "" : "s"}`);
   el["cart-count"].setAttribute("aria-label", `${count} item${count === 1 ? "" : "s"}`);
+  el["cart-empty-message"].textContent = cartExpiredNotice ? EXPIRED_CART_MESSAGE : DEFAULT_EMPTY_CART_MESSAGE;
   el["cart-empty"].hidden = Boolean(cart.length);
   el["cart-content"].hidden = !cart.length;
   el["cart-items"].innerHTML = cart.map((line) => {
@@ -611,6 +622,7 @@ function renderCart() {
 }
 
 function updateLine(id, action, upgradeId = null) {
+  if (!renewCartActivity()) return;
   const index = cart.findIndex((line) => line.lineId === id);
   if (index < 0) return;
   if (action === "edit") { editCartLine(cart[index]); return; }
@@ -675,7 +687,7 @@ function showCheckoutStep(step) {
 }
 
 function openCheckout() {
-  if (!cart.length) return;
+  if (!renewCartActivity()) return;
   renderReview();
   const requestedDate = el["order-form"].elements.requestedDate;
   requestedDate.min = localDateAfter(hasQuoteItem() ? 7 : 3);
@@ -884,7 +896,7 @@ function attachInteractions() {
   el["product-quantity-minus"].addEventListener("click", () => el["product-quantity"].value = Math.max(1, (parseInt(el["product-quantity"].value, 10) || 1) - 1));
   el["product-quantity-plus"].addEventListener("click", () => el["product-quantity"].value = Math.min(20, (parseInt(el["product-quantity"].value, 10) || 1) + 1));
   previewClose.addEventListener("click", () => closeOverlay(el["product-preview"]));
-  el["cart-toggle"].addEventListener("click", () => { renderCart(); el["cart-toggle"].setAttribute("aria-expanded", "true"); openOverlay(el["cart-drawer"], el["cart-close"], el["cart-toggle"]); });
+  el["cart-toggle"].addEventListener("click", () => { renewCartActivity(); renderCart(); el["cart-toggle"].setAttribute("aria-expanded", "true"); openOverlay(el["cart-drawer"], el["cart-close"], el["cart-toggle"]); });
   el["product-view-bag"].addEventListener("click", () => el["cart-toggle"].click());
   for (const id of ["cart-close", "cart-browse", "cart-continue"]) el[id].addEventListener("click", () => closeOverlay(el["cart-drawer"]));
   el["cart-items"].addEventListener("click", (event) => { const line = event.target.closest(".cart-line"); if (!line) return; const action = event.target.closest("[data-action]")?.dataset.action; const upgrade = event.target.closest("[data-upgrade]")?.dataset.upgrade; if (action) updateLine(line.dataset.lineId, action); if (upgrade) updateLine(line.dataset.lineId, "upgrade", upgrade); });
@@ -892,7 +904,7 @@ function attachInteractions() {
   el["checkout-close"].addEventListener("click", () => closeOverlay(el["checkout-panel"]));
   el["checkout-next"].addEventListener("click", () => showCheckoutStep("details"));
   el["checkout-back"].addEventListener("click", () => showCheckoutStep("review"));
-  el["checkout-edit"].addEventListener("click", () => { closeOverlay(el["checkout-panel"], false); el["cart-toggle"].setAttribute("aria-expanded", "true"); openOverlay(el["cart-drawer"], el["cart-close"], el["cart-toggle"]); });
+  el["checkout-edit"].addEventListener("click", () => { renewCartActivity(); closeOverlay(el["checkout-panel"], false); el["cart-toggle"].setAttribute("aria-expanded", "true"); openOverlay(el["cart-drawer"], el["cart-close"], el["cart-toggle"]); });
   el["order-form"].addEventListener("change", (event) => { if (event.target.name === "fulfillmentType") toggleDelivery(); event.target.removeAttribute("aria-invalid"); orderIdempotencyKey = null; saveDraft(el["order-form"], "coco-order-draft-v1"); });
   el["order-form"].addEventListener("input", (event) => { event.target.removeAttribute("aria-invalid"); orderIdempotencyKey = null; saveDraft(el["order-form"], "coco-order-draft-v1"); });
   el["order-form"].addEventListener("submit", submitOrder);

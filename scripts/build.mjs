@@ -5,6 +5,7 @@ const root = resolve(import.meta.dirname, "..");
 const dist = resolve(root, "dist");
 const publicFiles = [
   "index.html", "styles.css", "app.js",
+  "cart-storage.mjs",
   "owner.html", "owner.css", "owner.js", "owner-config.js",
 ];
 

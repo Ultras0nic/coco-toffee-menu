@@ -7,10 +7,15 @@ import test from "node:test";
 const root = new URL("../", import.meta.url);
 
 test("browser entry points parse successfully", () => {
-  for (const file of ["app.js", "owner.js", "owner-config.js"]) {
+  for (const file of ["app.js", "cart-storage.mjs", "owner.js", "owner-config.js"]) {
     const result = spawnSync(process.execPath, ["--check", fileURLToPath(new URL(file, root))], { encoding: "utf8" });
     assert.equal(result.status, 0, `${file}: ${result.stderr}`);
   }
+});
+
+test("the local preview serves browser modules with a JavaScript content type", async () => {
+  const server = await readFile(new URL("scripts/dev.mjs", root), "utf8");
+  assert.match(server, /"\.mjs": "text\/javascript; charset=utf-8"/);
 });
 
 test("public build is allow-listed and includes owner assets without server files", async () => {
