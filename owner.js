@@ -1,5 +1,6 @@
 const config = window.COCO_OWNER_CONFIG || {};
 const OWNER_EMAIL = String(config.ownerEmail || "jericholi334677@gmail.com").trim().toLowerCase();
+const PAYMENTS_ENABLED = config.paymentsEnabled === true;
 const SESSION_KEY = "coco-owner-session";
 const loginPanel = document.querySelector("#login-panel");
 const inboxPanel = document.querySelector("#inbox-panel");
@@ -131,6 +132,12 @@ function fulfillmentText(order) {
   return `${fulfillment.type || "Not provided"} · requested ${fulfillment.requestedDate || "no date"} · ${fulfillment.requestedWindow ?? fulfillment.preferredTime ?? "flexible time"} · ${location}`;
 }
 
+function orderReplyHref(order) {
+  const subject = `Re: Coco & Toffee order ${order.public_code}`;
+  const body = `Hi ${order.customer_name},\n\nThank you for your Coco & Toffee order request ${order.public_code}.\n\n`;
+  return `mailto:${encodeURIComponent(order.customer_email)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+}
+
 function renderOrder(order) {
   const lines = (order.order_items || []).map((item) => {
     const components = (item.order_item_components || []).map((component) =>
@@ -139,8 +146,9 @@ function renderOrder(order) {
   }).join("");
   const failedNotifications = (order.notification_outbox || []).filter((item) => item.status === "failed");
   const canReview = ["quote_requested", "pending_approval", "changes_requested", "payment_setup_pending", "payment_failed", "payment_expired"].includes(order.status);
+  const canCreatePayment = canReview && PAYMENTS_ENABLED;
   const hasQuote = (order.order_items || []).some((item) => item.amount_cents == null);
-  const activePaymentLink = order.status === "pending_payment" && order.checkout_url &&
+  const activePaymentLink = PAYMENTS_ENABLED && order.status === "pending_payment" && order.checkout_url &&
     order.checkout_expires_at && new Date(order.checkout_expires_at).getTime() > Date.now();
   const quoteGuideMinimum = Number(order.subtotal_cents || 0) + (order.order_items || [])
     .filter((item) => item.amount_cents == null)
@@ -164,18 +172,20 @@ function renderOrder(order) {
     ${order.approved_date ? `<p data-approved-schedule><strong>Approved fulfillment:</strong> ${escapeHtml(order.approved_date)} · ${escapeHtml(order.approved_window || "Time to be arranged")}</p>` : ""}
     <p><strong>Customer notes:</strong> ${escapeHtml(order.notes || "None")}</p>
     ${order.owner_note ? `<p><strong>Owner message:</strong> ${escapeHtml(order.owner_note)}</p>` : ""}
-    ${order.checkout_expires_at ? `<p><strong>Payment link expires:</strong> ${escapeHtml(new Date(order.checkout_expires_at).toLocaleString())}</p>` : ""}
+    ${PAYMENTS_ENABLED && order.checkout_expires_at ? `<p><strong>Payment link expires:</strong> ${escapeHtml(new Date(order.checkout_expires_at).toLocaleString())}</p>` : ""}
     ${failedNotifications.length ? `<p class="notice-error">${failedNotifications.length} email notification(s) need retry.</p>` : ""}
     ${canReview ? `<div class="approval-grid">
-      ${hasQuote ? `<label>Approved food total ($)<input data-role="quote-total" type="number" min="${(quoteGuideMinimum / 100).toFixed(2)}" step="0.01" value="${quoteValue.toFixed(2)}" required /><small>Private starting guide plus fixed items: ${money(quoteGuideMinimum)}</small></label>` : ""}
-      <label>Approved date<input data-role="approved-date" type="date" min="${localMinimumDate(leadDays)}" value="${escapeHtml(approvedDate)}" required /></label>
+      ${canCreatePayment && hasQuote ? `<label>Approved food total ($)<input data-role="quote-total" type="number" min="${(quoteGuideMinimum / 100).toFixed(2)}" step="0.01" value="${quoteValue.toFixed(2)}" required /><small>Private starting guide plus fixed items: ${money(quoteGuideMinimum)}</small></label>` : ""}
+      ${canCreatePayment ? `<label>Approved date<input data-role="approved-date" type="date" min="${localMinimumDate(leadDays)}" value="${escapeHtml(approvedDate)}" required /></label>
       <label>Pickup/delivery time<input data-role="approved-window" type="text" maxlength="120" value="${escapeHtml(order.approved_window || order.fulfillment?.requestedWindow || order.fulfillment?.preferredTime || "")}" placeholder="Example: 10:00–11:00 AM" required /></label>
       <label>Delivery fee ($)<input data-role="delivery" type="number" min="0" max="10000" step="0.01" value="${(Number(order.delivery_cents || 0) / 100).toFixed(2)}" /></label>
-      <label>Tax ($)<input data-role="tax" type="number" min="0" max="10000" step="0.01" value="${(Number(order.tax_cents || 0) / 100).toFixed(2)}" /></label>
+      <label>Tax ($)<input data-role="tax" type="number" min="0" max="10000" step="0.01" value="${(Number(order.tax_cents || 0) / 100).toFixed(2)}" /></label>` : ""}
       <label class="full-field">Message to customer<textarea data-role="owner-note" maxlength="2000" rows="3" placeholder="Required when requesting changes or declining">${escapeHtml(order.owner_note || "")}</textarea></label>
     </div>` : ""}
     <div class="actions">
-      ${canReview ? `<button data-action="approve">Approve &amp; create payment link</button><button class="secondary" data-action="request_changes">Request changes</button><button class="danger" data-action="decline">Decline</button>` : ""}
+      <a class="button-link" href="${escapeHtml(orderReplyHref(order))}">Reply by email</a>
+      ${canCreatePayment ? `<button data-action="approve">Approve &amp; create payment link</button>` : ""}
+      ${canReview ? `<button class="secondary" data-action="request_changes">Request changes</button><button class="danger" data-action="decline">Decline</button>` : ""}
       ${order.status === "confirmed" ? `<button data-action="fulfill">Mark fulfilled</button>` : ""}
       ${activePaymentLink ? `<a class="button-link" href="${escapeHtml(order.checkout_url)}" target="_blank" rel="noopener">Open payment link</a><button class="secondary" data-action="copy_email">Copy customer email</button>` : ""}
     </div>
@@ -280,7 +290,7 @@ ordersNode.addEventListener("click", (event) => {
 });
 document.querySelector("#refresh-orders").addEventListener("click", loadInbox);
 document.querySelector("#retry-notifications").addEventListener("click", async () => {
-  try { const result = await api("process-notifications", { method: "POST", body: "{}" }); statusNode.textContent = `${result.sent} email(s) sent; ${result.failed} will retry automatically.`; await loadInbox(); }
+  try { const result = await api("process-notifications", { method: "POST", body: "{}" }); statusNode.textContent = `${result.sent} email(s) sent; ${result.suppressed || 0} customer email(s) held until a sending domain is ready; ${result.failed} will retry automatically.`; await loadInbox(); }
   catch (error) { statusNode.textContent = error.message; }
 });
 statusFilter.addEventListener("change", loadInbox);

@@ -19,10 +19,25 @@ Deno.serve(async (request) => {
   const { data: queued, error } = await client.rpc("claim_notifications", { p_limit: 20 });
   if (error) return failure(request, 503, "SERVICE_UNAVAILABLE", "Notification queue is unavailable");
 
+  const customerEmailEnabled = optionalEnv("CUSTOMER_EMAIL_ENABLED", "false") === "true";
   let sent = 0;
   let failed = 0;
+  let suppressed = 0;
   for (const notification of queued || []) {
     try {
+      const isCustomerNotification = String(notification.template || "").startsWith("customer_");
+      if (isCustomerNotification && !customerEmailEnabled) {
+        const { error: suppressError } = await client.from("notification_outbox").update({
+          status: "suppressed",
+          provider_message_id: "suppressed:no-verified-domain",
+          last_error: null,
+          claimed_at: null,
+          claim_token: null,
+        }).eq("id", notification.id).eq("claim_token", notification.claim_token).eq("status", "sending");
+        if (suppressError) throw suppressError;
+        suppressed += 1;
+        continue;
+      }
       const messageId = await sendQueuedNotification(client, notification);
       await client.from("notification_outbox").update({
         status: "sent", provider_message_id: messageId, sent_at: new Date().toISOString(), last_error: null,
@@ -41,6 +56,6 @@ Deno.serve(async (request) => {
       failed += 1;
     }
   }
-  console.log(JSON.stringify({ event: "notification_batch", actor: owner.email, sent, failed }));
-  return json(request, { ok: true, processed: sent + failed, sent, failed, environment: optionalEnv("ENVIRONMENT", "unknown") });
+  console.log(JSON.stringify({ event: "notification_batch", actor: owner.email, sent, failed, suppressed }));
+  return json(request, { ok: true, processed: sent + failed + suppressed, sent, failed, suppressed, environment: optionalEnv("ENVIRONMENT", "unknown") });
 });

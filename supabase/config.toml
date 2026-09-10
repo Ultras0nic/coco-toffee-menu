@@ -10,8 +10,5 @@ verify_jwt = false
 [functions.owner-orders]
 verify_jwt = true
 
-[functions.stripe-webhook]
-verify_jwt = false
-
 [functions.process-notifications]
 verify_jwt = false

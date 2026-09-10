@@ -71,6 +71,9 @@ Deno.serve(async (request) => {
       return json(request, { ok: true, orderId: changed.id, publicCode: changed.public_code, status: changed.status });
     }
     if (action !== "approve") return failure(request, 422, "VALIDATION_FAILED", "Unknown owner action");
+    if (optionalEnv("PAYMENTS_ENABLED", "false") !== "true") {
+      return failure(request, 409, "PAYMENTS_DISABLED", "Online payment links are not enabled. Reply to the customer by email to arrange next steps");
+    }
     if (order.status === "pending_payment" && order.checkout_url && order.checkout_expires_at && new Date(order.checkout_expires_at).getTime() > Date.now()) {
       return json(request, { ok: true, orderId: order.id, publicCode: order.public_code, status: order.status, checkoutUrl: order.checkout_url });
     }

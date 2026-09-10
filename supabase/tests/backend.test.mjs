@@ -77,29 +77,37 @@ test("workflow SQL is idempotent, exact-amount, retry-safe, and private by defau
   assert.match(workflow, /attempts<10/);
 });
 
-test("owner access is magic-link only and stale Checkout links are not exposed", async () => {
-  const [ownerHtml, ownerJs, ownerApi] = await Promise.all([
+test("owner access is magic-link only and payment controls are disabled for request-only launch", async () => {
+  const [ownerHtml, ownerJs, ownerApi, ownerConfig, functionConfig] = await Promise.all([
     read("owner.html"), read("owner.js"), read("supabase/functions/owner-orders/index.ts"),
+    read("owner-config.js"), read("supabase/config.toml"),
   ]);
   assert.doesNotMatch(ownerHtml, /type="password"/);
   assert.match(ownerJs, /\/auth\/v1\/otp/);
   assert.match(ownerJs, /create_user: false/);
   assert.doesNotMatch(ownerJs, /grant_type=password/);
-  assert.match(ownerJs, /order\.status === "pending_payment"/);
+  assert.match(ownerJs, /const PAYMENTS_ENABLED = config\.paymentsEnabled === true/);
+  assert.match(ownerJs, /Reply by email/);
+  assert.match(ownerConfig, /paymentsEnabled:\s*false/);
   assert.match(ownerApi, /owner\.email !== OWNER_EMAIL/);
-  assert.match(ownerApi, /checkout_expires_at.*Date\.now/);
+  assert.match(ownerApi, /optionalEnv\("PAYMENTS_ENABLED", "false"\) !== "true"/);
+  assert.doesNotMatch(functionConfig, /\[functions\.stripe-webhook\]/);
 });
 
-test("notification worker uses authenticated leases and customer email uses the saved time field", async () => {
-  const [worker, notification] = await Promise.all([
+test("notification worker sends owner alerts and suppresses customer mail until a domain is verified", async () => {
+  const [worker, notification, requestOnlyMigration] = await Promise.all([
     read("supabase/functions/process-notifications/index.ts"),
     read("supabase/functions/_shared/notifications.ts"),
+    read("supabase/migrations/202609100001_request_only_mode.sql"),
   ]);
   assert.match(worker, /rpc\("claim_notifications"/);
   assert.match(worker, /owner\.email !== OWNER_EMAIL/);
   assert.match(worker, /eq\("claim_token", notification\.claim_token\)/);
+  assert.match(worker, /optionalEnv\("CUSTOMER_EMAIL_ENABLED", "false"\)/);
+  assert.match(worker, /status: "suppressed"/);
+  assert.match(requestOnlyMigration, /'suppressed'/);
   assert.match(notification, /requestedWindow \?\? fulfillment\.preferredTime/);
-  assert.match(notification, /order is not confirmed until Coco & Toffee approves it and payment is completed/i);
+  assert.match(notification, /This is an order request, not a confirmed order/i);
 });
 
 test("Stripe session and webhook bind order, payment intent, exact amount, and live mode", async () => {

@@ -42,11 +42,15 @@ function orderStatusLabel(value: unknown): string {
 }
 
 function orderNotice(): string {
-  return "Your order is not confirmed until Coco & Toffee approves it and payment is completed.";
+  return optionalEnv("PAYMENTS_ENABLED", "false") === "true"
+    ? "Your order is not confirmed until Coco & Toffee approves it and payment is completed."
+    : "This is an order request, not a confirmed order. Coco & Toffee will reply with availability, the final total and next steps. No payment has been collected.";
 }
 
 function cancellationTerms(): string {
-  return "Paid cancellations receive a full refund when requested at least 72 hours before regular-item fulfillment or 7 days before custom-dessert fulfillment. Later cancellations are non-refundable unless Coco & Toffee cancels.";
+  return optionalEnv("PAYMENTS_ENABLED", "false") === "true"
+    ? "Paid cancellations receive a full refund when requested at least 72 hours before regular-item fulfillment or 7 days before custom-dessert fulfillment. Later cancellations are non-refundable unless Coco & Toffee cancels."
+    : "Reply to this email as soon as possible if the request needs to change or be cancelled.";
 }
 
 export async function sendQueuedNotification(client: SupabaseClient, notification: Record<string, unknown>): Promise<string> {

@@ -8,6 +8,7 @@
     <meta name="turnstile-site-key" content="" />
     <!-- Optional E.164 business number. When blank, SMS opens with no recipient selected. -->
     <meta name="sms-recipient" content="" />
+    <meta name="payments-enabled" content="false" />
     <meta
       name="description"
       content="Explore the Coco & Toffee bakery menu. Hover on desktop or tap on mobile to view product details."
@@ -233,8 +234,7 @@
         <div id="checkout-review-total" class="checkout-total"></div>
         <p class="request-notice">
           This is an order request. Your order is not confirmed until Coco &amp; Toffee replies
-          with availability and the final total. If approved, payment must be completed through
-          the secure link we send before the order is confirmed.
+          with availability and the final total. No payment is collected on this website.
         </p>
         <button id="checkout-next" class="primary-button full-button" type="button">
           Continue to contact details
@@ -324,7 +324,6 @@
         <p id="order-code" class="order-code" hidden></p>
         <details class="request-details"><summary>Review request details</summary><pre id="order-summary-text"></pre></details>
         <div class="result-actions">
-          <a id="checkout-payment-link" class="primary-button" href="#" hidden>Continue to secure payment</a>
           <a id="order-email-link" class="primary-button" href="mailto:jericholi334677@gmail.com" hidden>Email this request</a>
           <a id="order-sms-link" class="primary-button sms-action" href="sms:" hidden>Text this request</a>
           <button id="copy-order" class="secondary-button" type="button">Copy order details</button>
@@ -379,10 +378,10 @@
       <details id="order-policies" class="order-policies">
         <summary>Ordering, cancellations &amp; privacy</summary>
         <p>All requests are subject to availability. Allow at least 3 days for regular items and 7 days for whole cakes and custom desserts. We aim to reply within 24 hours. Pickup details and any delivery charge are confirmed during approval.</p>
-        <p>Your order is confirmed only after approval and completed payment. Applicable tax and the final total are shown before payment. Card details are handled by Stripe, never collected in these forms.</p>
-        <p>For a full refund, email your cancellation request at least 72 hours before regular-item fulfillment or 7 days before custom-dessert fulfillment. Later cancellations are non-refundable unless Coco &amp; Toffee cancels. Refunds are reviewed and processed by the owner.</p>
+        <p>Submitting the form sends an order request; it does not confirm an order or collect payment. Coco &amp; Toffee will reply by email to confirm availability, the final total and next steps.</p>
+        <p>If you need to cancel or change a request, email us as soon as possible. Any cancellation or refund terms for an approved order will be confirmed before payment is arranged.</p>
         <p>Please review each product’s allergens. Our kitchen handles multiple allergens; we cannot promise an allergen-free environment. Refrigerated and other restricted products are subject to an appropriately approved kitchen and safe handling.</p>
-        <p>We use the contact and fulfillment details you provide to review requests, communicate with you and fulfill approved orders. The order bag is saved on this browser; form drafts are saved for this browser session. When online sending is enabled, requests are processed with Supabase and transactional email, and payments with Stripe. Submitting a request does not subscribe you to marketing. Email us with questions about your information.</p>
+        <p>We use the contact and fulfillment details you provide to review requests, communicate with you and fulfill approved orders. The order bag is saved on this browser; form drafts are saved for this browser session. Online requests are stored privately with Supabase. Submitting a request does not subscribe you to marketing. Email us with questions about your information.</p>
       </details>
       <p>Thank you for considering us. We look forward to hearing from you.</p>
       <p class="footer-mark">Coco & Toffee</p>

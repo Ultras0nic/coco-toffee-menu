@@ -14,15 +14,15 @@ menu layout while adding accessible product detail cards.
 - Product details and approved individual/package prices
 - Persistent order bag, mixed boxes, package savings, and custom-dessert requests
 - Pickup/delivery request forms and a contact form
-- An owner-only review interface and Supabase/Stripe/email integration
+- An owner-only review interface and Supabase/Resend email integration
 - Automated content validation
 - GitHub Pages deployment workflow
 - The public menu works without service credentials; unconfigured forms provide an honest email/copy fallback
 
 ## Service activation
 
-The storefront is a static GitHub Pages site. Automatic submission, owner sign-in, email and payment
-require the separately deployed Supabase functions and configured providers. See
+The storefront is a static GitHub Pages site. Automatic submission, owner sign-in and owner email
+alerts require the separately deployed Supabase functions and configured providers. See
 [`supabase/README.md`](supabase/README.md) for the deployment checklist.
 
 The empty `order-endpoint` and `turnstile-site-key` meta tags in `index.html` intentionally leave
@@ -32,9 +32,8 @@ E.164 business number (for example, `+16175550123`) to the `sms-recipient` meta 
 messages. When it is blank, the customer chooses the recipient in their messaging app. `owner-config.js` contains
 only public configuration placeholders. Never put server secrets in browser files.
 
-The owner approves availability, delivery fees and custom pricing before sending a Stripe link.
-Payment webhooks—not the browser success URL—confirm payment. Do not enable live payments before
-testing the full flow and confirming tax and food-business requirements.
+The first release collects requests only. The owner reviews each request and replies manually from
+Gmail with availability, final pricing and next steps. Online payment controls remain disabled.
 
 ## Brand logo
 

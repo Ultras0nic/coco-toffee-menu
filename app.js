@@ -35,7 +35,7 @@ const el = Object.fromEntries([
   "checkout-kicker", "checkout-title", "checkout-review", "checkout-review-items",
   "checkout-review-total", "checkout-next", "checkout-edit", "order-form", "order-error-summary",
   "delivery-address", "checkout-back", "order-submit", "order-submit-status", "order-result",
-  "order-result-title", "order-result-message", "order-code", "checkout-payment-link", "copy-order",
+  "order-result-title", "order-result-message", "order-code", "copy-order",
   "order-result-close", "copy-order-status", "contact-form", "contact-submit", "contact-status",
   "order-turnstile", "contact-turnstile",
   "order-email-link", "order-sms-link", "contact-email-link", "contact-sms-link",
@@ -745,7 +745,7 @@ function orderSummary(payload) {
     const effectivePrice = linePriceCents(line, record);
     const price = Number.isInteger(effectivePrice) ? formatMoney(effectivePrice * line.quantity) : "Custom quote";
     return `- ${lineTitle(line, record)} — ${record.offer.label} × ${line.quantity}: ${price}${line.components ? `\n  Per box: ${componentText(line)}` : ""}`;
-  }), "", sum.hasQuote ? `Priced items estimate: ${formatMoney(sum.subtotal)} + custom quote` : `Estimated subtotal: ${formatMoney(sum.subtotal)}`, `Name: ${payload.customer.name}`, `Email: ${payload.customer.email}`, payload.customer.phone && `Phone: ${payload.customer.phone}`, `Requested date: ${payload.fulfillment.requestedDate}`, `Fulfillment: ${payload.fulfillment.type}`, payload.fulfillment.requestedWindow && `Preferred time: ${payload.fulfillment.requestedWindow}`, payload.fulfillment.address && `Delivery address: ${Object.values(payload.fulfillment.address).filter(Boolean).join(", ")}`, payload.notes && `Notes: ${payload.notes}`, "This is a request, not a confirmed order. Payment through the approved secure link is required to confirm."].filter(Boolean).join("\n");
+  }), "", sum.hasQuote ? `Priced items estimate: ${formatMoney(sum.subtotal)} + custom quote` : `Estimated subtotal: ${formatMoney(sum.subtotal)}`, `Name: ${payload.customer.name}`, `Email: ${payload.customer.email}`, payload.customer.phone && `Phone: ${payload.customer.phone}`, `Requested date: ${payload.fulfillment.requestedDate}`, `Fulfillment: ${payload.fulfillment.type}`, payload.fulfillment.requestedWindow && `Preferred time: ${payload.fulfillment.requestedWindow}`, payload.fulfillment.address && `Delivery address: ${Object.values(payload.fulfillment.address).filter(Boolean).join(", ")}`, payload.notes && `Notes: ${payload.notes}`, "This is a request, not a confirmed order. Coco & Toffee will reply by email with availability, the final total and next steps. No payment has been collected."].filter(Boolean).join("\n");
 }
 
 async function postJson(url, payload) {
@@ -779,10 +779,6 @@ function showOrderResult(submitted, data, message) {
   el["order-summary-text"].textContent = lastOrderSummary;
   el["order-code"].hidden = !data?.publicCode;
   el["order-code"].textContent = data?.publicCode ? `Request number: ${data.publicCode}` : "";
-  let checkout = null;
-  try { const url = new URL(data?.checkoutUrl); if (url.protocol === "https:") checkout = url.href; } catch { checkout = null; }
-  el["checkout-payment-link"].hidden = !checkout;
-  if (checkout) el["checkout-payment-link"].href = checkout;
   el["order-email-link"].hidden = submitted;
   el["order-sms-link"].hidden = submitted;
   if (!submitted) el["order-sms-link"].href = smsHref(lastOrderSummary);
@@ -814,7 +810,9 @@ async function submitOrder(event) {
   } else {
     try {
       const data = await postJson(endpoint, payload);
-      const message = data.status === "quote_requested" ? "We’ll review the custom items, confirm availability and email your quote. No payment has been collected." : data.status === "pending_payment" ? "Your request is approved. Use the secure payment link when you’re ready." : "We’ll review availability and email your final total and payment link. No payment has been collected.";
+      const message = data.status === "quote_requested"
+        ? "We’ll review the custom items, confirm availability and reply by email with your quote. No payment has been collected."
+        : "We’ll review availability and reply by email with the final total and next steps. No payment has been collected.";
       showOrderResult(true, data, message);
       resetTurnstile("order");
     } catch (error) {

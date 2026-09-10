@@ -24,6 +24,7 @@ test("public build is allow-listed and includes owner assets without server file
   assert.doesNotMatch(build, /cp\(resolve\(root, "(?:supabase|pricing)"/);
   const config = await readFile(new URL("owner-config.js", root), "utf8");
   assert.doesNotMatch(config, /(?:sk_live_|sk_test_|sb_secret_|re_[A-Za-z0-9]{20})/);
+  assert.match(config, /paymentsEnabled:\s*false/);
 });
 
 test("unconfigured storefront does not pretend requests were sent", async () => {
@@ -31,8 +32,11 @@ test("unconfigured storefront does not pretend requests were sent", async () => 
   const app = await readFile(new URL("app.js", root), "utf8");
   assert.match(html, /meta name="order-endpoint" content="[^"]*"/);
   assert.match(html, /meta name="turnstile-site-key" content="[^"]*"/);
+  assert.match(html, /meta name="payments-enabled" content="false"/);
   assert.match(app, /Your request has not been sent/);
   assert.match(app, /mailto:jericholi334677@gmail\.com/);
+  assert.doesNotMatch(html, /Continue to secure payment/);
+  assert.doesNotMatch(app, /final total and payment link/);
 });
 
 test("the redundant selection checklist is not rendered", async () => {
