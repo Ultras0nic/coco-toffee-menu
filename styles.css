@@ -195,8 +195,10 @@ html[data-locale="zh-Hans"] h1,
 html[data-locale="zh-Hans"] h2,
 html[data-locale="zh-Hans"] .footer-mark,
 html[data-locale="zh-Hans"] .category-nav a,
+html[data-locale="zh-Hans"] .menu-item,
 html[data-locale="zh-Hans"] .slogan-band-track {
-  font-family: KaiTi, STKaiti, "Kaiti SC", "Microsoft YaHei", sans-serif;
+  font-family: "ZCOOL KuaiLe", KaiTi, STKaiti, "Kaiti SC", "Microsoft YaHei", sans-serif;
+  font-weight: 400;
 }
 
 .visually-hidden {

@@ -71,6 +71,17 @@ test("the storefront location line is translated in every added language", () =>
   }
 });
 
+test("ZCOOL KuaiLe is loaded and scoped only to Chinese display text", async () => {
+  const [html, css] = await Promise.all([
+    readFile(new URL("../index.html", import.meta.url), "utf8"),
+    readFile(new URL("../styles.css", import.meta.url), "utf8"),
+  ]);
+  assert.match(html, /fonts\.googleapis\.com\/css2\?family=ZCOOL\+KuaiLe&display=swap/);
+  assert.match(html, /fonts\.gstatic\.com" crossorigin/);
+  assert.match(css, /html\[data-locale="zh-Hans"\] \.menu-item,[^}]*font-family: "ZCOOL KuaiLe"/s);
+  assert.doesNotMatch(css, /html\[data-locale="(?:en|pt-PT|es-ES)"\][^}]*ZCOOL KuaiLe/);
+});
+
 test("storefront sends the selected locale without trusting translated catalog values", async () => {
   const app = await readFile(new URL("../app.js", import.meta.url), "utf8");
   assert.match(app, /schemaVersion: 2, requestType: "order", locale: currentLocale/);
