@@ -3,7 +3,7 @@ import { serviceClient } from "../_shared/db.ts";
 import { failure, json, readJson } from "../_shared/http.ts";
 import { allowRequest } from "../_shared/rate-limit.ts";
 import { verifyTurnstile } from "../_shared/turnstile.ts";
-import { cleanText, clientIp, sha256, stableStringify, validEmail, validIdempotencyKey } from "../_shared/validation.ts";
+import { cleanText, clientIp, normalizeCustomerLocale, sha256, stableStringify, validEmail, validIdempotencyKey } from "../_shared/validation.ts";
 
 Deno.serve(async (request) => {
   if (request.method === "OPTIONS") return optionsResponse(request);
@@ -20,9 +20,10 @@ Deno.serve(async (request) => {
     const message = cleanText(body.message, 4_000);
     const idempotencyKey = cleanText(body.idempotencyKey, 128);
     const token = cleanText(body.turnstileToken, 2_048);
+    const locale = normalizeCustomerLocale(body.locale);
     const fields: Record<string, string> = {};
 
-    if (body.schemaVersion !== 1 || body.requestType !== "contact") fields.request = "Unsupported request format";
+    if (![1, 2].includes(body.schemaVersion) || body.requestType !== "contact") fields.request = "Unsupported request format";
     if (name.length < 2) fields.name = "Enter your name";
     if (!validEmail(email)) fields.email = "Enter a valid email";
     if (message.length < 10) fields.message = "Enter at least 10 characters";
@@ -33,7 +34,7 @@ Deno.serve(async (request) => {
     if (!await allowRequest(client, request, "contact", email)) {
       return failure(request, 429, "RATE_LIMITED", "Too many attempts. Please wait and try again");
     }
-    const requestHash = await sha256(stableStringify({ name, email, phone, subject, message }));
+    const requestHash = await sha256(stableStringify({ name, email, phone, subject, message, ...(body.schemaVersion === 2 ? { locale } : {}) }));
     const { data: existing, error: lookupError } = await client.from("contact_messages").select("id,public_code,request_hash").eq("idempotency_key", idempotencyKey).maybeSingle();
     if (lookupError) throw lookupError;
     if (existing) {
@@ -52,6 +53,7 @@ Deno.serve(async (request) => {
       customer_phone: phone || null,
       subject: subject || null,
       message,
+      customer_locale: locale,
     }).select("id,public_code").single();
     if (error) {
       if (error.code === "23505") {

@@ -141,6 +141,62 @@ h1 {
   object-fit: cover;
 }
 
+.header-utility {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  max-width: 42rem;
+}
+
+.language-control {
+  display: grid;
+  gap: 4px;
+  color: var(--muted);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.language-control select {
+  min-width: 8.6rem;
+  min-height: 40px;
+  padding: 7px 32px 7px 10px;
+  border: 1px solid rgb(81 71 64 / 45%);
+  border-radius: 2px;
+  color: var(--ink);
+  background: rgb(255 250 253 / 76%);
+  font: 700 0.85rem/1.2 var(--font-copy);
+  letter-spacing: 0.02em;
+  text-transform: none;
+}
+
+.translation-notice {
+  margin-block: 0 18px;
+  padding: 10px 14px;
+  border: 1px solid #9a755e;
+  background: #f0dfca;
+  font-size: 0.88rem;
+}
+
+html[data-locale="zh-Hans"] body,
+html[data-locale="zh-Hans"] button,
+html[data-locale="zh-Hans"] select,
+html[data-locale="zh-Hans"] input,
+html[data-locale="zh-Hans"] textarea {
+  font-family: "Microsoft YaHei", "PingFang SC", "Noto Sans CJK SC", Arial, sans-serif;
+  letter-spacing: 0.02em;
+}
+
+html[data-locale="zh-Hans"] h1,
+html[data-locale="zh-Hans"] h2,
+html[data-locale="zh-Hans"] .footer-mark,
+html[data-locale="zh-Hans"] .category-nav a,
+html[data-locale="zh-Hans"] .slogan-band-track {
+  font-family: KaiTi, STKaiti, "Kaiti SC", "Microsoft YaHei", sans-serif;
+}
+
 .visually-hidden {
   position: absolute;
   width: 1px;
@@ -415,6 +471,16 @@ h1 {
   margin: 0;
   color: var(--muted);
   font-size: 0.82rem;
+}
+
+.allergen-original {
+  display: block;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid rgb(81 71 64 / 20%);
+  color: var(--muted);
+  font-size: 0.78em;
+  line-height: 1.45;
 }
 
 .cart-toggle { display:inline-flex; min-height:42px; align-items:center; gap:9px; padding:7px 12px; border:1px solid var(--ink); color:var(--paper-light); background:var(--ink); font-weight:700; white-space:nowrap; cursor:pointer; }
@@ -925,6 +991,16 @@ button:disabled { opacity:.55; cursor:wait; }
   .slogan-band-group[aria-hidden="true"],
   .slogan-band-group span:not(:first-child) {
     display: none;
+  }
+
+  .header-utility {
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .language-control {
+    align-items: center;
   }
 }
 

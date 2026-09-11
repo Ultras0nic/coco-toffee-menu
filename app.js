@@ -1,4 +1,17 @@
 import { loadStoredCart, saveStoredCart } from "./cart-storage.mjs";
+import {
+  DEFAULT_LOCALE,
+  LANGUAGE_NAMES,
+  LANGUAGE_STORAGE_KEY,
+  SUPPORTED_LOCALES,
+  formatUsd,
+  localizedOfferLabel,
+  normalizeLocale,
+  overlayCatalog,
+  resolveInitialLocale,
+  shortLocale,
+  translate,
+} from "./i18n.mjs";
 
 async function loadMenuData() {
   const response = await fetch("./data/menu.json", { cache: "no-store" });
@@ -6,19 +19,38 @@ async function loadMenuData() {
   return response.json();
 }
 
-const DEFAULT_EMPTY_CART_MESSAGE = "Your order bag is waiting for something delicious.";
-const EXPIRED_CART_MESSAGE = "Your saved order bag expired after 3 days of inactivity. Please choose your items again.";
+async function loadLocaleData(locale) {
+  if (locale === DEFAULT_LOCALE) return null;
+  const response = await fetch(`./data/locales/${locale}.json`, { cache: "no-store" });
+  if (!response.ok) throw new Error(`Translation request failed: ${response.status}`);
+  return response.json();
+}
+
+function storedLocale() {
+  try { return localStorage.getItem(LANGUAGE_STORAGE_KEY) || ""; } catch { return ""; }
+}
+
+let currentLocale = resolveInitialLocale({ search: location.search, stored: storedLocale(), languages: navigator.languages || [navigator.language] });
+let baseMenuData;
 let menuCategories = [];
 let menuAssetVersion = "";
 let pricingCatalog = {};
+let translationLoadFailed = false;
 
 try {
-  ({ menuCategories, assetVersion: menuAssetVersion, pricingCatalog } = await loadMenuData());
+  baseMenuData = await loadMenuData();
+  let overlay = null;
+  try { overlay = await loadLocaleData(currentLocale); }
+  catch (error) { console.error(error); currentLocale = DEFAULT_LOCALE; translationLoadFailed = true; }
+  const localized = overlayCatalog(baseMenuData, overlay, currentLocale);
+  ({ menuCategories, assetVersion: menuAssetVersion, pricingCatalog } = localized);
 } catch (error) {
   console.error(error);
   document.querySelector("#menu-sections").innerHTML = `<section class="data-error" role="alert"><h2>Menu temporarily unavailable</h2><p>Please refresh the page or contact Coco & Toffee directly.</p></section>`;
   throw error;
 }
+
+const t = (key, values) => translate(currentLocale, key, values);
 
 const byId = (id) => document.querySelector(`#${id}`);
 const el = Object.fromEntries([
@@ -67,7 +99,58 @@ function escapeHtml(value) {
 }
 
 function formatMoney(cents) {
-  return new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", minimumFractionDigits: cents % 100 ? 2 : 0 }).format(cents / 100);
+  return formatUsd(cents, currentLocale);
+}
+
+function offerLabel(offer) {
+  return localizedOfferLabel(offer, currentLocale);
+}
+
+function priceSummary(item) {
+  const pricing = normalizedPricing(item);
+  if (!pricing?.offers?.length || pricing.mode === "quote") return t("Custom quote");
+  if (pricing.mode === "builder") return t("{offer} from {price}", { offer: offerLabel(pricing.offers[0]), price: formatMoney(pricing.offers[0].priceCents) });
+  return pricing.offers.map((offer) => `${offerLabel(offer)} ${formatMoney(offer.priceCents)}`).join(" · ");
+}
+
+const originalTextNodes = new WeakMap();
+const originalAttributes = new WeakMap();
+
+function applyStaticTranslations() {
+  document.documentElement.lang = currentLocale;
+  document.documentElement.dataset.locale = currentLocale;
+  document.title = t("Coco & Toffee | Menu");
+  const description = document.querySelector('meta[name="description"]');
+  if (description) description.content = t("Explore the Coco & Toffee bakery menu. Hover on desktop or tap on mobile to view product details.");
+  const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+  for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+    if (node.parentElement?.closest("script,style,[data-i18n-ignore],input,textarea")) continue;
+    if (!originalTextNodes.has(node)) originalTextNodes.set(node, node.nodeValue);
+    const original = originalTextNodes.get(node);
+    const source = original.trim();
+    if (!source) continue;
+    const leading = original.match(/^\s*/)?.[0] || "";
+    const trailing = original.match(/\s*$/)?.[0] || "";
+    node.nodeValue = `${leading}${t(source)}${trailing}`;
+  }
+  for (const node of document.querySelectorAll("[aria-label],[placeholder],[title]")) {
+    let originals = originalAttributes.get(node);
+    if (!originals) { originals = {}; originalAttributes.set(node, originals); }
+    for (const attribute of ["aria-label", "placeholder", "title"]) {
+      if (!node.hasAttribute(attribute)) continue;
+      if (!(attribute in originals)) originals[attribute] = node.getAttribute(attribute);
+      node.setAttribute(attribute, t(originals[attribute]));
+    }
+  }
+  const selector = document.querySelector("#language-select");
+  if (selector) {
+    selector.value = currentLocale;
+    selector.setAttribute("aria-label", t("Language"));
+  }
+  for (const option of document.querySelectorAll("#language-select option")) option.textContent = LANGUAGE_NAMES[option.value];
+  const announcer = document.querySelector("#language-status");
+  if (announcer) announcer.textContent = t("Language: {language}", { language: LANGUAGE_NAMES[currentLocale] });
+  document.body.classList.toggle("translation-fallback", translationLoadFailed);
 }
 
 function isCompactInteraction() {
@@ -120,8 +203,8 @@ function initTurnstile() {
     }
   };
   script.onerror = () => {
-    el["order-submit-status"].textContent = "The security check could not load. Please refresh and try again.";
-    setContactStatus("The security check could not load. Please refresh and try again.", "error");
+    el["order-submit-status"].textContent = t("The security check could not load. Please refresh and try again.");
+    setContactStatus(t("The security check could not load. Please refresh and try again."), "error");
   };
   document.head.append(script);
 }
@@ -206,6 +289,7 @@ function getRecord(line) {
 }
 
 function renderMenu() {
+  itemIndex.clear();
   el["category-nav-list"].innerHTML = menuCategories.map((category) => `<a href="#${escapeHtml(category.id)}">${escapeHtml(category.name)}</a>`).join("");
   el["menu-sections"].innerHTML = menuCategories.map((category) => {
     const illustration = category.illustration;
@@ -217,7 +301,7 @@ function renderMenu() {
     }
     const items = category.items.map((item) => {
       itemIndex.set(item.id, { item, category });
-      return `<li><button class="menu-item" type="button" data-item-id="${escapeHtml(item.id)}" aria-controls="product-preview" aria-expanded="false"><span>${escapeHtml(item.name)}</span><span class="item-cue" aria-hidden="true">View</span></button></li>`;
+      return `<li><button class="menu-item" type="button" data-item-id="${escapeHtml(item.id)}" aria-controls="product-preview" aria-expanded="false"><span>${escapeHtml(item.name)}</span><span class="item-cue" aria-hidden="true">${escapeHtml(t("View"))}</span></button></li>`;
     }).join("");
     return `<section class="menu-category" id="${escapeHtml(category.id)}" aria-labelledby="${escapeHtml(category.id)}-title"><div class="category-heading"><h2 id="${escapeHtml(category.id)}-title">${escapeHtml(category.name)}</h2>${illustrationMarkup}</div><ul class="item-grid">${items}</ul><p class="category-note">${escapeHtml(category.note)}</p></section>`;
   }).join("");
@@ -278,19 +362,19 @@ function renderProductOrdering(item) {
     el["offer-fieldset"].hidden = true;
     el["quote-fields"].hidden = true;
     el["add-to-cart"].disabled = true;
-    el["add-to-cart"].textContent = "Ordering option coming soon";
-    el["product-order-note"].textContent = "Please use the contact form below for this item.";
+    el["add-to-cart"].textContent = t("Ordering option coming soon");
+    el["product-order-note"].textContent = t("Please use the contact form below for this item.");
     return;
   }
   const quote = pricing.mode === "quote";
   el["offer-fieldset"].hidden = quote && pricing.offers.length === 1;
   el["quote-fields"].hidden = !quote;
   el["add-to-cart"].disabled = false;
-  el["add-to-cart"].textContent = quote ? "Add to quote request" : "Add to order bag";
+  el["add-to-cart"].textContent = quote ? t("Add to quote request") : t("Add to order bag");
   el["offer-options"].innerHTML = pricing.offers.map((offer, index) => {
     const savings = Number.isInteger(offer.compareAtCents) && Number.isInteger(offer.priceCents) ? Math.max(0, offer.compareAtCents - offer.priceCents) : 0;
-    const price = Number.isInteger(offer.priceCents) ? formatMoney(offer.priceCents) : "Custom quote";
-    return `<label class="offer-option"><input type="radio" name="offerId" value="${escapeHtml(offer.fullId)}" ${index ? "" : "checked"}><span><strong>${escapeHtml(offer.label)}</strong><small>${escapeHtml(price)}${savings ? ` · Save ${escapeHtml(formatMoney(savings))}` : ""}</small></span></label>`;
+    const price = Number.isInteger(offer.priceCents) ? formatMoney(offer.priceCents) : t("Custom quote");
+    return `<label class="offer-option"><input type="radio" name="offerId" value="${escapeHtml(offer.fullId)}" ${index ? "" : "checked"}><span><strong>${escapeHtml(offerLabel(offer))}</strong><small>${escapeHtml(price)}${savings ? ` · ${escapeHtml(t("Save {amount}", { amount: formatMoney(savings) }))}` : ""}</small></span></label>`;
   }).join("");
   renderMixBuilder();
   updateProductNote();
@@ -324,9 +408,9 @@ function renderMixBuilder() {
   const target = offer.units;
   const group = pricing.mixGroup;
   el["mix-builder-help"].textContent = group === "cookies"
-    ? `Choose exactly ${target} cookies across 2–3 flavors, with at least 2 of each flavor.`
-    : `Choose exactly ${target} items. The mixed-box price is calculated from the flavors selected.`;
-  el["mix-components"].innerHTML = mixItems.map(({ item }) => `<label class="mix-component"><span>${escapeHtml(item.name)}</span><input type="number" min="0" max="${target}" step="1" value="${item.id === activeProduct.id && !alwaysBuild ? target : 0}" data-mix-product="${escapeHtml(item.id)}" aria-label="${escapeHtml(item.name)} quantity"></label>`).join("");
+    ? t("Choose exactly {target} cookies across 2–3 flavors, with at least 2 of each flavor.", { target })
+    : t("Choose exactly {target} items. The mixed-box price is calculated from the flavors selected.", { target });
+  el["mix-components"].innerHTML = mixItems.map(({ item }) => `<label class="mix-component"><span>${escapeHtml(item.name)}</span><input type="number" min="0" max="${target}" step="1" value="${item.id === activeProduct.id && !alwaysBuild ? target : 0}" data-mix-product="${escapeHtml(item.id)}" aria-label="${escapeHtml(t("{name} quantity", { name: item.name }))}"></label>`).join("");
   updateMixTotal();
 }
 
@@ -341,15 +425,15 @@ function mixSelection(validate = false) {
   const cookieRulesFail = pricing.mixGroup === "cookies" && (components.length < 2 || components.length > 3 || components.some((component) => component.units < 2));
   if (validate && (total !== offer.units || cookieRulesFail)) {
     el["mix-total"].textContent = cookieRulesFail
-      ? `Choose 2–3 flavors with at least 2 cookies each. Current total: ${total} of ${offer.units}.`
-      : `Choose exactly ${offer.units} items. Current total: ${total}.`;
+      ? t("Choose 2–3 flavors with at least 2 cookies each. Current total: {total} of {target}.", { total, target: offer.units })
+      : t("Choose exactly {target} items. Current total: {total}.", { target: offer.units, total });
     el["mix-total"].classList.add("is-error");
     return false;
   }
   if (total !== offer.units) return { components, total, priceCents: null };
   const priceCents = priceComponents({ item: activeProduct, pricing, offer }, components);
   if (validate && !Number.isInteger(priceCents)) {
-    el["mix-total"].textContent = "Please review the flavor selection before adding this box.";
+    el["mix-total"].textContent = t("Please review the flavor selection before adding this box.");
     el["mix-total"].classList.add("is-error");
     return false;
   }
@@ -385,8 +469,8 @@ function updateMixTotal() {
   const result = mixSelection(false);
   el["mix-total"].classList.remove("is-error");
   el["mix-total"].textContent = result.total === offer.units
-    ? `${result.total} of ${offer.units} selected${Number.isInteger(result.priceCents) ? ` · ${formatMoney(result.priceCents)}` : ""}`
-    : `${result.total} of ${offer.units} selected`;
+    ? `${t("{total} of {target} selected", { total: result.total, target: offer.units })}${Number.isInteger(result.priceCents) ? ` · ${formatMoney(result.priceCents)}` : ""}`
+    : t("{total} of {target} selected", { total: result.total, target: offer.units });
 }
 
 function updateProductNote() {
@@ -398,17 +482,17 @@ function updateProductNote() {
   const savings = Number.isInteger(offer.compareAtCents) && Number.isInteger(offer.priceCents) ? Math.max(0, offer.compareAtCents - offer.priceCents) : 0;
   const firstBundle = pricing.offers.find((candidate) => candidate.units > 1 && candidate.compareAtCents > candidate.priceCents);
   el["product-order-note"].textContent = savings
-    ? `This option saves ${formatMoney(savings)} compared with individual pricing.`
+    ? t("This option saves {amount} compared with individual pricing.", { amount: formatMoney(savings) })
     : pricing.mode === "quote"
-      ? "Tell us what you need and we’ll confirm a custom price."
+      ? t("Tell us what you need and we’ll confirm a custom price.")
       : firstBundle
-        ? `${firstBundle.label} pricing saves ${formatMoney(firstBundle.compareAtCents - firstBundle.priceCents)}.`
+        ? t("{offer} pricing saves {amount}.", { offer: offerLabel(firstBundle), amount: formatMoney(firstBundle.compareAtCents - firstBundle.priceCents) })
         : pricing.mode === "builder"
-          ? "Starting price; the final assortment price depends on your flavor choices."
-          : "Your total updates in the order bag.";
+          ? t("Starting price; the final assortment price depends on your flavor choices.")
+          : t("Your total updates in the order bag.");
 }
 
-function activateItem(button, openOnClick = false) {
+function activateItem(button, openOnClick = false, updateHistory = true) {
   const record = itemIndex.get(button.dataset.itemId);
   if (!record) return;
   if (activeButton && activeButton !== button) {
@@ -423,11 +507,11 @@ function activateItem(button, openOnClick = false) {
   byId("preview-title").textContent = record.item.name;
   byId("preview-description").textContent = record.item.description;
   byId("preview-texture").textContent = record.item.texture;
-  byId("preview-allergens").textContent = record.item.allergens;
-  byId("preview-price").textContent = record.item.price;
+  byId("preview-allergens").innerHTML = `${escapeHtml(record.item.allergens)}${record.item.englishAllergens ? `<small class="allergen-original"><strong>${escapeHtml(t("English"))}:</strong> ${escapeHtml(record.item.englishAllergens)}</small>` : ""}`;
+  byId("preview-price").textContent = priceSummary(record.item);
   setImage(el["preview-image"], el["preview-placeholder"], record.item);
   renderProductOrdering(record.item);
-  history.replaceState(null, "", `#product-${record.item.id}`);
+  if (updateHistory) history.replaceState(null, "", `#product-${record.item.id}`);
   if (openOnClick) openPreview();
 }
 
@@ -487,15 +571,15 @@ function addActiveProduct() {
   const quote = pricing.mode === "quote" ? { servings: el["quote-servings"].value.trim(), occasion: el["quote-occasion"].value.trim(), details: el["quote-details"].value.trim() } : null;
   const components = mix?.components || null;
   if (editingLineId) cart = cart.filter((line) => line.lineId !== editingLineId);
-  if (cart.length >= 50) { el["product-order-note"].textContent = "Please send us a message for an order with more than 50 selections."; return; }
+  if (cart.length >= 50) { el["product-order-note"].textContent = t("Please send us a message for an order with more than 50 selections."); return; }
   const existing = cart.find((line) => line.productId === activeProduct.id && line.offerId === offerId && JSON.stringify(line.quote) === JSON.stringify(quote) && JSON.stringify(line.components) === JSON.stringify(components));
   if (existing) existing.quantity = Math.min(20, existing.quantity + quantity);
   else cart.push({ lineId: editingLineId || createKey(), productId: activeProduct.id, offerId, quantity, quote, components });
   editingLineId = null;
-  el["add-to-cart"].textContent = pricing.mode === "quote" ? "Add to quote request" : "Add to order bag";
+  el["add-to-cart"].textContent = pricing.mode === "quote" ? t("Add to quote request") : t("Add to order bag");
   saveCart();
   renderCart();
-  el["product-order-note"].textContent = `${activeProduct.name} added. Your bag has ${cartUnitCount()} item${cartUnitCount() === 1 ? "" : "s"}.`;
+  el["product-order-note"].textContent = t("{name} added. Your bag has {count} item(s).", { name: activeProduct.name, count: cartUnitCount() });
   el["product-view-bag"].hidden = false;
   el["cart-toggle"].classList.remove("cart-bump");
   requestAnimationFrame(() => el["cart-toggle"].classList.add("cart-bump"));
@@ -511,8 +595,8 @@ function linePriceCents(line, record) {
 
 function lineTitle(line, record) {
   if (!line.components) return record.item.name;
-  const groupNames = { cookies: "Mixed cookies", "brownies-blondies": "Mixed brownies & blondies", muffins: "Mixed jumbo muffins", tartlets: "Assorted tartlets" };
-  return `${groupNames[record.pricing.mixGroup] || "Mixed box"} — ${record.offer.units}-pack`;
+  const groupNames = { cookies: t("Mixed cookies"), "brownies-blondies": t("Mixed brownies & blondies"), muffins: t("Mixed jumbo muffins"), tartlets: t("Assorted tartlets") };
+  return `${groupNames[record.pricing.mixGroup] || t("Mixed box")} — ${t("{count}-pack", { count: record.offer.units })}`;
 }
 
 function cartMediaItems(line, record) {
@@ -593,20 +677,20 @@ function renderCart() {
   });
   const count = cartUnitCount();
   el["cart-count"].textContent = String(count);
-  el["cart-toggle"].setAttribute("aria-label", `Open order bag, ${count} item${count === 1 ? "" : "s"}`);
-  el["cart-count"].setAttribute("aria-label", `${count} item${count === 1 ? "" : "s"}`);
-  el["cart-empty-message"].textContent = cartExpiredNotice ? EXPIRED_CART_MESSAGE : DEFAULT_EMPTY_CART_MESSAGE;
+  el["cart-toggle"].setAttribute("aria-label", t("Open order bag, {count} item(s)", { count }));
+  el["cart-count"].setAttribute("aria-label", t("{count} item(s)", { count }));
+  el["cart-empty-message"].textContent = cartExpiredNotice ? t("Your saved order bag expired after 3 days of inactivity. Please choose your items again.") : t("Your order bag is waiting for something delicious.");
   el["cart-empty"].hidden = Boolean(cart.length);
   el["cart-content"].hidden = !cart.length;
   el["cart-items"].innerHTML = cart.map((line) => {
     const record = getRecord(line);
     const physicalUnits = (record.offer.units || 1) * line.quantity;
     const effectivePrice = linePriceCents(line, record);
-    const price = Number.isInteger(effectivePrice) ? formatMoney(effectivePrice * line.quantity) : "Custom quote";
+    const price = Number.isInteger(effectivePrice) ? formatMoney(effectivePrice * line.quantity) : t("Custom quote");
     const upgrade = upgradeFor(line, record);
     const mixedNames = componentText(line);
     const note = line.quote ? [line.quote.servings, line.quote.occasion, line.quote.details].filter(Boolean).join(" · ") : mixedNames || "";
-    return `<li class="cart-line" data-line-id="${escapeHtml(line.lineId)}"><div class="cart-line-product">${cartLineMedia(line, record)}<div class="cart-line-copy"><div class="cart-line-heading"><div><strong>${escapeHtml(lineTitle(line, record))}</strong><span>${escapeHtml(record.offer.label)} · ${physicalUnits} item${physicalUnits === 1 ? "" : "s"}</span></div><strong>${escapeHtml(price)}</strong></div>${note ? `<p class="cart-line-note">${escapeHtml(note)}</p>` : ""}</div></div>${upgrade ? `<button class="saving-prompt" type="button" data-upgrade="${escapeHtml(upgrade.offer.fullId)}">Switch to ${escapeHtml(upgrade.offer.label)} and save ${escapeHtml(formatMoney(upgrade.saving))}</button>` : ""}<div class="cart-line-actions"><span class="stepper"><button type="button" data-action="decrease" aria-label="Decrease ${escapeHtml(record.item.name)} quantity">−</button><output aria-live="polite">${line.quantity}</output><button type="button" data-action="increase" aria-label="Increase ${escapeHtml(record.item.name)} quantity">+</button></span><button class="text-button" type="button" data-action="edit">Edit</button><button class="text-button" type="button" data-action="remove">Remove</button></div></li>`;
+    return `<li class="cart-line" data-line-id="${escapeHtml(line.lineId)}"><div class="cart-line-product">${cartLineMedia(line, record)}<div class="cart-line-copy"><div class="cart-line-heading"><div><strong>${escapeHtml(lineTitle(line, record))}</strong><span>${escapeHtml(offerLabel(record.offer))} · ${escapeHtml(t("{count} item(s)", { count: physicalUnits }))}</span></div><strong>${escapeHtml(price)}</strong></div>${note ? `<p class="cart-line-note">${escapeHtml(note)}</p>` : ""}</div></div>${upgrade ? `<button class="saving-prompt" type="button" data-upgrade="${escapeHtml(upgrade.offer.fullId)}">${escapeHtml(t("Switch to {offer} and save {amount}", { offer: offerLabel(upgrade.offer), amount: formatMoney(upgrade.saving) }))}</button>` : ""}<div class="cart-line-actions"><span class="stepper"><button type="button" data-action="decrease" aria-label="${escapeHtml(t("Decrease {name} quantity", { name: record.item.name }))}">−</button><output aria-live="polite">${line.quantity}</output><button type="button" data-action="increase" aria-label="${escapeHtml(t("Increase {name} quantity", { name: record.item.name }))}">+</button></span><button class="text-button" type="button" data-action="edit">${escapeHtml(t("Edit"))}</button><button class="text-button" type="button" data-action="remove">${escapeHtml(t("Remove"))}</button></div></li>`;
   }).join("");
   el["cart-items"].querySelectorAll(".cart-thumb-image").forEach((image) => {
     image.addEventListener("error", () => { image.hidden = true; }, { once: true });
@@ -659,7 +743,7 @@ function editCartLine(line) {
     el["quote-details"].value = line.quote.details || "";
   }
   editingLineId = line.lineId;
-  el["add-to-cart"].textContent = "Update order bag";
+  el["add-to-cart"].textContent = t("Update order bag");
 }
 
 function renderReview() {
@@ -668,10 +752,10 @@ function renderReview() {
     const record = getRecord(line);
     const quantity = (record.offer.units || 1) * line.quantity;
     const effectivePrice = linePriceCents(line, record);
-    const price = Number.isInteger(effectivePrice) ? formatMoney(effectivePrice * line.quantity) : "Custom quote";
-    return `<li><span><strong>${escapeHtml(lineTitle(line, record))}</strong><small>${escapeHtml(record.offer.label)} · ${quantity} items</small>${line.components ? `<small>${escapeHtml(componentText(line))}</small>` : ""}</span><strong>${escapeHtml(price)}</strong></li>`;
+    const price = Number.isInteger(effectivePrice) ? formatMoney(effectivePrice * line.quantity) : t("Custom quote");
+    return `<li><span><strong>${escapeHtml(lineTitle(line, record))}</strong><small>${escapeHtml(offerLabel(record.offer))} · ${escapeHtml(t("{count} item(s)", { count: quantity }))}</small>${line.components ? `<small>${escapeHtml(componentText(line))}</small>` : ""}</span><strong>${escapeHtml(price)}</strong></li>`;
   }).join("")}</ul>`;
-  el["checkout-review-total"].innerHTML = sum.hasQuote ? `<span>Priced items estimate</span><strong>${formatMoney(sum.subtotal)} + custom quote</strong>` : `<span>Estimated subtotal</span><strong>${formatMoney(sum.subtotal)}</strong>`;
+  el["checkout-review-total"].innerHTML = sum.hasQuote ? `<span>${escapeHtml(t("Priced items estimate"))}</span><strong>${formatMoney(sum.subtotal)} + ${escapeHtml(t("custom quote"))}</strong>` : `<span>${escapeHtml(t("Estimated subtotal"))}</span><strong>${formatMoney(sum.subtotal)}</strong>`;
 }
 
 function showCheckoutStep(step) {
@@ -679,8 +763,8 @@ function showCheckoutStep(step) {
   el["checkout-review"].hidden = !review;
   el["order-form"].hidden = review;
   el["order-result"].hidden = true;
-  el["checkout-kicker"].textContent = review ? "Step 1 of 2" : "Step 2 of 2";
-  el["checkout-title"].textContent = review ? "Review your request" : "Contact & fulfillment";
+  el["checkout-kicker"].textContent = review ? t("Step 1 of 2") : t("Step 2 of 2");
+  el["checkout-title"].textContent = review ? t("Review your request") : t("Contact & fulfillment");
   requestAnimationFrame(() => (review ? el["checkout-next"] : el["order-form"].elements.name).focus());
 }
 
@@ -689,7 +773,7 @@ function openCheckout() {
   renderReview();
   const requestedDate = el["order-form"].elements.requestedDate;
   requestedDate.min = localDateAfter(hasQuoteItem() ? 7 : 3);
-  el["order-lead-time"].textContent = hasQuoteItem() ? "Custom dessert requests need at least 7 days’ notice. Availability is confirmed after review." : "Please allow at least 3 days for your order. Availability is confirmed after review.";
+  el["order-lead-time"].textContent = hasQuoteItem() ? t("Custom dessert requests need at least 7 days’ notice. Availability is confirmed after review.") : t("Please allow at least 3 days for your order. Availability is confirmed after review.");
   closeOverlay(el["cart-drawer"], false);
   showCheckoutStep("review");
   openOverlay(el["checkout-panel"], el["checkout-next"], el["cart-toggle"]);
@@ -707,7 +791,7 @@ function validateForm(form, summary) {
   if (form.checkValidity()) return true;
   const invalid = [...form.querySelectorAll(":invalid")];
   invalid.forEach((field) => field.setAttribute("aria-invalid", "true"));
-  summary.textContent = `Please review ${invalid.length} highlighted field${invalid.length === 1 ? "" : "s"}.`;
+  summary.textContent = t("Please review {count} highlighted field(s).", { count: invalid.length });
   summary.hidden = false;
   summary.focus();
   return false;
@@ -717,7 +801,7 @@ function quoteNotes() {
   return cart.map((line) => {
     const record = getRecord(line);
     if (!line.quote || !Object.values(line.quote).some(Boolean)) return null;
-    return `${record.item.name}: ${[line.quote.servings && `Servings/size: ${line.quote.servings}`, line.quote.occasion && `Occasion: ${line.quote.occasion}`, line.quote.details && `Ideas: ${line.quote.details}`].filter(Boolean).join("; ")}`;
+    return `${record.item.name}: ${[line.quote.servings && `${t("Servings/size")}: ${line.quote.servings}`, line.quote.occasion && `${t("Occasion")}: ${line.quote.occasion}`, line.quote.details && `${t("Ideas")}: ${line.quote.details}`].filter(Boolean).join("; ")}`;
   }).filter(Boolean);
 }
 
@@ -726,7 +810,7 @@ function orderPayload() {
   const type = form.get("fulfillmentType");
   const notes = [form.get("notes")?.trim(), ...quoteNotes()].filter(Boolean).join("\n\n");
   const payload = {
-    schemaVersion: 1, requestType: "order", idempotencyKey: orderIdempotencyKey ||= createKey(),
+    schemaVersion: 2, requestType: "order", locale: currentLocale, idempotencyKey: orderIdempotencyKey ||= createKey(),
     customer: { name: form.get("name").trim(), email: form.get("email").trim(), phone: form.get("phone").trim() },
     fulfillment: { type, requestedDate: form.get("requestedDate"), requestedWindow: form.get("requestedWindow").trim() },
     items: cart.map((line) => ({ offerId: line.offerId, quantity: line.quantity, ...(line.components ? { components: line.components } : {}) })),
@@ -743,9 +827,9 @@ function orderSummary(payload) {
   return ["Coco & Toffee order request", "", ...cart.map((line) => {
     const record = getRecord(line);
     const effectivePrice = linePriceCents(line, record);
-    const price = Number.isInteger(effectivePrice) ? formatMoney(effectivePrice * line.quantity) : "Custom quote";
-    return `- ${lineTitle(line, record)} — ${record.offer.label} × ${line.quantity}: ${price}${line.components ? `\n  Per box: ${componentText(line)}` : ""}`;
-  }), "", sum.hasQuote ? `Priced items estimate: ${formatMoney(sum.subtotal)} + custom quote` : `Estimated subtotal: ${formatMoney(sum.subtotal)}`, `Name: ${payload.customer.name}`, `Email: ${payload.customer.email}`, payload.customer.phone && `Phone: ${payload.customer.phone}`, `Requested date: ${payload.fulfillment.requestedDate}`, `Fulfillment: ${payload.fulfillment.type}`, payload.fulfillment.requestedWindow && `Preferred time: ${payload.fulfillment.requestedWindow}`, payload.fulfillment.address && `Delivery address: ${Object.values(payload.fulfillment.address).filter(Boolean).join(", ")}`, payload.notes && `Notes: ${payload.notes}`, "This is a request, not a confirmed order. Coco & Toffee will reply by email with availability, the final total and next steps. No payment has been collected."].filter(Boolean).join("\n");
+    const price = Number.isInteger(effectivePrice) ? formatMoney(effectivePrice * line.quantity) : t("Custom quote");
+    return `- ${lineTitle(line, record)} — ${offerLabel(record.offer)} × ${line.quantity}: ${price}${line.components ? `\n  ${t("Per box")}: ${componentText(line)}` : ""}`;
+  }), "", sum.hasQuote ? `${t("Priced items estimate")}: ${formatMoney(sum.subtotal)} + ${t("custom quote")}` : `${t("Estimated subtotal")}: ${formatMoney(sum.subtotal)}`, `${t("Name")}: ${payload.customer.name}`, `${t("Email")}: ${payload.customer.email}`, payload.customer.phone && `${t("Phone")}: ${payload.customer.phone}`, `${t("Requested date")}: ${payload.fulfillment.requestedDate}`, `${t("Fulfillment")}: ${t(payload.fulfillment.type === "delivery" ? "Delivery" : "Pickup")}`, payload.fulfillment.requestedWindow && `${t("Preferred time")}: ${payload.fulfillment.requestedWindow}`, payload.fulfillment.address && `${t("Delivery address")}: ${Object.values(payload.fulfillment.address).filter(Boolean).join(", ")}`, payload.notes && `${t("Notes")}: ${payload.notes}`, t("This is a request, not a confirmed order. Coco & Toffee will reply by email with availability, the final total and next steps. No payment has been collected.")].filter(Boolean).join("\n");
 }
 
 async function postJson(url, payload) {
@@ -755,13 +839,13 @@ async function postJson(url, payload) {
   try {
     response = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload), signal: controller.signal });
   } catch (error) {
-    if (error.name === "AbortError") throw new Error("Sending took too long. Please try again.");
+    if (error.name === "AbortError") throw new Error(t("Sending took too long. Please try again."));
     throw error;
   } finally { clearTimeout(timeout); }
   let data;
   try { data = await response.json(); } catch { data = null; }
   if (!response.ok || !data?.ok) {
-    const error = new Error(data?.error?.message || "We couldn’t send your request right now.");
+    const error = new Error(t("We couldn’t send your request right now."));
     Object.assign(error, { status: response.status, fields: data?.error?.fields, code: data?.error?.code });
     throw error;
   }
@@ -772,13 +856,13 @@ function showOrderResult(submitted, data, message) {
   el["checkout-review"].hidden = true;
   el["order-form"].hidden = true;
   el["order-result"].hidden = false;
-  el["checkout-kicker"].textContent = submitted ? "Request received" : "Copy required";
-  el["checkout-title"].textContent = submitted ? "Thank you" : "One more step";
-  el["order-result-title"].textContent = submitted ? "We received your request" : "Your request has not been sent";
+  el["checkout-kicker"].textContent = submitted ? t("Request received") : t("Copy required");
+  el["checkout-title"].textContent = submitted ? t("Thank you") : t("One more step");
+  el["order-result-title"].textContent = submitted ? t("We received your request") : t("Your request has not been sent");
   el["order-result-message"].textContent = message;
   el["order-summary-text"].textContent = lastOrderSummary;
   el["order-code"].hidden = !data?.publicCode;
-  el["order-code"].textContent = data?.publicCode ? `Request number: ${data.publicCode}` : "";
+  el["order-code"].textContent = data?.publicCode ? t("Request number: {code}", { code: data.publicCode }) : "";
   el["order-email-link"].hidden = submitted;
   el["order-sms-link"].hidden = submitted;
   if (!submitted) el["order-sms-link"].href = smsHref(lastOrderSummary);
@@ -791,7 +875,7 @@ async function submitOrder(event) {
   if (orderSubmitting) return;
   if (!validateForm(el["order-form"], el["order-error-summary"])) return;
   if (endpointFor("submit-order") && turnstileSiteKey() && !turnstile.order.token) {
-    el["order-submit-status"].textContent = "Please complete the security check before sending.";
+    el["order-submit-status"].textContent = t("Please complete the security check before sending.");
     return;
   }
   const payload = orderPayload();
@@ -799,24 +883,24 @@ async function submitOrder(event) {
   const endpoint = endpointFor("submit-order");
   orderSubmitting = true;
   el["order-submit"].disabled = true;
-  el["order-submit"].textContent = "Sending…";
+  el["order-submit"].textContent = t("Sending…");
   el["order-submit-status"].textContent = "";
   el["order-copy-draft"].hidden = true;
   el["order-email-draft"].hidden = true;
   el["order-sms-draft"].hidden = true;
   if (!endpoint) {
     el["order-email-link"].href = `mailto:jericholi334677@gmail.com?subject=${encodeURIComponent("Coco & Toffee order request")}&body=${encodeURIComponent(lastOrderSummary)}`;
-    showOrderResult(false, null, "Online sending is not connected yet. Copy the request details below and send them directly to Coco & Toffee.");
+    showOrderResult(false, null, t("Online sending is not connected yet. Copy the request details below and send them directly to Coco & Toffee."));
   } else {
     try {
       const data = await postJson(endpoint, payload);
       const message = data.status === "quote_requested"
-        ? "We’ll review the custom items, confirm availability and reply by email with your quote. No payment has been collected."
-        : "We’ll review availability and reply by email with the final total and next steps. No payment has been collected.";
+        ? t("We’ll review the custom items, confirm availability and reply by email with your quote. No payment has been collected.")
+        : t("We’ll review availability and reply by email with the final total and next steps. No payment has been collected.");
       showOrderResult(true, data, message);
       resetTurnstile("order");
     } catch (error) {
-      el["order-submit-status"].textContent = error.status === 429 ? "Too many attempts. Please wait a moment, then try again." : error.status === 409 ? "The menu or availability changed. Please reopen your bag and review it." : `${error.message} Your selections are saved; you can retry or copy the order details.`;
+      el["order-submit-status"].textContent = error.status === 429 ? t("Too many attempts. Please wait a moment, then try again.") : error.status === 409 ? t("The menu or availability changed. Please reopen your bag and review it.") : `${error.message} ${t("Your selections are saved; you can retry or copy the order details.")}`;
       if (error.fields) for (const [name, message] of Object.entries(error.fields)) { const field = el["order-form"].elements[name]; if (field) { field.setAttribute("aria-invalid", "true"); field.title = message; } }
       resetTurnstile("order");
       el["order-copy-draft"].hidden = false;
@@ -827,13 +911,13 @@ async function submitOrder(event) {
     }
   }
   el["order-submit"].disabled = false;
-  el["order-submit"].textContent = "Send order request";
+  el["order-submit"].textContent = t("Send order request");
   orderSubmitting = false;
 }
 
 async function copyText(text, status, success) {
   try { await navigator.clipboard.writeText(text); status.textContent = success; }
-  catch { status.textContent = "Copy was unavailable. Please select and copy the details manually."; }
+  catch { status.textContent = t("Copy was unavailable. Please select and copy the details manually."); }
 }
 
 function setContactStatus(message = "", state = "") {
@@ -844,11 +928,12 @@ function setContactStatus(message = "", state = "") {
   if (message) requestAnimationFrame(() => status.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "nearest" }));
 }
 
-function contactFormChanged() {
+function contactFormChanged(event) {
+  event?.target?.removeAttribute("aria-invalid");
   contactIdempotencyKey = null;
   saveDraft(el["contact-form"], "coco-contact-draft-v1");
   if (el["contact-status"].textContent) setContactStatus();
-  el["contact-submit"].textContent = "Send message";
+  el["contact-submit"].textContent = t("Send message");
   delete el["contact-submit"].dataset.sent;
 }
 
@@ -856,11 +941,17 @@ async function submitContact(event) {
   event.preventDefault();
   if (contactSubmitting) return;
   const form = el["contact-form"];
-  if (!form.checkValidity()) { form.reportValidity(); return; }
+  if (!form.checkValidity()) {
+    const invalid = [...form.querySelectorAll(":invalid")];
+    invalid.forEach((field) => field.setAttribute("aria-invalid", "true"));
+    setContactStatus(t("Please review {count} highlighted field(s).", { count: invalid.length }), "error");
+    invalid[0]?.focus();
+    return;
+  }
   const values = new FormData(form);
-  const payload = { schemaVersion: 1, requestType: "contact", idempotencyKey: contactIdempotencyKey ||= createKey(), customer: { name: values.get("name").trim(), email: values.get("email").trim(), phone: values.get("phone").trim() }, subject: values.get("subject"), message: values.get("message").trim(), submittedAt: new Date().toISOString() };
-  const contactMessage = `Coco & Toffee message\n\nName: ${payload.customer.name}\nEmail: ${payload.customer.email}\nPhone: ${payload.customer.phone}\nTopic: ${payload.subject}\n\n${payload.message}`;
-  if (endpointFor("contact") && turnstileSiteKey() && !turnstile.contact.token) { setContactStatus("Please complete the security check before sending.", "error"); return; }
+  const payload = { schemaVersion: 2, requestType: "contact", locale: currentLocale, idempotencyKey: contactIdempotencyKey ||= createKey(), customer: { name: values.get("name").trim(), email: values.get("email").trim(), phone: values.get("phone").trim() }, subject: values.get("subject"), message: values.get("message").trim(), submittedAt: new Date().toISOString() };
+  const contactMessage = `Coco & Toffee — ${t("Message")}\n\n${t("Name")}: ${payload.customer.name}\n${t("Email")}: ${payload.customer.email}\n${t("Phone")}: ${payload.customer.phone}\n${t("Topic")}: ${t(payload.subject)}\n\n${payload.message}`;
+  if (endpointFor("contact") && turnstileSiteKey() && !turnstile.contact.token) { setContactStatus(t("Please complete the security check before sending."), "error"); return; }
   if (turnstile.contact.token) payload.turnstileToken = turnstile.contact.token;
   const endpoint = endpointFor("contact");
   if (!endpoint) {
@@ -868,32 +959,32 @@ async function submitContact(event) {
     el["contact-email-link"].hidden = false;
     el["contact-sms-link"].href = smsHref(contactMessage);
     el["contact-sms-link"].hidden = false;
-    await copyText(contactMessage, el["contact-status"], "Online sending is not connected yet, so your message was copied. Paste it into your preferred email or message app.");
+    await copyText(contactMessage, el["contact-status"], t("Online sending is not connected yet, so your message was copied. Paste it into your preferred email or message app."));
     el["contact-status"].dataset.state = "info";
     return;
   }
   setContactStatus();
   delete el["contact-submit"].dataset.sent;
   el["contact-submit"].disabled = true;
-  el["contact-submit"].textContent = "Sending…";
+  el["contact-submit"].textContent = t("Sending…");
   contactSubmitting = true;
-  try { await postJson(endpoint, payload); form.reset(); clearDraft("coco-contact-draft-v1"); contactIdempotencyKey = null; el["contact-email-link"].hidden = true; el["contact-sms-link"].hidden = true; setContactStatus("Message sent! Thank you — we received your note and will reply using the email you provided.", "success"); el["contact-submit"].textContent = "Message sent ✓"; el["contact-submit"].dataset.sent = "true"; resetTurnstile("contact"); }
+  try { await postJson(endpoint, payload); form.reset(); clearDraft("coco-contact-draft-v1"); contactIdempotencyKey = null; el["contact-email-link"].hidden = true; el["contact-sms-link"].hidden = true; setContactStatus(t("Message sent! Thank you — we received your note and will reply using the email you provided."), "success"); el["contact-submit"].textContent = t("Message sent ✓"); el["contact-submit"].dataset.sent = "true"; resetTurnstile("contact"); }
   catch (error) {
-    setContactStatus(`${error.message} Your message is still here so you can retry or email it directly.`, "error");
+    setContactStatus(`${error.message} ${t("Your message is still here so you can retry or email it directly.")}`, "error");
     el["contact-email-link"].href = `mailto:jericholi334677@gmail.com?subject=${encodeURIComponent(payload.subject)}&body=${encodeURIComponent(`Name: ${payload.customer.name}\nEmail: ${payload.customer.email}\nPhone: ${payload.customer.phone}\n\n${payload.message}`)}`;
     el["contact-email-link"].hidden = false;
     el["contact-sms-link"].href = smsHref(contactMessage);
     el["contact-sms-link"].hidden = false;
     resetTurnstile("contact");
   }
-  finally { el["contact-submit"].disabled = false; if (el["contact-status"].dataset.state !== "success") el["contact-submit"].textContent = "Send message"; contactSubmitting = false; }
+  finally { el["contact-submit"].disabled = false; if (el["contact-status"].dataset.state !== "success") el["contact-submit"].textContent = t("Send message"); contactSubmitting = false; }
 }
 
 function focusable(panel) {
   return [...panel.querySelectorAll('a[href],button:not([disabled]),input:not([disabled]):not([type="hidden"]),textarea:not([disabled]),select:not([disabled]),[tabindex]:not([tabindex="-1"])')].filter((node) => !node.closest("[hidden]") && node.offsetParent !== null);
 }
 
-function attachInteractions() {
+function attachMenuInteractions() {
   document.querySelectorAll(".menu-item").forEach((button) => {
     button.addEventListener("pointerenter", (event) => { if (event.pointerType === "mouse") showProductPeek(button); });
     button.addEventListener("pointerleave", () => hideProductPeek(button));
@@ -901,6 +992,45 @@ function attachInteractions() {
     button.addEventListener("blur", () => hideProductPeek(button));
     button.addEventListener("click", () => { hideProductPeek(); activateItem(button, true); });
   });
+}
+
+async function changeLanguage(nextLocale) {
+  const requested = normalizeLocale(nextLocale);
+  if (requested === currentLocale && !translationLoadFailed) return;
+  const activeId = activeProduct?.id || location.hash.replace(/^#product-/, "");
+  const selector = document.querySelector("#language-select");
+  if (selector) selector.disabled = true;
+  let locale = requested;
+  let overlay = null;
+  translationLoadFailed = false;
+  try { overlay = await loadLocaleData(locale); }
+  catch (error) { console.error(error); locale = DEFAULT_LOCALE; translationLoadFailed = true; }
+  currentLocale = locale;
+  const localized = overlayCatalog(baseMenuData, overlay, currentLocale);
+  ({ menuCategories, assetVersion: menuAssetVersion, pricingCatalog } = localized);
+  try { localStorage.setItem(LANGUAGE_STORAGE_KEY, currentLocale); } catch { /* Language still works for this visit. */ }
+  const url = new URL(location.href);
+  url.searchParams.set("lang", shortLocale(currentLocale));
+  history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
+  activeButton = null;
+  activeProduct = null;
+  renderMenu();
+  attachMenuInteractions();
+  renderCart();
+  if (!el["checkout-review"].hidden) renderReview();
+  applyStaticTranslations();
+  const notice = document.querySelector("#translation-notice");
+  if (notice) {
+    notice.hidden = !translationLoadFailed;
+    notice.textContent = translationLoadFailed ? t("That translation could not load, so the menu is shown in English.") : "";
+  }
+  const button = activeId && document.querySelector(`[data-item-id="${CSS.escape(activeId)}"]`);
+  if (button) activateItem(button, false, false);
+  if (selector) { selector.disabled = false; selector.value = currentLocale; }
+}
+
+function attachInteractions() {
+  attachMenuInteractions();
   el["product-order-form"].addEventListener("submit", (event) => { event.preventDefault(); addActiveProduct(); });
   el["offer-options"].addEventListener("change", () => { renderMixBuilder(); updateProductNote(); });
   el["mix-toggle"].addEventListener("change", () => {
@@ -923,8 +1053,8 @@ function attachInteractions() {
   el["order-form"].addEventListener("change", (event) => { if (event.target.name === "fulfillmentType") toggleDelivery(); event.target.removeAttribute("aria-invalid"); orderIdempotencyKey = null; saveDraft(el["order-form"], "coco-order-draft-v1"); });
   el["order-form"].addEventListener("input", (event) => { event.target.removeAttribute("aria-invalid"); orderIdempotencyKey = null; saveDraft(el["order-form"], "coco-order-draft-v1"); });
   el["order-form"].addEventListener("submit", submitOrder);
-  el["copy-order"].addEventListener("click", () => copyText(lastOrderSummary, el["copy-order-status"], "Order details copied."));
-  el["order-copy-draft"].addEventListener("click", () => copyText(lastOrderSummary, el["order-submit-status"], "Order details copied."));
+  el["copy-order"].addEventListener("click", () => copyText(lastOrderSummary, el["copy-order-status"], t("Order details copied.")));
+  el["order-copy-draft"].addEventListener("click", () => copyText(lastOrderSummary, el["order-submit-status"], t("Order details copied.")));
   el["order-result-close"].addEventListener("click", () => closeOverlay(el["checkout-panel"]));
   el["contact-form"].addEventListener("submit", submitContact);
   el["contact-form"].addEventListener("input", contactFormChanged);
@@ -941,6 +1071,7 @@ function attachInteractions() {
   let compact = isCompactInteraction();
   window.addEventListener("resize", () => { hideProductPeek(); const next = isCompactInteraction(); if (next !== compact && activeOverlay === el["product-preview"]) closeOverlay(activeOverlay, false); compact = next; });
   window.addEventListener("scroll", () => hideProductPeek(), { passive: true });
+  document.querySelector("#language-select")?.addEventListener("change", (event) => changeLanguage(event.target.value));
 }
 
 function restoreProductFromHash() {
@@ -950,6 +1081,7 @@ function restoreProductFromHash() {
 }
 
 renderMenu();
+applyStaticTranslations();
 for (const panel of [el["product-preview"], el["cart-drawer"], el["checkout-panel"]]) panel.inert = true;
 renderCart();
 attachInteractions();
@@ -958,3 +1090,8 @@ restoreDraft(el["contact-form"], "coco-contact-draft-v1");
 toggleDelivery();
 initTurnstile();
 restoreProductFromHash();
+const translationNotice = document.querySelector("#translation-notice");
+if (translationNotice && translationLoadFailed) {
+  translationNotice.hidden = false;
+  translationNotice.textContent = t("That translation could not load, so the menu is shown in English.");
+}

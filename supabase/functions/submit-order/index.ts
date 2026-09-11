@@ -4,7 +4,7 @@ import { failure, json, readJson } from "../_shared/http.ts";
 import { normalizeCart, normalizeFulfillment, ValidationError } from "../_shared/order-validation.mjs";
 import { allowRequest } from "../_shared/rate-limit.ts";
 import { verifyTurnstile } from "../_shared/turnstile.ts";
-import { cleanText, clientIp, sha256, stableStringify, validEmail, validIdempotencyKey } from "../_shared/validation.ts";
+import { cleanText, clientIp, normalizeCustomerLocale, sha256, stableStringify, validEmail, validIdempotencyKey } from "../_shared/validation.ts";
 
 Deno.serve(async (request) => {
   if (request.method === "OPTIONS") return optionsResponse(request);
@@ -20,10 +20,11 @@ Deno.serve(async (request) => {
     const notes = cleanText(body.notes, 2_000);
     const idempotencyKey = cleanText(body.idempotencyKey, 128);
     const token = cleanText(body.turnstileToken, 2_048);
+    const locale = normalizeCustomerLocale(body.locale);
     const items = Array.isArray(body.items) ? body.items : [];
     const fields: Record<string, string> = {};
 
-    if (body.schemaVersion !== 1 || body.requestType !== "order") fields.request = "Unsupported request format";
+    if (![1, 2].includes(body.schemaVersion) || body.requestType !== "order") fields.request = "Unsupported request format";
     if (name.length < 2) fields.name = "Enter your name";
     if (!validEmail(email)) fields.email = "Enter a valid email";
     if (!validIdempotencyKey(idempotencyKey)) fields.idempotencyKey = "Start a new submission and try again";
@@ -42,7 +43,7 @@ Deno.serve(async (request) => {
     if (!await allowRequest(client, request, "submit-order", email)) {
       return failure(request, 429, "RATE_LIMITED", "Too many attempts. Please wait and try again");
     }
-    const requestHash = await sha256(stableStringify({ customer: { name, email, phone }, items, fulfillment: body.fulfillment, allergyAcknowledged: body.allergyAcknowledged, notes }));
+    const requestHash = await sha256(stableStringify({ customer: { name, email, phone }, items, fulfillment: body.fulfillment, allergyAcknowledged: body.allergyAcknowledged, notes, ...(body.schemaVersion === 2 ? { locale } : {}) }));
     const { data: existing, error: lookupError } = await client.from("orders")
       .select("id,public_code,status,request_hash").eq("idempotency_key", idempotencyKey).maybeSingle();
     if (lookupError) throw lookupError;
@@ -62,7 +63,7 @@ Deno.serve(async (request) => {
     const normalizedItems = normalizeCart(items, products || [], offers || []);
     const hasQuote = normalizedItems.some((item: { amountCents: number | null }) => item.amountCents === null);
     const fulfillment = normalizeFulfillment(body.fulfillment, body.allergyAcknowledged, hasQuote);
-    const { data, error } = await client.rpc("create_order_request", {
+    const { data, error } = await client.rpc(body.schemaVersion === 2 ? "create_order_request_v2" : "create_order_request", {
       p_idempotency_key: idempotencyKey,
       p_customer_name: name,
       p_customer_email: email,
@@ -71,6 +72,7 @@ Deno.serve(async (request) => {
       p_items: normalizedItems,
       p_notes: notes,
       p_request_hash: requestHash,
+      ...(body.schemaVersion === 2 ? { p_customer_locale: locale } : {}),
     });
     if (error) {
       if (error.code === "23514") return failure(request, 409, "CONFLICT", "This submission key was already used for different content");

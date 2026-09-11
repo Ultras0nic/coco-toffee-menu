@@ -90,7 +90,7 @@ export async function sendQueuedNotification(client: SupabaseClient, notificatio
       ? `<p><a href="${escapeHtml(order.checkout_url)}">Pay securely with Stripe</a></p><p>This payment link expires ${escapeHtml(order.checkout_expires_at || "within 24 hours")}. An unpaid link does not reserve the production date.</p>`
       : "";
     const ownerDetails = ownerMessage
-      ? `<p><strong>Customer:</strong> ${escapeHtml(order.customer_name)} · ${escapeHtml(order.customer_email)} · ${escapeHtml(order.customer_phone || "No phone")}</p><p><a href="${escapeHtml(ownerInboxUrl())}">Open the private owner inbox</a></p>`
+      ? `<p><strong>Customer:</strong> ${escapeHtml(order.customer_name)} · ${escapeHtml(order.customer_email)} · ${escapeHtml(order.customer_phone || "No phone")}<br><strong>Customer language:</strong> ${escapeHtml(order.customer_locale || "en")}</p><p><a href="${escapeHtml(ownerInboxUrl())}">Open the private owner inbox</a></p>`
       : "";
     html = `<h1>${escapeHtml(subject)}</h1><p><strong>Reference:</strong> ${escapeHtml(order.public_code)}<br><strong>Status:</strong> ${escapeHtml(orderStatusLabel(order.status))}</p>${ownerDetails}<p><strong>Requested date:</strong> ${requestedDate}<br><strong>Preferred time:</strong> ${requestedTime}<br><strong>Fulfillment:</strong> ${escapeHtml(fulfillment.type || "Not provided")}</p>${approvedSchedule}<ul>${lines}</ul>${priceSummary}${note}${payment}<p>${escapeHtml(orderNotice())}</p><p><small>${escapeHtml(cancellationTerms())}</small></p>`;
   } else {
@@ -99,7 +99,7 @@ export async function sendQueuedNotification(client: SupabaseClient, notificatio
     const ownerMessage = String(notification.template).startsWith("owner_");
     subject = ownerMessage ? `New inquiry ${message.public_code}` : `We received your Coco & Toffee inquiry ${message.public_code}`;
     html = ownerMessage
-      ? `<h1>${escapeHtml(subject)}</h1><p>From: ${escapeHtml(message.customer_name)} &lt;${escapeHtml(message.customer_email)}&gt; · ${escapeHtml(message.customer_phone || "No phone")}</p><p><strong>Topic:</strong> ${escapeHtml(message.subject || "General question")}</p><p>${escapeHtml(message.message)}</p><p><a href="${escapeHtml(ownerInboxUrl())}">Open the private owner inbox</a></p>`
+      ? `<h1>${escapeHtml(subject)}</h1><p>From: ${escapeHtml(message.customer_name)} &lt;${escapeHtml(message.customer_email)}&gt; · ${escapeHtml(message.customer_phone || "No phone")}<br><strong>Customer language:</strong> ${escapeHtml(message.customer_locale || "en")}</p><p><strong>Topic:</strong> ${escapeHtml(message.subject || "General question")}</p><p>${escapeHtml(message.message)}</p><p><a href="${escapeHtml(ownerInboxUrl())}">Open the private owner inbox</a></p>`
       : `<h1>${escapeHtml(subject)}</h1><p>Thank you, ${escapeHtml(message.customer_name)}. We received your message and normally reply within 24 hours.</p><p><strong>Reference:</strong> ${escapeHtml(message.public_code)}</p>`;
   }
 

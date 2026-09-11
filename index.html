@@ -14,6 +14,11 @@
       content="Explore the Coco & Toffee bakery menu. Hover on desktop or tap on mobile to view product details."
     />
     <title>Coco & Toffee | Menu</title>
+    <link rel="alternate" hreflang="en" href="https://ultras0nic.github.io/coco-toffee-menu/?lang=en" />
+    <link rel="alternate" hreflang="pt-PT" href="https://ultras0nic.github.io/coco-toffee-menu/?lang=pt" />
+    <link rel="alternate" hreflang="es-ES" href="https://ultras0nic.github.io/coco-toffee-menu/?lang=es" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://ultras0nic.github.io/coco-toffee-menu/?lang=zh" />
+    <link rel="alternate" hreflang="x-default" href="https://ultras0nic.github.io/coco-toffee-menu/" />
     <link rel="icon" href="./assets/brand/coco-toffee-logo.jpg" type="image/jpeg" />
     <link rel="stylesheet" href="./styles.css" />
     <script type="module" src="./app.js"></script>
@@ -23,7 +28,18 @@
 
     <header class="menu-header page-shell">
       <div>
-        <p class="eyebrow">Coco & Toffee Bakery & Co.</p>
+        <div class="header-utility">
+          <p class="eyebrow">Coco & Toffee Bakery & Co.</p>
+          <label class="language-control" for="language-select">
+            <span>Language</span>
+            <select id="language-select" name="language" aria-label="Language">
+              <option value="en">English</option>
+              <option value="pt-PT">Português</option>
+              <option value="es-ES">Español</option>
+              <option value="zh-Hans">简体中文</option>
+            </select>
+          </label>
+        </div>
         <h1>Menu</h1>
         <p class="header-note">
           Hover for a quick preview and click for full details. Tap to discover on mobile.
@@ -194,7 +210,9 @@
           <h2 id="cart-title">Order bag</h2>
         </div>
         <button id="cart-close" class="panel-close" type="button" aria-label="Close order bag">Close</button>
-      </header>
+    </header>
+    <p id="language-status" class="visually-hidden" role="status" aria-live="polite"></p>
+    <p id="translation-notice" class="translation-notice page-shell" role="status" hidden></p>
       <div id="cart-empty" class="cart-empty">
         <p id="cart-empty-message" aria-live="polite">Your order bag is waiting for something delicious.</p>
         <button id="cart-browse" class="secondary-button" type="button">Browse the menu</button>

@@ -163,6 +163,7 @@ function renderOrder(order) {
       <span><strong>Customer:</strong> ${escapeHtml(order.customer_name)}</span>
       <span><strong>Email:</strong> <a href="mailto:${escapeHtml(order.customer_email)}">${escapeHtml(order.customer_email)}</a></span>
       <span><strong>Phone:</strong> ${escapeHtml(order.customer_phone || "Not provided")}</span>
+      <span><strong>Customer language:</strong> ${escapeHtml(order.customer_locale || "en")}</span>
       <span><strong>Received:</strong> ${escapeHtml(new Date(order.created_at).toLocaleString())}</span>
       <span><strong>Fixed-item subtotal:</strong> ${money(order.subtotal_cents)}</span>
       <span><strong>Current total:</strong> ${money(order.total_cents)}</span>
@@ -195,7 +196,7 @@ function renderOrder(order) {
 function renderContact(message) {
   return `<article class="order-card" data-message-id="${escapeHtml(message.id)}">
     <div class="order-heading"><h2>Inquiry ${escapeHtml(message.public_code)}</h2><span class="status-pill">${escapeHtml(message.status)}</span></div>
-    <div class="order-meta"><span><strong>From:</strong> ${escapeHtml(message.customer_name)}</span><span><strong>Email:</strong> <a href="mailto:${escapeHtml(message.customer_email)}">${escapeHtml(message.customer_email)}</a></span><span><strong>Phone:</strong> ${escapeHtml(message.customer_phone || "Not provided")}</span><span><strong>Received:</strong> ${escapeHtml(new Date(message.created_at).toLocaleString())}</span></div>
+    <div class="order-meta"><span><strong>From:</strong> ${escapeHtml(message.customer_name)}</span><span><strong>Email:</strong> <a href="mailto:${escapeHtml(message.customer_email)}">${escapeHtml(message.customer_email)}</a></span><span><strong>Phone:</strong> ${escapeHtml(message.customer_phone || "Not provided")}</span><span><strong>Customer language:</strong> ${escapeHtml(message.customer_locale || "en")}</span><span><strong>Received:</strong> ${escapeHtml(new Date(message.created_at).toLocaleString())}</span></div>
     <p><strong>Topic:</strong> ${escapeHtml(message.subject || "General question")}</p><p class="message-body">${escapeHtml(message.message)}</p>
     <div class="actions"><a class="button-link" href="mailto:${escapeHtml(message.customer_email)}?subject=${encodeURIComponent(`Re: Coco & Toffee inquiry ${message.public_code}`)}">Reply by email</a><button data-contact-status="reviewed">Mark reviewed</button><button class="secondary" data-contact-status="closed">Close</button><button class="danger" data-contact-status="spam">Spam</button></div>
   </article>`;

@@ -7,7 +7,7 @@ import test from "node:test";
 const root = new URL("../", import.meta.url);
 
 test("browser entry points parse successfully", () => {
-  for (const file of ["app.js", "cart-storage.mjs", "owner.js", "owner-config.js"]) {
+  for (const file of ["app.js", "cart-storage.mjs", "i18n.mjs", "owner.js", "owner-config.js"]) {
     const result = spawnSync(process.execPath, ["--check", fileURLToPath(new URL(file, root))], { encoding: "utf8" });
     assert.equal(result.status, 0, `${file}: ${result.stderr}`);
   }
@@ -94,7 +94,9 @@ test("contact submissions show persistent, prominent success feedback", async ()
 
 test("private setup and secrets are not inside public content folders", async () => {
   const files = await readdir(new URL("data/", root));
-  assert.deepEqual(files, ["menu.json"]);
+  assert.deepEqual(files.sort(), ["locales", "menu.json"]);
+  const localeFiles = await readdir(new URL("data/locales/", root));
+  assert.deepEqual(localeFiles.sort(), ["es-ES.json", "pt-PT.json", "zh-Hans.json"]);
   const menu = await readFile(new URL("data/menu.json", root), "utf8");
   assert.doesNotMatch(menu, /PRIVATE_QUOTE_GUIDE|fullCostCents|private_quote_start|service_role|STRIPE_SECRET/);
 });

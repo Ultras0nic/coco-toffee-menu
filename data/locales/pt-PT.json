@@ -1,0 +1,190 @@
+{
+  "schemaVersion": 1,
+  "locale": "pt-PT",
+  "categories": {
+    "cookies": { "name": "Cookies", "note": "Cookies grandes de pastelaria. A disponibilidade sazonal pode variar." },
+    "brownies-blondies": { "name": "Brownies e Blondies", "note": "Disponíveis em quadrados grandes de pastelaria ou em porções mais pequenas." },
+    "muffins-cinnamon-rolls": { "name": "Muffins e Rolos de Canela", "note": "Muffins jumbo de pastelaria e rolos de canela individuais grandes." },
+    "savory-baking": { "name": "Pastelaria Salgada", "note": "Pastéis salgados individuais disponíveis por encomenda personalizada." },
+    "tartlets": { "name": "Tarteletes", "note": "Disponíveis em sortido ou por sabor." },
+    "tiramisu-flans": { "name": "Tiramisù e Pudins Flan", "note": "As sobremesas grandes podem ser porcionadas para facilitar o serviço." },
+    "cakes-cupcakes": { "name": "Bolos e Cupcakes", "note": "Bolos inteiros disponíveis por encomenda e com opção de corte antecipado. Outros sabores, recheios e decorações de cupcakes estão disponíveis mediante pedido." },
+    "portuguese-pastries": { "name": "Pastelaria Portuguesa", "note": "Pastelaria tradicional produzida em pequenos lotes." }
+  },
+  "products": {
+    "coco-double-chocolate": {
+      "name": "Cookie COCO de Chocolate Duplo com Oreo",
+      "description": "Cacau escuro e Oreo finamente triturado criam uma base intensa de cookies & cream, terminada com pedaços de Oreo, chocolate branco cremoso e chocolate meio amargo derretido.",
+      "texture": "Espesso e denso, com centro semelhante a brownie e pedaços crocantes de bolacha.",
+      "allergens": "Contém trigo, leite, ovo e soja. Produzido numa cozinha doméstica onde também são manuseados amendoins e frutos de casca rija."
+    },
+    "toffee-brown-butter-espresso": {
+      "name": "Cookie TOFFEE Crocante de Manteiga Tostada e Espresso",
+      "description": "Manteiga tostada de sabor a noz e espresso juntam-se a chocolate meio amargo e chocolate de leite, com pedaços generosos de toffee caramelizado, crocante e caseiro.",
+      "texture": "Espesso e mastigável, com chocolate derretido e toffee crocante em cada dentada.",
+      "allergens": "Contém trigo, leite, ovo e soja. Contém cafeína. Produzido numa cozinha doméstica onde também são manuseados amendoins e frutos de casca rija."
+    },
+    "classic-chocolate-chip": {
+      "name": "Cookie Clássico com Pepitas de Chocolate",
+      "description": "Um cookie amanteigado, rico em baunilha e repleto de chocolate meio amargo e chocolate de leite, com sabor intenso sem ser demasiado doce.",
+      "texture": "Espesso e mastigável, com bordos dourados, centro macio e chocolate derretido.",
+      "allergens": "Contém trigo, leite, ovo e soja. Produzido numa cozinha doméstica onde também são manuseados amendoins e frutos de casca rija."
+    },
+    "cranberry-white-chocolate-oatmeal": {
+      "name": "Cookie Sazonal de Aveia com Arandos e Chocolate Branco",
+      "description": "Flocos de aveia tradicionais, arandos secos ácidos e chocolate branco ganham frescura com raspa de laranja e canela aromática.",
+      "texture": "Espesso e mastigável, com bordos crocantes, centro macio e textura rústica de aveia.",
+      "allergens": "Contém trigo, leite, ovo, soja e aveia. Produzido numa cozinha doméstica onde também são manuseados amendoins e frutos de casca rija."
+    },
+    "white-chocolate-macadamia": {
+      "name": "Cookie de Chocolate Branco e Macadâmia",
+      "description": "Chocolate branco cremoso e pedaços de macadâmia torrada preenchem um rico cookie de baunilha, criado para uma experiência premium de pastelaria.",
+      "texture": "Espesso e generoso, com centro macio, bordos dourados crocantes e frutos secos torrados.",
+      "allergens": "Contém trigo, leite, ovo, soja e frutos de casca rija (macadâmia). Produzido numa cozinha doméstica onde também são manuseados amendoins e outros frutos de casca rija."
+    },
+    "smores-cookie": {
+      "name": "Cookie de S’mores",
+      "description": "Massa com sabor a bolacha Graham envolve um centro cremoso de marshmallow, chocolate de leite e meio amargo, pedaços visíveis de bolacha e uma base Graham tostada.",
+      "texture": "Espesso e macio no centro, com marshmallow cremoso, chocolate derretido e apontamentos crocantes de bolacha Graham.",
+      "allergens": "Contém trigo, leite, ovo e soja. Produzido numa cozinha doméstica onde também são manuseados amendoins e frutos de casca rija."
+    },
+    "peanut-butter-blossom": {
+      "name": "Cookie de Manteiga de Amendoim com Chocolate",
+      "description": "Um cookie de sabor intenso a manteiga de amendoim, com uma leve cobertura de açúcar e um centro decorativo de chocolate moldado.",
+      "texture": "Espesso, macio e mastigável, com exterior ligeiramente estaladiço.",
+      "allergens": "Contém trigo, leite, ovo, amendoins e soja. Produzido numa cozinha doméstica onde também são manuseados frutos de casca rija."
+    },
+    "classic-fudge-brownie": {
+      "name": "Brownie Clássico de Chocolate Intenso",
+      "description": "Chocolate negro, cacau de processo holandês, um toque de café e pepitas de chocolate meio amargo criam um brownie profundamente achocolatado.",
+      "texture": "Denso e cremoso, com bordos mastigáveis e uma superfície brilhante.",
+      "allergens": "Contém trigo, leite, ovo e soja. Contém cafeína. Produzido numa cozinha doméstica onde também são manuseados amendoins e frutos de casca rija."
+    },
+    "funfetti-blondie": {
+      "name": "Blondie com Confettis Coloridos",
+      "description": "Um blondie com sabor a bolo de aniversário e baunilha, feito com chocolate branco, pepitas de chocolate branco e confettis coloridos.",
+      "texture": "Espesso, mastigável, amanteigado e macio, com um miolo rico de chocolate branco.",
+      "allergens": "Contém trigo, leite, ovo e soja. Produzido numa cozinha doméstica onde também são manuseados amendoins e frutos de casca rija."
+    },
+    "chocolate-chip-jumbo-muffin": {
+      "name": "Muffin Jumbo com Pepitas de Chocolate",
+      "description": "Um grande muffin de baunilha ao estilo de pastelaria, com chocolate por todo o miolo e uma cúpula alta e dourada.",
+      "texture": "Húmido e amanteigado, com miolo tenro e pepitas de chocolate derretidas.",
+      "allergens": "Contém trigo, leite, ovo e soja. Produzido numa cozinha doméstica onde também são manuseados amendoins e frutos de casca rija."
+    },
+    "blueberry-jumbo-muffin": {
+      "name": "Muffin Jumbo de Mirtilo",
+      "description": "Mirtilos frescos preenchem um muffin de baunilha delicadamente perfumado com limão e terminado com uma cobertura brilhante de açúcar grosso.",
+      "texture": "Alto e tenro, com mirtilos inteiros, miolo húmido e uma cobertura ligeiramente crocante.",
+      "allergens": "Contém trigo, leite e ovo. Produzido numa cozinha doméstica onde também são manuseados amendoins, frutos de casca rija e soja."
+    },
+    "coffee-cake-jumbo-muffin": {
+      "name": "Muffin Jumbo com Streusel de Canela",
+      "description": "Um muffin de natas azedas com uma camada de canela e uma cobertura generosa de streusel amanteigado ao estilo de pastelaria.",
+      "texture": "Húmido e tenro, com uma cobertura de migalhas abundante e crocante.",
+      "allergens": "Contém trigo, leite e ovo. Produzido numa cozinha doméstica onde também são manuseados amendoins, frutos de casca rija e soja."
+    },
+    "jumbo-cinnamon-roll": {
+      "name": "Rolo de Canela Jumbo com Cobertura de Baunilha",
+      "description": "Um grande rolo individual com uma espiral definida de canela e açúcar mascavado, coberto generosamente com creme de manteiga de baunilha.",
+      "texture": "Alto, macio e fofo, com centro húmido e cremoso e bordos ligeiramente caramelizados.",
+      "allergens": "Contém trigo, leite e ovo. Produzido numa cozinha doméstica onde também são manuseados amendoins, frutos de casca rija e soja."
+    },
+    "bacon-gruyere-onion-quiche": {
+      "name": "Quiche de Bacon, Gruyère e Cebola Caramelizada",
+      "description": "Uma quiche individual de inspiração francesa, com bacon fumado, cebola caramelizada doce, Gruyère e um recheio sedoso e temperado de ovo e natas.",
+      "texture": "Massa fina, amanteigada e crocante, com recheio cremoso que mantém um corte limpo.",
+      "allergens": "Contém trigo, leite e ovo. Produzido numa cozinha doméstica onde também são manuseados amendoins, frutos de casca rija e soja."
+    },
+    "assorted-individual-tartlets": {
+      "name": "Tarteletes Individuais Sortidas",
+      "description": "Um sortido de tarteletes de creme pasteleiro de baunilha e frutos vermelhos frescos, creme de limão com creme de baunilha e chocolate com avelã, em bases crocantes de pâte sucrée de amêndoa.",
+      "texture": "Bases finas e crocantes, com recheios sedosos e acabamentos distintos de fruta, citrinos e chocolate.",
+      "allergens": "O sortido contém trigo, leite, ovo, soja e frutos de casca rija (amêndoa e avelã). Produzido numa cozinha doméstica onde também são manuseados amendoins."
+    },
+    "vanilla-custard-fresh-berry-tartlet": {
+      "name": "Tartelete de Creme de Baunilha e Frutos Vermelhos Frescos",
+      "description": "Uma base crocante de pâte sucrée de amêndoa, recheada com creme pasteleiro sedoso de baunilha, coberta generosamente com frutos vermelhos frescos e terminada com um brilho leve.",
+      "texture": "Massa crocante, creme suave e frutos vermelhos frescos e sumarentos.",
+      "allergens": "Contém trigo, leite, ovo e frutos de casca rija (amêndoa). Produzido numa cozinha doméstica onde também são manuseados amendoins, outros frutos de casca rija e soja."
+    },
+    "lemon-cream-tartlet": {
+      "name": "Tartelete de Creme de Limão com Creme de Baunilha",
+      "description": "Uma base crocante de pâte sucrée de amêndoa, recheada com creme vivo de limão e terminada com um anel elegante de creme estabilizado de mascarpone e baunilha.",
+      "texture": "Massa crocante com recheio sedoso de limão e apontamentos leves e cremosos de baunilha.",
+      "allergens": "Contém trigo, leite, ovo e frutos de casca rija (amêndoa). Produzido numa cozinha doméstica onde também são manuseados amendoins, outros frutos de casca rija e soja."
+    },
+    "chocolate-hazelnut-tartlet": {
+      "name": "Tartelete de Chocolate e Avelã",
+      "description": "Uma base crocante de pâte sucrée de amêndoa, com ganache sedosa de chocolate negro, ganache batida leve de avelã e avelãs torradas.",
+      "texture": "Massa crocante, chocolate rico e suave e creme leve de avelã.",
+      "allergens": "Contém trigo, leite, ovo, soja e frutos de casca rija (amêndoa e avelã). Produzido numa cozinha doméstica onde também são manuseados amendoins."
+    },
+    "classic-tiramisu": {
+      "name": "Tiramisù Clássico",
+      "description": "Duas camadas de palitos la reine embebidos em espresso e creme generoso de mascarpone, com aroma subtil de baunilha e rum e acabamento de chocolate.",
+      "texture": "Leve e sedoso, com palitos totalmente macios, nunca encharcados, e fatias limpas ao estilo de pastelaria.",
+      "allergens": "Contém trigo, leite e ovo. Contém cafeína e álcool. Produzido numa cozinha doméstica onde também são manuseados amendoins, frutos de casca rija e soja."
+    },
+    "traditional-portuguese-flan": {
+      "name": "Pudim Flan Tradicional Português",
+      "description": "Um pudim em forma de coroa, com cobertura brilhante de caramelo âmbar-escuro, molho abundante, sabor rico a ovo e leite e aroma subtil de limão e baunilha.",
+      "texture": "Suave e sedoso, firme o suficiente para desenformar e cortar sem ficar denso ou borrachudo.",
+      "allergens": "Contém leite e ovo. Produzido numa cozinha doméstica onde também são manuseados trigo, amendoins, frutos de casca rija e soja."
+    },
+    "chocoflan": {
+      "name": "Chocoflan — Bolo de Chocolate e Flan",
+      "description": "Pudim flan de inspiração portuguesa com cobertura brilhante de caramelo, sobre uma camada húmida de bolo de chocolate negro, num equilíbrio entre caramelo e cacau.",
+      "texture": "Pudim sedoso e cremoso, com camadas bem definidas e base húmida de bolo de chocolate.",
+      "allergens": "Contém trigo, leite e ovo. Contém cafeína. Produzido numa cozinha doméstica onde também são manuseados amendoins, frutos de casca rija e soja."
+    },
+    "new-york-style-cheesecake": {
+      "name": "Cheesecake Clássico ao Estilo de Nova Iorque",
+      "description": "Um cheesecake rico de baunilha, com acidez equilibrada de queijo creme e uma base fina de bolacha Graham.",
+      "texture": "Denso, cremoso e suave, com fatias limpas depois de refrigerado e acabamento cremoso à temperatura de serviço.",
+      "allergens": "Contém trigo, leite e ovo. Produzido numa cozinha doméstica onde também são manuseados amendoins, frutos de casca rija e soja."
+    },
+    "four-layer-chocolate-cake": {
+      "name": "Bolo Clássico de Chocolate com 4 Camadas",
+      "description": "Quatro camadas de bolo escuro e intensamente achocolatado, com creme de manteiga de ganache de chocolate sedoso e decoração cuidada de pastelaria.",
+      "texture": "Alto, húmido e tenro, com cobertura suave e rica e estrutura suficiente para fatias limpas.",
+      "allergens": "Contém trigo, leite e ovo. Contém cafeína. Produzido numa cozinha doméstica onde também são manuseados amendoins, frutos de casca rija e soja."
+    },
+    "carrot-cake": {
+      "name": "Bolo de Cenoura com Cobertura de Queijo Creme, Baunilha e Amêndoa",
+      "description": "Bolo de quatro camadas rico em cenoura, aromatizado com canela, gengibre, cardamomo e noz-moscada, terminado com cobertura fresca de queijo creme, baunilha e amêndoa. Não são adicionados frutos secos nem passas ao bolo.",
+      "texture": "Macio, muito húmido e tenro, sem ficar oleoso ou gomoso.",
+      "allergens": "Contém trigo, leite e ovo. A cobertura inclui extrato de amêndoa. Produzido numa cozinha doméstica onde também são manuseados amendoins, frutos de casca rija e soja."
+    },
+    "classic-vanilla-cupcakes": {
+      "name": "Cupcakes Clássicos de Baunilha",
+      "description": "Baunilha e sementes de baunilha dão sabor pleno a um cupcake terminado com uma espiral alta de creme de manteiga suave de baunilha.",
+      "texture": "Macio, fino e húmido, com estrutura suficiente para suportar uma cobertura generosa.",
+      "allergens": "Contém trigo, leite e ovo. Produzido numa cozinha doméstica onde também são manuseados amendoins, frutos de casca rija e soja."
+    },
+    "classic-chocolate-cupcakes": {
+      "name": "Cupcakes Clássicos de Chocolate",
+      "description": "Cupcakes ricos de chocolate, terminados com uma espiral generosa de creme de manteiga suave. Recheios especiais e decoração personalizada podem ser combinados para encomendas maiores.",
+      "texture": "Macio, húmido e rico em chocolate, com estrutura suficiente para suportar uma cobertura generosa.",
+      "allergens": "Contém trigo, leite e ovo. Contém cafeína. Produzido numa cozinha doméstica onde também são manuseados amendoins, frutos de casca rija e soja."
+    },
+    "red-velvet-cupcakes": {
+      "name": "Cupcakes de Veludo Vermelho",
+      "description": "Cupcakes clássicos de veludo vermelho, com sabor suave a cacau e uma espiral generosa de cobertura de queijo creme. A decoração personalizada pode ser combinada para encomendas maiores.",
+      "texture": "Macio, húmido e tenro, com uma cobertura suave, fresca e ligeiramente ácida.",
+      "allergens": "Contém trigo, leite e ovo. Contém cafeína. Produzido numa cozinha doméstica onde também são manuseados amendoins, frutos de casca rija e soja."
+    },
+    "carrot-cupcakes": {
+      "name": "Cupcakes de Cenoura",
+      "description": "Cupcakes de cenoura com especiarias, terminados com cobertura de queijo creme, baunilha e amêndoa. Não são adicionados frutos secos nem passas à massa.",
+      "texture": "Macio, muito húmido e tenro, com uma cobertura suave, fresca e ligeiramente ácida.",
+      "allergens": "Contém trigo, leite e ovo. A cobertura inclui extrato de amêndoa. Produzido numa cozinha doméstica onde também são manuseados amendoins, frutos de casca rija e soja."
+    },
+    "pasteis-de-nata": {
+      "name": "Pastéis de Nata",
+      "description": "Pastéis de nata portugueses com massa folhada crocante, creme sedoso perfumado com limão e canela e as características manchas escuras de caramelização.",
+      "texture": "Massa folhada estaladiça, com base totalmente cozida e creme tenro e cremoso.",
+      "allergens": "Contém trigo, leite e ovo. Produzido numa cozinha doméstica onde também são manuseados amendoins, frutos de casca rija e soja."
+    }
+  }
+}

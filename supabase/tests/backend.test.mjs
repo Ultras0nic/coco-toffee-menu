@@ -133,3 +133,24 @@ test("public catalog seed contains no internal costs or private quote guide amou
   assert.doesNotMatch(seed, /full.?cost|private_quote|quote_guide/i);
   assert.doesNotMatch(seed, /private_quote_start_cents/i);
 });
+
+test("versioned customer locale storage remains compatible with legacy requests", async () => {
+  const [migration, order, contact, validation, owner, notifications] = await Promise.all([
+    read("supabase/migrations/202609110001_customer_locale.sql"),
+    read("supabase/functions/submit-order/index.ts"),
+    read("supabase/functions/contact/index.ts"),
+    read("supabase/functions/_shared/validation.ts"),
+    read("owner.js"),
+    read("supabase/functions/_shared/notifications.ts"),
+  ]);
+  assert.match(migration, /customer_locale text not null default 'en'/);
+  assert.match(migration, /create_order_request_v2/);
+  assert.match(migration, /'en', 'pt-PT', 'es-ES', 'zh-Hans'/);
+  assert.match(order, /\[1, 2\]\.includes\(body\.schemaVersion\)/);
+  assert.match(order, /create_order_request_v2/);
+  assert.match(order, /body\.schemaVersion === 2 \? \{ locale \} : \{\}/);
+  assert.match(contact, /customer_locale: locale/);
+  assert.match(validation, /normalizeCustomerLocale/);
+  assert.match(owner, /Customer language:/);
+  assert.match(notifications, /Customer language:/);
+});

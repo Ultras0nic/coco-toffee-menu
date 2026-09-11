@@ -10,6 +10,15 @@ export function validIdempotencyKey(value: string): boolean {
   return /^[A-Za-z0-9_-]{16,128}$/.test(value);
 }
 
+export const CUSTOMER_LOCALES = ["en", "pt-PT", "es-ES", "zh-Hans"] as const;
+
+export function normalizeCustomerLocale(value: unknown): typeof CUSTOMER_LOCALES[number] {
+  const locale = cleanText(value, 16);
+  return CUSTOMER_LOCALES.includes(locale as typeof CUSTOMER_LOCALES[number])
+    ? locale as typeof CUSTOMER_LOCALES[number]
+    : "en";
+}
+
 export function clientIp(request: Request): string {
   return (request.headers.get("x-forwarded-for") || request.headers.get("cf-connecting-ip") || "unknown")
     .split(",")[0].trim().slice(0, 80);
