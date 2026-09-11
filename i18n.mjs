@@ -25,6 +25,7 @@ const translations = {
     "Skip to menu": "Saltar para o menu",
     "Menu": "Menu",
     "Hover for a quick preview and click for full details. Tap to discover on mobile.": "Passe o cursor para uma pré-visualização e clique para ver todos os detalhes. No telemóvel, toque para descobrir.",
+    "Local pickup and delivery, located in New Bedford. 02745.": "Recolha local e entrega, em New Bedford, MA 02745.",
     "A little gift in every bite🌼✨": "Um pequeno presente em cada dentada🌼✨",
     "Coco and Toffee slogan": "Slogan da Coco & Toffee",
     "Menu categories and order bag": "Categorias do menu e cesto de encomenda",
@@ -134,6 +135,7 @@ const translations = {
   "es-ES": {
     "Skip to menu": "Saltar al menú", "Menu": "Menú",
     "Hover for a quick preview and click for full details. Tap to discover on mobile.": "Pasa el cursor para ver una vista previa y haz clic para consultar todos los detalles. En el móvil, toca para descubrir.",
+    "Local pickup and delivery, located in New Bedford. 02745.": "Recogida local y entrega en New Bedford, MA 02745.",
     "A little gift in every bite🌼✨": "Un pequeño regalo en cada bocado🌼✨", "Coco and Toffee slogan": "Eslogan de Coco & Toffee",
     "Menu categories and order bag": "Categorías del menú y cesta del pedido", "Order bag": "Cesta del pedido", "Product details": "Detalles del producto",
     "Close product details": "Cerrar los detalles del producto", "Close": "Cerrar", "Photo coming soon": "Foto próximamente", "Explore the menu": "Explora el menú",
@@ -163,7 +165,7 @@ const translations = {
     "Language": "Idioma", "View": "Ver", "Each": "Por unidad", "4-pack": "Caja de 4", "6-pack": "Caja de 6", "Dozen": "Docena", "4-count assortment": "Surtido de 4", "English": "Inglés",
   },
   "zh-Hans": {
-    "Skip to menu": "跳到菜单", "Menu": "菜单", "Hover for a quick preview and click for full details. Tap to discover on mobile.": "将鼠标移到产品上可快速预览，点击可查看完整详情；手机端请轻触查看。",
+    "Skip to menu": "跳到菜单", "Menu": "菜单", "Hover for a quick preview and click for full details. Tap to discover on mobile.": "将鼠标移到产品上可快速预览，点击可查看完整详情；手机端请轻触查看。", "Local pickup and delivery, located in New Bedford. 02745.": "位于马萨诸塞州新贝德福德 02745，支持本地自取和配送。",
     "A little gift in every bite🌼✨": "每一口，都是一份小礼物🌼✨", "Coco and Toffee slogan": "Coco & Toffee 品牌标语", "Menu categories and order bag": "菜单分类和订单篮", "Order bag": "订单篮", "Product details": "产品详情", "Close product details": "关闭产品详情", "Close": "关闭",
     "Photo coming soon": "图片即将上线", "Explore the menu": "浏览菜单", "Choose a menu item": "请选择产品", "Product photos, flavor notes, textures and allergen details can be added at any time.": "产品图片、风味说明、口感和过敏原信息会随时更新。", "Texture": "口感", "Details coming soon": "详情即将上线", "Allergens": "过敏原", "Please ask before ordering": "下单前请先咨询", "Pricing": "价格", "Custom quote": "定制报价",
     "Choose an option": "选择规格", "Mix flavors in this box": "此盒混搭口味", "Build your box": "搭配您的礼盒", "Servings or size needed": "所需份数或尺寸", "Occasion": "使用场合", "Design or flavor ideas": "设计或口味想法", "Quantity": "数量", "Decrease quantity": "减少数量", "Increase quantity": "增加数量", "Add to order bag": "加入订单", "View order bag": "查看订单篮", "Your selection": "您的选择", "Close order bag": "关闭订单篮",

@@ -7,6 +7,7 @@ import {
   overlayCatalog,
   resolveInitialLocale,
   shortLocale,
+  translate,
 } from "../i18n.mjs";
 
 const readJson = async (path) => JSON.parse(await readFile(new URL(path, import.meta.url), "utf8"));
@@ -61,6 +62,13 @@ test("USD formatting changes presentation but not integer-cent values", () => {
   assert.match(formatUsd(cents, "es-ES"), /28,75/);
   assert.match(formatUsd(cents, "zh-Hans"), /28\.75/);
   assert.equal(cents, 2875);
+});
+
+test("the storefront location line is translated in every added language", () => {
+  const source = "Local pickup and delivery, located in New Bedford. 02745.";
+  for (const locale of ["pt-PT", "es-ES", "zh-Hans"]) {
+    assert.notEqual(translate(locale, source), source);
+  }
 });
 
 test("storefront sends the selected locale without trusting translated catalog values", async () => {
