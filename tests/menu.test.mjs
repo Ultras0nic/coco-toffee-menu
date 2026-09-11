@@ -29,7 +29,7 @@ test("the recipe collection menu structure is represented", () => {
       "Cookies",
       "Brownies & Blondies",
       "Muffins & Cinnamon Rolls",
-      "Savory Baking",
+      "Savory",
       "Tartlets",
       "Tiramisu & Flans",
       "Cakes & Cupcakes",

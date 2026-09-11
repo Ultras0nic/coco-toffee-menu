@@ -48,7 +48,7 @@
     {
       "id": "cookies",
       "name": "Cookies",
-      "note": "Large bakery-style cookies. Seasonal availability may vary.",
+      "note": "Big, generous cookies, about a quarter pound each. Two are named after Coco and Toffee, the little guinea pigs behind our name.",
       "illustration": { "src": "assets/categories/category-cookies.webp", "width": 640, "height": 329 },
       "items": [
         {
@@ -182,7 +182,7 @@
     {
       "id": "brownies-blondies",
       "name": "Brownies & Blondies",
-      "note": "Available as large bakery squares or smaller portions.",
+      "note": "Rich, chewy squares made for sharing (or not). Available as big bakery squares or smaller bites for parties.",
       "illustration": { "src": "assets/categories/category-brownies-blondies.webp", "width": 640, "height": 510 },
       "items": [
         {
@@ -226,7 +226,7 @@
     {
       "id": "muffins-cinnamon-rolls",
       "name": "Muffins & Cinnamon Rolls",
-      "note": "Jumbo bakery muffins and large individual cinnamon rolls.",
+      "note": "Jumbo muffins and soft, iced cinnamon rolls, made for slow mornings and good coffee.",
       "illustration": { "src": "assets/categories/category-muffins-cinnamon-rolls.webp", "width": 640, "height": 591 },
       "items": [
         {
@@ -300,8 +300,8 @@
     },
     {
       "id": "savory-baking",
-      "name": "Savory Baking",
-      "note": "Individual savory pastries are available by custom order.",
+      "name": "Savory",
+      "note": "For anyone who'd rather have something savory. Our quiche is baked in a buttery, flaky crust. More savory bakes are available by custom order.",
       "illustration": { "src": "assets/categories/category-savory-baking.webp", "width": 640, "height": 479 },
       "items": [
         {
@@ -326,7 +326,7 @@
     {
       "id": "tartlets",
       "name": "Tartlets",
-      "note": "Available as an assorted selection or by flavor.",
+      "note": "Little tarts with crisp, buttery shells. Choose an assortment to try a bit of everything, or pick your favorite.",
       "illustration": { "src": "assets/categories/category-tartlets.webp", "width": 640, "height": 514 },
       "items": [
         {
@@ -406,7 +406,7 @@
     {
       "id": "tiramisu-flans",
       "name": "Tiramisu & Flans",
-      "note": "Large desserts can be portioned for convenient service.",
+      "note": "Creamy, comforting desserts made for sharing. Order whole, or ask us to portion them for you.",
       "illustration": { "src": "assets/categories/category-tiramisu-flans.webp", "width": 640, "height": 500 },
       "items": [
         {
@@ -462,7 +462,7 @@
     {
       "id": "cakes-cupcakes",
       "name": "Cakes & Cupcakes",
-      "note": "Whole cakes are available for custom orders and can be pre-sliced. Other cupcake flavors, fillings and decoration are available by request.",
+      "note": "Cakes and cupcakes for birthdays, gatherings, or just because. Whole cakes need about a week's notice and can come pre-sliced. Just ask if you'd like other cupcake flavors, fillings or decorations.",
       "illustration": { "src": "assets/categories/category-cakes-cupcakes.webp", "width": 640, "height": 452 },
       "items": [
         {
@@ -583,7 +583,7 @@
     {
       "id": "portuguese-pastries",
       "name": "Portuguese Pastries",
-      "note": "Traditional pastries made in small batches.",
+      "note": "Crisp, flaky pastéis de nata with a creamy custard center, inspired by the Portuguese baking New Bedford knows and loves.",
       "illustration": { "src": "assets/categories/category-portuguese-pastries.webp", "width": 640, "height": 469 },
       "items": [
         {
