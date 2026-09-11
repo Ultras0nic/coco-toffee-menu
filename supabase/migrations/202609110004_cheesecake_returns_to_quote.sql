@@ -1,4 +1,5 @@
 -- Returns the New York-style cheesecake to the custom-quote workflow.
+-- Version 004 follows the renumbered price revision.
 -- The 2026-09-11 revision briefly sold it at a fixed $50; the owner has since
 -- set it back to a quote starting at $45, so this reverses that one product
 -- without touching the rest of that revision. The two layer cakes stay on

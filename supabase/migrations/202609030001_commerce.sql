@@ -12,7 +12,7 @@ create table public.products (
 );
 
 create table public.offers (
-  id text primary key check (id ~ '^[a-z0-9-]+:(single|4-pack|6-pack|dozen|assorted-4|quote)$'),
+  id text primary key check (id ~ '^[a-z0-9-]+:(single|4-pack|6-pack|dozen|assorted-4|whole|quote)$'),
   product_id text not null references public.products(id) on delete cascade,
   offer_key text not null,
   label text not null,

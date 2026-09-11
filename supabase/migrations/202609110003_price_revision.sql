@@ -1,10 +1,16 @@
 -- Applies the direct-customer price revision approved on 2026-09-11.
+-- Version 003 follows the already-deployed customer-locale migration.
 -- Every product moves to the owner's new per-unit rate and bundle prices.
 -- Brownies and blondies switch from a 4-pack to a 6-pack, so the brownie mixed
 -- box now fills in sixes. Tiramisu, Portuguese flan, chocoflan and the New
 -- York-style cheesecake leave the custom-quote workflow for fixed per-slice and
 -- whole-dessert prices, leaving only the two layer cakes on custom quotes.
 -- This migration is idempotent so it can safely follow the original catalog seed.
+
+-- Whole-dessert offers were added after the original schema was created.
+alter table public.offers drop constraint if exists offers_id_check;
+alter table public.offers add constraint offers_id_check
+  check (id ~ '^[a-z0-9-]+:(single|4-pack|6-pack|dozen|assorted-4|whole|quote)$');
 
 update public.products set pricing_mode = 'fixed'
 where id in (
