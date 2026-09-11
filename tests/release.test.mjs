@@ -18,6 +18,15 @@ test("the local preview serves browser modules with a JavaScript content type", 
   assert.match(server, /"\.mjs": "text\/javascript; charset=utf-8"/);
 });
 
+test("localized storefront modules use a release cache version", async () => {
+  const [html, app] = await Promise.all([
+    readFile(new URL("index.html", root), "utf8"),
+    readFile(new URL("app.js", root), "utf8"),
+  ]);
+  assert.match(html, /app\.js\?v=\d{4}-\d{2}-\d{2}-\d+/);
+  assert.match(app, /i18n\.mjs\?v=\d{4}-\d{2}-\d{2}-\d+/);
+});
+
 test("public build is allow-listed and includes owner assets without server files", async () => {
   const build = await readFile(new URL("scripts/build.mjs", root), "utf8");
   for (const file of ["owner.html", "owner.css", "owner.js", "owner-config.js"]) assert.ok(build.includes(`"${file}"`));

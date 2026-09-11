@@ -11,7 +11,7 @@ import {
   resolveInitialLocale,
   shortLocale,
   translate,
-} from "./i18n.mjs";
+} from "./i18n.mjs?v=2026-09-11-1";
 
 async function loadMenuData() {
   const response = await fetch("./data/menu.json", { cache: "no-store" });
