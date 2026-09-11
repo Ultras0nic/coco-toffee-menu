@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "lastUpdated": "2026-09-11",
-  "assetVersion": "2026-09-01-1",
+  "assetVersion": "2026-09-11-1",
   "pricingCatalog": {
     "currency": "USD",
     "discountStacking": "none",
@@ -67,7 +67,7 @@
               { "id": "dozen", "label": "Dozen", "units": 12, "priceCents": 3900, "compareAtCents": 4200 }
             ]
           },
-          "photo": "assets/menu/coco-double-chocolate.jpg?v=2026-09-01-1"
+          "photo": "assets/menu/coco-double-chocolate.jpg?v=2026-09-11-1"
         },
         {
           "id": "toffee-brown-butter-espresso",
@@ -85,7 +85,7 @@
               { "id": "dozen", "label": "Dozen", "units": 12, "priceCents": 3900, "compareAtCents": 4200 }
             ]
           },
-          "photo": "assets/menu/toffee-brown-butter-espresso.jpg?v=2026-09-01-1"
+          "photo": "assets/menu/toffee-brown-butter-espresso.jpg?v=2026-09-11-1"
         },
         {
           "id": "classic-chocolate-chip",
@@ -103,7 +103,7 @@
               { "id": "dozen", "label": "Dozen", "units": 12, "priceCents": 3900, "compareAtCents": 4200 }
             ]
           },
-          "photo": "assets/menu/classic-chocolate-chip-cookie.jpg?v=2026-09-01-1"
+          "photo": "assets/menu/classic-chocolate-chip-cookie.jpg?v=2026-09-11-1"
         },
         {
           "id": "cranberry-white-chocolate-oatmeal",
@@ -121,7 +121,7 @@
               { "id": "dozen", "label": "Dozen", "units": 12, "priceCents": 3900, "compareAtCents": 4200 }
             ]
           },
-          "photo": "assets/menu/cranberry-white-chocolate-oatmeal.jpg?v=2026-09-01-1"
+          "photo": "assets/menu/cranberry-white-chocolate-oatmeal.jpg?v=2026-09-11-1"
         },
         {
           "id": "white-chocolate-macadamia",
@@ -139,7 +139,7 @@
               { "id": "dozen", "label": "Dozen", "units": 12, "priceCents": 4200, "compareAtCents": 4500 }
             ]
           },
-          "photo": "assets/menu/white-chocolate-macadamia.jpg?v=2026-09-01-1"
+          "photo": "assets/menu/white-chocolate-macadamia.jpg?v=2026-09-11-1"
         },
         {
           "id": "smores-cookie",
@@ -201,7 +201,7 @@
               { "id": "dozen", "label": "Dozen", "units": 12, "priceCents": 3300, "compareAtCents": 3600 }
             ]
           },
-          "photo": "assets/menu/classic-fudge-brownie.jpg?v=2026-09-01-1"
+          "photo": "assets/menu/classic-fudge-brownie.jpg?v=2026-09-11-1"
         },
         {
           "id": "funfetti-blondie",
@@ -219,7 +219,7 @@
               { "id": "dozen", "label": "Dozen", "units": 12, "priceCents": 3300, "compareAtCents": 3600 }
             ]
           },
-          "photo": "assets/menu/funfetti-blondie.jpg?v=2026-09-01-1"
+          "photo": "assets/menu/funfetti-blondie.jpg?v=2026-09-11-1"
         }
       ]
     },
@@ -244,7 +244,7 @@
               { "id": "pack-6", "label": "6-pack", "units": 6, "priceCents": 1700, "compareAtCents": 1800 }
             ]
           },
-          "photo": "assets/menu/chocolate-chip-jumbo-muffin.jpg?v=2026-09-01-1"
+          "photo": "assets/menu/chocolate-chip-jumbo-muffin.jpg?v=2026-09-11-1"
         },
         {
           "id": "blueberry-jumbo-muffin",
@@ -261,7 +261,7 @@
               { "id": "pack-6", "label": "6-pack", "units": 6, "priceCents": 1700, "compareAtCents": 1800 }
             ]
           },
-          "photo": "assets/menu/blueberry-jumbo-muffin.jpg?v=2026-09-01-1"
+          "photo": "assets/menu/blueberry-jumbo-muffin.jpg?v=2026-09-11-1"
         },
         {
           "id": "coffee-cake-jumbo-muffin",
@@ -294,7 +294,7 @@
               { "id": "pack-6", "label": "6-pack", "units": 6, "priceCents": 2600, "compareAtCents": 2700 }
             ]
           },
-          "photo": "assets/menu/jumbo-cinnamon-roll.jpg?v=2026-09-01-1"
+          "photo": "assets/menu/jumbo-cinnamon-roll.jpg?v=2026-09-11-1"
         }
       ]
     },
@@ -601,7 +601,7 @@
               { "id": "dozen", "label": "Dozen", "units": 12, "priceCents": 1400, "compareAtCents": 2100 }
             ]
           },
-          "photo": ""
+          "photo": "assets/menu/pasteis-de-nata.jpg?v=2026-09-11-1"
         }
       ]
     }
