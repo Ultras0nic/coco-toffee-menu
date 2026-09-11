@@ -18,7 +18,7 @@
         "minUnitsPerProduct": 2
       },
       "brownies-blondies": {
-        "bundleQuantities": [4, 12],
+        "bundleQuantities": [6, 12],
         "priceMethod": "weighted-offer-rate",
         "roundUpToCents": 50,
         "exactFill": true
@@ -129,14 +129,14 @@
           "description": "Creamy white chocolate and roasted macadamia pieces fill a rich vanilla cookie designed for a premium bakery-style bite.",
           "texture": "Thick and chunky with a soft center, crisp golden edges and crunchy roasted nuts.",
           "allergens": "Contains wheat, milk, egg, soy and tree nuts (macadamia). Made in a home kitchen that also handles peanuts and other tree nuts.",
-          "price": "$3.75 each · 6-pack $21.25 · dozen $41.75",
+          "price": "$3.75 each · 6-pack $22 · dozen $42",
           "pricing": {
             "mode": "fixed",
             "mixGroup": "cookies",
             "offers": [
               { "id": "each", "label": "Each", "units": 1, "priceCents": 375, "compareAtCents": null },
-              { "id": "pack-6", "label": "6-pack", "units": 6, "priceCents": 2125, "compareAtCents": 2250 },
-              { "id": "dozen", "label": "Dozen", "units": 12, "priceCents": 4175, "compareAtCents": 4500 }
+              { "id": "pack-6", "label": "6-pack", "units": 6, "priceCents": 2200, "compareAtCents": 2250 },
+              { "id": "dozen", "label": "Dozen", "units": 12, "priceCents": 4200, "compareAtCents": 4500 }
             ]
           },
           "photo": ""
@@ -191,14 +191,14 @@
           "description": "Dark chocolate, Dutch-process cocoa, a touch of coffee and semi-sweet chocolate chips create a deeply chocolate brownie.",
           "texture": "Dense and fudgy with chewy edges and a shiny top.",
           "allergens": "Contains wheat, milk, egg and soy. Contains caffeine. Made in a home kitchen that also handles peanuts and tree nuts.",
-          "price": "$3 each · 4-pack $11.50 · dozen $33.50",
+          "price": "$3 each · 6-pack $17 · dozen $33",
           "pricing": {
             "mode": "fixed",
             "mixGroup": "brownies-blondies",
             "offers": [
               { "id": "each", "label": "Each", "units": 1, "priceCents": 300, "compareAtCents": null },
-              { "id": "pack-4", "label": "4-pack", "units": 4, "priceCents": 1150, "compareAtCents": 1200 },
-              { "id": "dozen", "label": "Dozen", "units": 12, "priceCents": 3350, "compareAtCents": 3600 }
+              { "id": "pack-6", "label": "6-pack", "units": 6, "priceCents": 1700, "compareAtCents": 1800 },
+              { "id": "dozen", "label": "Dozen", "units": 12, "priceCents": 3300, "compareAtCents": 3600 }
             ]
           },
           "photo": ""
@@ -209,14 +209,14 @@
           "description": "A vanilla birthday-cake blondie built on white chocolate, filled with white chocolate chips and bright rainbow sprinkles.",
           "texture": "Thick, chewy, buttery and soft with a rich white-chocolate crumb.",
           "allergens": "Contains wheat, milk, egg and soy. Made in a home kitchen that also handles peanuts and tree nuts.",
-          "price": "$3 each · 4-pack $11.50 · dozen $33.50",
+          "price": "$3 each · 6-pack $17 · dozen $33",
           "pricing": {
             "mode": "fixed",
             "mixGroup": "brownies-blondies",
             "offers": [
               { "id": "each", "label": "Each", "units": 1, "priceCents": 300, "compareAtCents": null },
-              { "id": "pack-4", "label": "4-pack", "units": 4, "priceCents": 1150, "compareAtCents": 1200 },
-              { "id": "dozen", "label": "Dozen", "units": 12, "priceCents": 3350, "compareAtCents": 3600 }
+              { "id": "pack-6", "label": "6-pack", "units": 6, "priceCents": 1700, "compareAtCents": 1800 },
+              { "id": "dozen", "label": "Dozen", "units": 12, "priceCents": 3300, "compareAtCents": 3600 }
             ]
           },
           "photo": ""
@@ -286,12 +286,12 @@
           "description": "A large individual roll with a defined cinnamon-brown-sugar spiral and a generous layer of smooth vanilla butter icing.",
           "texture": "Tall, soft and fluffy with a moist, gooey center and lightly caramelized edges.",
           "allergens": "Contains wheat, milk and egg. Made in a home kitchen that also handles peanuts, tree nuts and soy.",
-          "price": "$4.50 each · 6-pack $25.75",
+          "price": "$4.50 each · 6-pack $26",
           "pricing": {
             "mode": "fixed",
             "offers": [
               { "id": "each", "label": "Each", "units": 1, "priceCents": 450, "compareAtCents": null },
-              { "id": "pack-6", "label": "6-pack", "units": 6, "priceCents": 2575, "compareAtCents": 2700 }
+              { "id": "pack-6", "label": "6-pack", "units": 6, "priceCents": 2600, "compareAtCents": 2700 }
             ]
           },
           "photo": "assets/menu/jumbo-cinnamon-roll.jpg?v=2026-09-01-1"
@@ -310,13 +310,13 @@
           "description": "A French-style individual quiche with smoky bacon, sweet caramelized onion, Gruyère and a silky seasoned custard.",
           "texture": "Thin crisp buttery pastry with a creamy custard that holds a clean shape.",
           "allergens": "Contains wheat, milk and egg. Made in a home kitchen that also handles peanuts, tree nuts and soy.",
-          "price": "$4 each · 6-pack $22.75 · dozen $44.75",
+          "price": "$4 each · 6-pack $23 · dozen $45",
           "pricing": {
             "mode": "fixed",
             "offers": [
               { "id": "each", "label": "Each", "units": 1, "priceCents": 400, "compareAtCents": null },
-              { "id": "pack-6", "label": "6-pack", "units": 6, "priceCents": 2275, "compareAtCents": 2400 },
-              { "id": "dozen", "label": "Dozen", "units": 12, "priceCents": 4475, "compareAtCents": 4800 }
+              { "id": "pack-6", "label": "6-pack", "units": 6, "priceCents": 2300, "compareAtCents": 2400 },
+              { "id": "dozen", "label": "Dozen", "units": 12, "priceCents": 4500, "compareAtCents": 4800 }
             ]
           },
           "photo": ""
@@ -415,11 +415,12 @@
           "description": "Two layers of espresso-soaked ladyfingers and generous mascarpone cream with subtle vanilla-rum aroma and a chocolate finish.",
           "texture": "Light and silky with fully softened, never soggy ladyfingers and clean bakery-style slices.",
           "allergens": "Contains wheat, milk and egg. Contains caffeine and alcohol. Made in a home kitchen that also handles peanuts, tree nuts and soy.",
-          "price": "$7 per slice",
+          "price": "$7 per slice · 5-slice pan $30",
           "pricing": {
             "mode": "fixed",
             "offers": [
-              { "id": "each", "label": "Per slice", "units": 1, "priceCents": 700, "compareAtCents": null }
+              { "id": "each", "label": "Per slice", "units": 1, "priceCents": 700, "compareAtCents": null },
+              { "id": "whole", "label": "5-slice pan", "units": 5, "priceCents": 3000, "compareAtCents": 3500 }
             ]
           },
           "photo": ""
@@ -591,13 +592,13 @@
           "description": "Portuguese custard tarts with a crisp laminated shell, silky lemon-and-cinnamon-scented custard and characteristic dark caramelized spots.",
           "texture": "Shattering flaky pastry with a fully baked bottom and tender creamy custard.",
           "allergens": "Contains wheat, milk and egg. Made in a home kitchen that also handles peanuts, tree nuts and soy.",
-          "price": "$1.75 each · 6-pack $10 · dozen $19.50",
+          "price": "$1.75 each · 6-pack $8 · dozen $14",
           "pricing": {
             "mode": "fixed",
             "offers": [
               { "id": "each", "label": "Each", "units": 1, "priceCents": 175, "compareAtCents": null },
-              { "id": "pack-6", "label": "6-pack", "units": 6, "priceCents": 1000, "compareAtCents": 1050 },
-              { "id": "dozen", "label": "Dozen", "units": 12, "priceCents": 1950, "compareAtCents": 2100 }
+              { "id": "pack-6", "label": "6-pack", "units": 6, "priceCents": 800, "compareAtCents": 1050 },
+              { "id": "dozen", "label": "Dozen", "units": 12, "priceCents": 1400, "compareAtCents": 2100 }
             ]
           },
           "photo": ""

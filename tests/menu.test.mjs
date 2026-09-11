@@ -122,21 +122,21 @@ test("every product has the approved direct-customer price", () => {
     "toffee-brown-butter-espresso": "$3.50 each · 6-pack $20 · dozen $39",
     "classic-chocolate-chip": "$3.50 each · 6-pack $20 · dozen $39",
     "cranberry-white-chocolate-oatmeal": "$3.50 each · 6-pack $20 · dozen $39",
-    "white-chocolate-macadamia": "$3.75 each · 6-pack $21.25 · dozen $41.75",
+    "white-chocolate-macadamia": "$3.75 each · 6-pack $22 · dozen $42",
     "smores-cookie": "$3.50 each · 6-pack $20 · dozen $39",
     "peanut-butter-blossom": "$3.50 each · 6-pack $20 · dozen $39",
-    "classic-fudge-brownie": "$3 each · 4-pack $11.50 · dozen $33.50",
-    "funfetti-blondie": "$3 each · 4-pack $11.50 · dozen $33.50",
+    "classic-fudge-brownie": "$3 each · 6-pack $17 · dozen $33",
+    "funfetti-blondie": "$3 each · 6-pack $17 · dozen $33",
     "chocolate-chip-jumbo-muffin": "$3 each · 6-pack $17",
     "blueberry-jumbo-muffin": "$3 each · 6-pack $17",
     "coffee-cake-jumbo-muffin": "$3 each · 6-pack $17",
-    "jumbo-cinnamon-roll": "$4.50 each · 6-pack $25.75",
-    "bacon-gruyere-onion-quiche": "$4 each · 6-pack $22.75 · dozen $44.75",
+    "jumbo-cinnamon-roll": "$4.50 each · 6-pack $26",
+    "bacon-gruyere-onion-quiche": "$4 each · 6-pack $23 · dozen $45",
     "assorted-individual-tartlets": "4-count assortment from $26.50",
     "vanilla-custard-fresh-berry-tartlet": "$7 each · 4-pack $26.50",
     "lemon-cream-tartlet": "$7 each · 4-pack $26.50",
     "chocolate-hazelnut-tartlet": "$7 each · 4-pack $26.50",
-    "classic-tiramisu": "$7 per slice",
+    "classic-tiramisu": "$7 per slice · 5-slice pan $30",
     "traditional-portuguese-flan": "$4.50 per slice · whole flan $20",
     chocoflan: "$5 per slice · whole dessert $25",
     "new-york-style-cheesecake":
@@ -147,7 +147,7 @@ test("every product has the approved direct-customer price", () => {
     "classic-chocolate-cupcakes": "$1.25 each · 6-pack $7 · dozen $14",
     "red-velvet-cupcakes": "$1.25 each · 6-pack $7 · dozen $14",
     "carrot-cupcakes": "$1.25 each · 6-pack $7 · dozen $14",
-    "pasteis-de-nata": "$1.75 each · 6-pack $10 · dozen $19.50",
+    "pasteis-de-nata": "$1.75 each · 6-pack $8 · dozen $14",
   });
 });
 
@@ -201,8 +201,8 @@ test("every product exposes the approved structured pricing contract", () => {
     ]),
     "white-chocolate-macadamia": fixed("cookies", [
       ["each", "Each", 1, 375, null],
-      ["pack-6", "6-pack", 6, 2125, 2250],
-      ["dozen", "Dozen", 12, 4175, 4500],
+      ["pack-6", "6-pack", 6, 2200, 2250],
+      ["dozen", "Dozen", 12, 4200, 4500],
     ]),
     "smores-cookie": fixed("cookies", [
       ["each", "Each", 1, 350, null],
@@ -216,13 +216,13 @@ test("every product exposes the approved structured pricing contract", () => {
     ]),
     "classic-fudge-brownie": fixed("brownies-blondies", [
       ["each", "Each", 1, 300, null],
-      ["pack-4", "4-pack", 4, 1150, 1200],
-      ["dozen", "Dozen", 12, 3350, 3600],
+      ["pack-6", "6-pack", 6, 1700, 1800],
+      ["dozen", "Dozen", 12, 3300, 3600],
     ]),
     "funfetti-blondie": fixed("brownies-blondies", [
       ["each", "Each", 1, 300, null],
-      ["pack-4", "4-pack", 4, 1150, 1200],
-      ["dozen", "Dozen", 12, 3350, 3600],
+      ["pack-6", "6-pack", 6, 1700, 1800],
+      ["dozen", "Dozen", 12, 3300, 3600],
     ]),
     "chocolate-chip-jumbo-muffin": fixed("muffins", [
       ["each", "Each", 1, 300, null],
@@ -238,12 +238,12 @@ test("every product exposes the approved structured pricing contract", () => {
     ]),
     "jumbo-cinnamon-roll": fixed(null, [
       ["each", "Each", 1, 450, null],
-      ["pack-6", "6-pack", 6, 2575, 2700],
+      ["pack-6", "6-pack", 6, 2600, 2700],
     ]),
     "bacon-gruyere-onion-quiche": fixed(null, [
       ["each", "Each", 1, 400, null],
-      ["pack-6", "6-pack", 6, 2275, 2400],
-      ["dozen", "Dozen", 12, 4475, 4800],
+      ["pack-6", "6-pack", 6, 2300, 2400],
+      ["dozen", "Dozen", 12, 4500, 4800],
     ]),
     "assorted-individual-tartlets": {
       mode: "builder",
@@ -266,6 +266,7 @@ test("every product exposes the approved structured pricing contract", () => {
     ]),
     "classic-tiramisu": fixed(null, [
       ["each", "Per slice", 1, 700, null],
+      ["whole", "5-slice pan", 5, 3000, 3500],
     ]),
     "traditional-portuguese-flan": fixed(null, [
       ["each", "Per slice", 1, 450, null],
@@ -302,8 +303,8 @@ test("every product exposes the approved structured pricing contract", () => {
     ]),
     "pasteis-de-nata": fixed(null, [
       ["each", "Each", 1, 175, null],
-      ["pack-6", "6-pack", 6, 1000, 1050],
-      ["dozen", "Dozen", 12, 1950, 2100],
+      ["pack-6", "6-pack", 6, 800, 1050],
+      ["dozen", "Dozen", 12, 1400, 2100],
     ]),
   });
 });
@@ -335,7 +336,7 @@ test("the catalog encodes the approved exact-fill mix rules", () => {
         minUnitsPerProduct: 2,
       },
       "brownies-blondies": {
-        bundleQuantities: [4, 12],
+        bundleQuantities: [6, 12],
         priceMethod: "weighted-offer-rate",
         roundUpToCents: 50,
         exactFill: true,
@@ -411,7 +412,7 @@ test("mixed bundle prices use trusted flavor rates and approved rounding", () =>
         { productId: "white-chocolate-macadamia", units: 2 },
       ],
     }),
-    2050,
+    2100,
   );
   assert.equal(
     priceMixedBundle(menuData, {
@@ -428,13 +429,13 @@ test("mixed bundle prices use trusted flavor rates and approved rounding", () =>
   assert.equal(
     priceMixedBundle(menuData, {
       mixGroup: "brownies-blondies",
-      bundleUnits: 4,
+      bundleUnits: 6,
       selections: [
-        { productId: "classic-fudge-brownie", units: 2 },
-        { productId: "funfetti-blondie", units: 2 },
+        { productId: "classic-fudge-brownie", units: 3 },
+        { productId: "funfetti-blondie", units: 3 },
       ],
     }),
-    1150,
+    1700,
   );
   assert.equal(
     priceMixedBundle(menuData, {
