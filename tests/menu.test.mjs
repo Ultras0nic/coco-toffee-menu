@@ -139,10 +139,9 @@ test("every product has the approved direct-customer price", () => {
     "classic-tiramisu": "$7 per slice · 5-slice pan $30",
     "traditional-portuguese-flan": "$4.50 per slice · whole flan $20",
     chocoflan: "$5 per slice · whole dessert $25",
-    "new-york-style-cheesecake":
-      "$50 per whole 9-inch cheesecake · flavors and finishes on request",
-    "four-layer-chocolate-cake": "Custom quote · 9-inch cake from $150",
-    "carrot-cake": "Custom quote · 9-inch cake from $130",
+    "new-york-style-cheesecake": "Custom quote · 9-inch cake from $45",
+    "four-layer-chocolate-cake": "Custom quote · 9-inch cake from $70",
+    "carrot-cake": "Custom quote · 9-inch cake from $70",
     "classic-vanilla-cupcakes": "$1.25 each · 6-pack $7 · dozen $14",
     "classic-chocolate-cupcakes": "$1.25 each · 6-pack $7 · dozen $14",
     "red-velvet-cupcakes": "$1.25 each · 6-pack $7 · dozen $14",
@@ -276,9 +275,7 @@ test("every product exposes the approved structured pricing contract", () => {
       ["each", "Per slice", 1, 500, null],
       ["whole", "Whole dessert", 5, 2500, null],
     ]),
-    "new-york-style-cheesecake": fixed(null, [
-      ["each", "Whole 9-inch cheesecake", 1, 5000, null],
-    ]),
+    "new-york-style-cheesecake": quote,
     "four-layer-chocolate-cake": quote,
     "carrot-cake": quote,
     "classic-vanilla-cupcakes": fixed(null, [
@@ -309,14 +306,18 @@ test("every product exposes the approved structured pricing contract", () => {
   });
 });
 
-test("exactly the two layer cakes retain the custom-quote workflow", () => {
+test("exactly the three whole cakes retain the custom-quote workflow", () => {
   const quoteOnlyIds = menuCategories
     .flatMap((category) => category.items)
     .filter((item) => item.pricing.mode === "quote")
     .map((item) => item.id)
     .sort();
 
-  assert.deepEqual(quoteOnlyIds, ["carrot-cake", "four-layer-chocolate-cake"]);
+  assert.deepEqual(quoteOnlyIds, [
+    "carrot-cake",
+    "four-layer-chocolate-cake",
+    "new-york-style-cheesecake",
+  ]);
 });
 
 test("the catalog encodes the approved exact-fill mix rules", () => {

@@ -471,11 +471,11 @@
           "description": "A rich vanilla cheesecake with balanced cream-cheese tang and a thin graham cracker crust.",
           "texture": "Dense-creamy and smooth, with clean slices after chilling and a creamy finish at serving temperature.",
           "allergens": "Contains wheat, milk and egg. Made in a home kitchen that also handles peanuts, tree nuts and soy.",
-          "price": "$50 per whole 9-inch cheesecake · flavors and finishes on request",
+          "price": "Custom quote · 9-inch cake from $45",
           "pricing": {
-            "mode": "fixed",
+            "mode": "quote",
             "offers": [
-              { "id": "each", "label": "Whole 9-inch cheesecake", "units": 1, "priceCents": 5000, "compareAtCents": null }
+              { "id": "quote", "label": "Custom quote", "units": null, "priceCents": null, "compareAtCents": null }
             ]
           },
           "photo": ""
@@ -486,7 +486,7 @@
           "description": "Four layers of dark, deeply chocolate cake with silky chocolate ganache buttercream and clean bakery-style decoration.",
           "texture": "Tall, moist and tender with smooth rich frosting and enough structure for clean slices.",
           "allergens": "Contains wheat, milk and egg. Contains caffeine. Made in a home kitchen that also handles peanuts, tree nuts and soy.",
-          "price": "Custom quote · 9-inch cake from $150",
+          "price": "Custom quote · 9-inch cake from $70",
           "pricing": {
             "mode": "quote",
             "offers": [
@@ -501,7 +501,7 @@
           "description": "A four-layer, carrot-forward cake warmed with cinnamon, ginger, cardamom and nutmeg, finished with tangy vanilla-almond cream cheese frosting. No nuts or raisins are added to the cake.",
           "texture": "Soft, very moist and tender without feeling oily or gummy.",
           "allergens": "Contains wheat, milk and egg. Frosting includes almond extract. Made in a home kitchen that also handles peanuts, tree nuts and soy.",
-          "price": "Custom quote · 9-inch cake from $130",
+          "price": "Custom quote · 9-inch cake from $70",
           "pricing": {
             "mode": "quote",
             "offers": [
