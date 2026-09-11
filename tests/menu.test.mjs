@@ -118,35 +118,36 @@ test("every product has the approved direct-customer price", () => {
   );
 
   assert.deepEqual(prices, {
-    "coco-double-chocolate": "$4.50 each · 6-pack $26 · dozen $51",
-    "toffee-brown-butter-espresso": "$5.25 each · 6-pack $28.75 · dozen $57",
-    "classic-chocolate-chip": "$4.25 each · 6-pack $23 · dozen $45",
-    "cranberry-white-chocolate-oatmeal": "$4.50 each · 6-pack $26 · dozen $51",
-    "white-chocolate-macadamia": "$5.50 each · 6-pack $32.50 · dozen $64.50",
-    "smores-cookie": "$4.50 each · 6-pack $26 · dozen $51",
-    "peanut-butter-blossom": "$5 each · 6-pack $29 · dozen $57",
-    "classic-fudge-brownie": "$4.50 each · 4-pack $17 · dozen $51",
-    "funfetti-blondie": "$4.50 each · 4-pack $17 · dozen $51",
-    "chocolate-chip-jumbo-muffin": "$7.50 each · 6-pack $44",
-    "blueberry-jumbo-muffin": "$7.75 each · 6-pack $44.25",
-    "coffee-cake-jumbo-muffin": "$7.75 each · 6-pack $44",
-    "jumbo-cinnamon-roll": "$11 each · 6-pack $62.25",
-    "bacon-gruyere-onion-quiche": "$7 each · 6-pack $38.25 · dozen $76",
-    "assorted-individual-tartlets": "4-count assortment from $30.75",
-    "vanilla-custard-fresh-berry-tartlet": "$8.25 each · 4-pack $30.75",
-    "lemon-cream-tartlet": "$11.50 each · 4-pack $43.75",
-    "chocolate-hazelnut-tartlet": "$14.50 each · 4-pack $56",
-    "classic-tiramisu": "Custom quote · 5-serving pan from $50",
-    "traditional-portuguese-flan": "Custom quote · whole flan from $50",
-    chocoflan: "Custom quote · whole dessert from $80",
-    "new-york-style-cheesecake": "Custom quote · 9-inch cake from $85",
+    "coco-double-chocolate": "$3.50 each · 6-pack $20 · dozen $39",
+    "toffee-brown-butter-espresso": "$3.50 each · 6-pack $20 · dozen $39",
+    "classic-chocolate-chip": "$3.50 each · 6-pack $20 · dozen $39",
+    "cranberry-white-chocolate-oatmeal": "$3.50 each · 6-pack $20 · dozen $39",
+    "white-chocolate-macadamia": "$3.75 each · 6-pack $21.25 · dozen $41.75",
+    "smores-cookie": "$3.50 each · 6-pack $20 · dozen $39",
+    "peanut-butter-blossom": "$3.50 each · 6-pack $20 · dozen $39",
+    "classic-fudge-brownie": "$3 each · 4-pack $11.50 · dozen $33.50",
+    "funfetti-blondie": "$3 each · 4-pack $11.50 · dozen $33.50",
+    "chocolate-chip-jumbo-muffin": "$3 each · 6-pack $17",
+    "blueberry-jumbo-muffin": "$3 each · 6-pack $17",
+    "coffee-cake-jumbo-muffin": "$3 each · 6-pack $17",
+    "jumbo-cinnamon-roll": "$4.50 each · 6-pack $25.75",
+    "bacon-gruyere-onion-quiche": "$4 each · 6-pack $22.75 · dozen $44.75",
+    "assorted-individual-tartlets": "4-count assortment from $26.50",
+    "vanilla-custard-fresh-berry-tartlet": "$7 each · 4-pack $26.50",
+    "lemon-cream-tartlet": "$7 each · 4-pack $26.50",
+    "chocolate-hazelnut-tartlet": "$7 each · 4-pack $26.50",
+    "classic-tiramisu": "$7 per slice",
+    "traditional-portuguese-flan": "$4.50 per slice · whole flan $20",
+    chocoflan: "$5 per slice · whole dessert $25",
+    "new-york-style-cheesecake":
+      "$50 per whole 9-inch cheesecake · flavors and finishes on request",
     "four-layer-chocolate-cake": "Custom quote · 9-inch cake from $150",
     "carrot-cake": "Custom quote · 9-inch cake from $130",
-    "classic-vanilla-cupcakes": "$6.50 each · 6-pack $37 · dozen $72",
-    "classic-chocolate-cupcakes": "$6.50 each · 6-pack $37 · dozen $72",
-    "red-velvet-cupcakes": "$7 each · 6-pack $40 · dozen $78",
-    "carrot-cupcakes": "$7 each · 6-pack $40 · dozen $78",
-    "pasteis-de-nata": "$6.25 each · 6-pack $35 · dozen $69",
+    "classic-vanilla-cupcakes": "$1.25 each · 6-pack $7 · dozen $14",
+    "classic-chocolate-cupcakes": "$1.25 each · 6-pack $7 · dozen $14",
+    "red-velvet-cupcakes": "$1.25 each · 6-pack $7 · dozen $14",
+    "carrot-cupcakes": "$1.25 each · 6-pack $7 · dozen $14",
+    "pasteis-de-nata": "$1.75 each · 6-pack $10 · dozen $19.50",
   });
 });
 
@@ -179,137 +180,142 @@ test("every product exposes the approved structured pricing contract", () => {
 
   assert.deepEqual(compactPricing, {
     "coco-double-chocolate": fixed("cookies", [
-      ["each", "Each", 1, 450, null],
-      ["pack-6", "6-pack", 6, 2600, 2700],
-      ["dozen", "Dozen", 12, 5100, 5400],
+      ["each", "Each", 1, 350, null],
+      ["pack-6", "6-pack", 6, 2000, 2100],
+      ["dozen", "Dozen", 12, 3900, 4200],
     ]),
     "toffee-brown-butter-espresso": fixed("cookies", [
-      ["each", "Each", 1, 525, null],
-      ["pack-6", "6-pack", 6, 2875, 3150],
-      ["dozen", "Dozen", 12, 5700, 6300],
+      ["each", "Each", 1, 350, null],
+      ["pack-6", "6-pack", 6, 2000, 2100],
+      ["dozen", "Dozen", 12, 3900, 4200],
     ]),
     "classic-chocolate-chip": fixed("cookies", [
-      ["each", "Each", 1, 425, null],
-      ["pack-6", "6-pack", 6, 2300, 2550],
-      ["dozen", "Dozen", 12, 4500, 5100],
+      ["each", "Each", 1, 350, null],
+      ["pack-6", "6-pack", 6, 2000, 2100],
+      ["dozen", "Dozen", 12, 3900, 4200],
     ]),
     "cranberry-white-chocolate-oatmeal": fixed("cookies", [
-      ["each", "Each", 1, 450, null],
-      ["pack-6", "6-pack", 6, 2600, 2700],
-      ["dozen", "Dozen", 12, 5100, 5400],
+      ["each", "Each", 1, 350, null],
+      ["pack-6", "6-pack", 6, 2000, 2100],
+      ["dozen", "Dozen", 12, 3900, 4200],
     ]),
     "white-chocolate-macadamia": fixed("cookies", [
-      ["each", "Each", 1, 550, null],
-      ["pack-6", "6-pack", 6, 3250, 3300],
-      ["dozen", "Dozen", 12, 6450, 6600],
+      ["each", "Each", 1, 375, null],
+      ["pack-6", "6-pack", 6, 2125, 2250],
+      ["dozen", "Dozen", 12, 4175, 4500],
     ]),
     "smores-cookie": fixed("cookies", [
-      ["each", "Each", 1, 450, null],
-      ["pack-6", "6-pack", 6, 2600, 2700],
-      ["dozen", "Dozen", 12, 5100, 5400],
+      ["each", "Each", 1, 350, null],
+      ["pack-6", "6-pack", 6, 2000, 2100],
+      ["dozen", "Dozen", 12, 3900, 4200],
     ]),
     "peanut-butter-blossom": fixed("cookies", [
-      ["each", "Each", 1, 500, null],
-      ["pack-6", "6-pack", 6, 2900, 3000],
-      ["dozen", "Dozen", 12, 5700, 6000],
+      ["each", "Each", 1, 350, null],
+      ["pack-6", "6-pack", 6, 2000, 2100],
+      ["dozen", "Dozen", 12, 3900, 4200],
     ]),
     "classic-fudge-brownie": fixed("brownies-blondies", [
-      ["each", "Each", 1, 450, null],
-      ["pack-4", "4-pack", 4, 1700, 1800],
-      ["dozen", "Dozen", 12, 5100, 5400],
+      ["each", "Each", 1, 300, null],
+      ["pack-4", "4-pack", 4, 1150, 1200],
+      ["dozen", "Dozen", 12, 3350, 3600],
     ]),
     "funfetti-blondie": fixed("brownies-blondies", [
-      ["each", "Each", 1, 450, null],
-      ["pack-4", "4-pack", 4, 1700, 1800],
-      ["dozen", "Dozen", 12, 5100, 5400],
+      ["each", "Each", 1, 300, null],
+      ["pack-4", "4-pack", 4, 1150, 1200],
+      ["dozen", "Dozen", 12, 3350, 3600],
     ]),
     "chocolate-chip-jumbo-muffin": fixed("muffins", [
-      ["each", "Each", 1, 750, null],
-      ["pack-6", "6-pack", 6, 4400, 4500],
+      ["each", "Each", 1, 300, null],
+      ["pack-6", "6-pack", 6, 1700, 1800],
     ]),
     "blueberry-jumbo-muffin": fixed("muffins", [
-      ["each", "Each", 1, 775, null],
-      ["pack-6", "6-pack", 6, 4425, 4650],
+      ["each", "Each", 1, 300, null],
+      ["pack-6", "6-pack", 6, 1700, 1800],
     ]),
     "coffee-cake-jumbo-muffin": fixed("muffins", [
-      ["each", "Each", 1, 775, null],
-      ["pack-6", "6-pack", 6, 4400, 4650],
+      ["each", "Each", 1, 300, null],
+      ["pack-6", "6-pack", 6, 1700, 1800],
     ]),
     "jumbo-cinnamon-roll": fixed(null, [
-      ["each", "Each", 1, 1100, null],
-      ["pack-6", "6-pack", 6, 6225, 6600],
+      ["each", "Each", 1, 450, null],
+      ["pack-6", "6-pack", 6, 2575, 2700],
     ]),
     "bacon-gruyere-onion-quiche": fixed(null, [
-      ["each", "Each", 1, 700, null],
-      ["pack-6", "6-pack", 6, 3825, 4200],
-      ["dozen", "Dozen", 12, 7600, 8400],
+      ["each", "Each", 1, 400, null],
+      ["pack-6", "6-pack", 6, 2275, 2400],
+      ["dozen", "Dozen", 12, 4475, 4800],
     ]),
     "assorted-individual-tartlets": {
       mode: "builder",
       mixGroup: "tartlets",
-      offers: [["assorted-4", "4-count assortment", 4, 3075, null]],
+      offers: [
+        ["assorted-4", "4-count assortment", 4, 2650, null],
+      ],
     },
     "vanilla-custard-fresh-berry-tartlet": fixed("tartlets", [
-      ["each", "Each", 1, 825, null],
-      ["pack-4", "4-pack", 4, 3075, 3300],
+      ["each", "Each", 1, 700, null],
+      ["pack-4", "4-pack", 4, 2650, 2800],
     ]),
     "lemon-cream-tartlet": fixed("tartlets", [
-      ["each", "Each", 1, 1150, null],
-      ["pack-4", "4-pack", 4, 4375, 4600],
+      ["each", "Each", 1, 700, null],
+      ["pack-4", "4-pack", 4, 2650, 2800],
     ]),
     "chocolate-hazelnut-tartlet": fixed("tartlets", [
-      ["each", "Each", 1, 1450, null],
-      ["pack-4", "4-pack", 4, 5600, 5800],
+      ["each", "Each", 1, 700, null],
+      ["pack-4", "4-pack", 4, 2650, 2800],
     ]),
-    "classic-tiramisu": quote,
-    "traditional-portuguese-flan": quote,
-    chocoflan: quote,
-    "new-york-style-cheesecake": quote,
+    "classic-tiramisu": fixed(null, [
+      ["each", "Per slice", 1, 700, null],
+    ]),
+    "traditional-portuguese-flan": fixed(null, [
+      ["each", "Per slice", 1, 450, null],
+      ["whole", "Whole flan", 5, 2000, 2250],
+    ]),
+    chocoflan: fixed(null, [
+      ["each", "Per slice", 1, 500, null],
+      ["whole", "Whole dessert", 5, 2500, null],
+    ]),
+    "new-york-style-cheesecake": fixed(null, [
+      ["each", "Whole 9-inch cheesecake", 1, 5000, null],
+    ]),
     "four-layer-chocolate-cake": quote,
     "carrot-cake": quote,
     "classic-vanilla-cupcakes": fixed(null, [
-      ["each", "Each", 1, 650, null],
-      ["pack-6", "6-pack", 6, 3700, 3900],
-      ["dozen", "Dozen", 12, 7200, 7800],
+      ["each", "Each", 1, 125, null],
+      ["pack-6", "6-pack", 6, 700, 750],
+      ["dozen", "Dozen", 12, 1400, 1500],
     ]),
     "classic-chocolate-cupcakes": fixed(null, [
-      ["each", "Each", 1, 650, null],
-      ["pack-6", "6-pack", 6, 3700, 3900],
-      ["dozen", "Dozen", 12, 7200, 7800],
+      ["each", "Each", 1, 125, null],
+      ["pack-6", "6-pack", 6, 700, 750],
+      ["dozen", "Dozen", 12, 1400, 1500],
     ]),
     "red-velvet-cupcakes": fixed(null, [
-      ["each", "Each", 1, 700, null],
-      ["pack-6", "6-pack", 6, 4000, 4200],
-      ["dozen", "Dozen", 12, 7800, 8400],
+      ["each", "Each", 1, 125, null],
+      ["pack-6", "6-pack", 6, 700, 750],
+      ["dozen", "Dozen", 12, 1400, 1500],
     ]),
     "carrot-cupcakes": fixed(null, [
-      ["each", "Each", 1, 700, null],
-      ["pack-6", "6-pack", 6, 4000, 4200],
-      ["dozen", "Dozen", 12, 7800, 8400],
+      ["each", "Each", 1, 125, null],
+      ["pack-6", "6-pack", 6, 700, 750],
+      ["dozen", "Dozen", 12, 1400, 1500],
     ]),
     "pasteis-de-nata": fixed(null, [
-      ["each", "Each", 1, 625, null],
-      ["pack-6", "6-pack", 6, 3500, 3750],
-      ["dozen", "Dozen", 12, 6900, 7500],
+      ["each", "Each", 1, 175, null],
+      ["pack-6", "6-pack", 6, 1000, 1050],
+      ["dozen", "Dozen", 12, 1950, 2100],
     ]),
   });
 });
 
-test("exactly the six whole desserts retain the custom-quote workflow", () => {
+test("exactly the two layer cakes retain the custom-quote workflow", () => {
   const quoteOnlyIds = menuCategories
     .flatMap((category) => category.items)
     .filter((item) => item.pricing.mode === "quote")
     .map((item) => item.id)
     .sort();
 
-  assert.deepEqual(quoteOnlyIds, [
-    "carrot-cake",
-    "chocoflan",
-    "classic-tiramisu",
-    "four-layer-chocolate-cake",
-    "new-york-style-cheesecake",
-    "traditional-portuguese-flan",
-  ]);
+  assert.deepEqual(quoteOnlyIds, ["carrot-cake", "four-layer-chocolate-cake"]);
 });
 
 test("the catalog encodes the approved exact-fill mix rules", () => {
@@ -405,7 +411,7 @@ test("mixed bundle prices use trusted flavor rates and approved rounding", () =>
         { productId: "white-chocolate-macadamia", units: 2 },
       ],
     }),
-    2850,
+    2050,
   );
   assert.equal(
     priceMixedBundle(menuData, {
@@ -417,7 +423,7 @@ test("mixed bundle prices use trusted flavor rates and approved rounding", () =>
         { productId: "white-chocolate-macadamia", units: 4 },
       ],
     }),
-    5350,
+    4000,
   );
   assert.equal(
     priceMixedBundle(menuData, {
@@ -428,7 +434,7 @@ test("mixed bundle prices use trusted flavor rates and approved rounding", () =>
         { productId: "funfetti-blondie", units: 2 },
       ],
     }),
-    1700,
+    1150,
   );
   assert.equal(
     priceMixedBundle(menuData, {
@@ -439,7 +445,7 @@ test("mixed bundle prices use trusted flavor rates and approved rounding", () =>
         { productId: "blueberry-jumbo-muffin", units: 3 },
       ],
     }),
-    4425,
+    1700,
   );
   assert.equal(
     priceMixedBundle(menuData, {
@@ -451,7 +457,7 @@ test("mixed bundle prices use trusted flavor rates and approved rounding", () =>
         { productId: "chocolate-hazelnut-tartlet", units: 1 },
       ],
     }),
-    4050,
+    2650,
   );
   assert.equal(
     priceBuilderBundle(menuData, {
@@ -464,7 +470,7 @@ test("mixed bundle prices use trusted flavor rates and approved rounding", () =>
         { productId: "chocolate-hazelnut-tartlet", units: 1 },
       ],
     }),
-    4050,
+    2650,
   );
 });
 
@@ -590,10 +596,10 @@ test("cart totals resolve trusted catalog prices instead of submitted prices", (
         priceCents: 1,
       },
     ]),
-    3400,
+    2750,
   );
   assert.deepEqual(priceFixedQuantity(menuData, "classic-chocolate-chip", 19), {
-    subtotalCents: 7225,
+    subtotalCents: 6250,
     appliedOffers: [
       { offerId: "dozen", count: 1 },
       { offerId: "pack-6", count: 1 },
@@ -601,7 +607,7 @@ test("cart totals resolve trusted catalog prices instead of submitted prices", (
     ],
   });
   assert.throws(
-    () => priceOfferCart(menuData, [{ productId: "chocoflan", offerId: "quote" }]),
+    () => priceOfferCart(menuData, [{ productId: "carrot-cake", offerId: "quote" }]),
     /does not have fixed-price offers/,
   );
 });
