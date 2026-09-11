@@ -1,46 +1,18 @@
-insert into public.products(id, name, pricing_mode, sort_order) values
-  ('coco-double-chocolate', 'COCO’s Double Chocolate Cookies & Cream', 'fixed', 10),
-  ('toffee-brown-butter-espresso', 'TOFFEE’s Brown Butter Espresso Crunch', 'fixed', 20),
-  ('classic-chocolate-chip', 'Classic Chocolate Chip Cookie', 'fixed', 30),
-  ('cranberry-white-chocolate-oatmeal', 'Seasonal Cranberry White Chocolate Oatmeal Cookie', 'fixed', 40),
-  ('white-chocolate-macadamia', 'White Chocolate Macadamia Cookie', 'fixed', 50),
-  ('smores-cookie', 'S’mores Cookie', 'fixed', 60),
-  ('peanut-butter-blossom', 'Peanut Butter Blossom Cookie', 'fixed', 70),
-  ('classic-fudge-brownie', 'Classic Fudge Brownie', 'fixed', 80),
-  ('funfetti-blondie', 'Funfetti Blondie', 'fixed', 90),
-  ('chocolate-chip-jumbo-muffin', 'Chocolate Chip Jumbo Muffin', 'fixed', 100),
-  ('blueberry-jumbo-muffin', 'Blueberry Jumbo Muffin', 'fixed', 110),
-  ('coffee-cake-jumbo-muffin', 'Coffee Cake Jumbo Muffin', 'fixed', 120),
-  ('jumbo-cinnamon-roll', 'Jumbo Individual Cinnamon Roll with Vanilla Icing', 'fixed', 130),
-  ('bacon-gruyere-onion-quiche', 'Bacon, Gruyère & Caramelized Onion Quiche', 'fixed', 140),
-  ('assorted-individual-tartlets', 'Assorted Individual Tartlets', 'builder', 150),
-  ('vanilla-custard-fresh-berry-tartlet', 'Vanilla Custard & Fresh Berry Tartlet', 'fixed', 160),
-  ('lemon-cream-tartlet', 'Lemon Cream Tartlet with Vanilla Cream', 'fixed', 170),
-  ('chocolate-hazelnut-tartlet', 'Chocolate Hazelnut Tartlet', 'fixed', 180),
-  ('classic-tiramisu', 'Classic Tiramisu', 'fixed', 190),
-  ('traditional-portuguese-flan', 'Traditional Portuguese Flan', 'fixed', 200),
-  ('chocoflan', 'Chocoflan', 'fixed', 210),
-  ('new-york-style-cheesecake', 'Classic New York–Style Cheesecake', 'fixed', 220),
-  ('four-layer-chocolate-cake', 'Classic 4-Layer Chocolate Cake', 'quote', 230),
-  ('carrot-cake', 'Carrot Cake with Vanilla-Almond Cream Cheese Frosting', 'quote', 240),
-  ('classic-vanilla-cupcakes', 'Classic Vanilla Cupcakes', 'fixed', 250),
-  ('classic-chocolate-cupcakes', 'Classic Chocolate Cupcakes', 'fixed', 260),
-  ('red-velvet-cupcakes', 'Red Velvet Cupcakes', 'fixed', 270),
-  ('carrot-cupcakes', 'Carrot Cupcakes', 'fixed', 280),
-  ('pasteis-de-nata', 'Pastéis de Nata', 'fixed', 290)
-on conflict (id) do update set
-  name = excluded.name,
-  pricing_mode = excluded.pricing_mode,
-  sort_order = excluded.sort_order,
-  active = true;
+-- Applies the direct-customer price revision approved on 2026-09-11.
+-- Every product moves to the owner's new per-unit rate and bundle prices.
+-- Brownies and blondies switch from a 4-pack to a 6-pack, so the brownie mixed
+-- box now fills in sixes. Tiramisu, Portuguese flan, chocoflan and the New
+-- York-style cheesecake leave the custom-quote workflow for fixed per-slice and
+-- whole-dessert prices, leaving only the two layer cakes on custom quotes.
+-- This migration is idempotent so it can safely follow the original catalog seed.
 
-update public.products set mix_group = case
-  when sort_order between 10 and 70 then 'cookies'
-  when sort_order between 80 and 90 then 'brownies-blondies'
-  when sort_order between 100 and 120 then 'muffins'
-  when sort_order between 150 and 180 then 'tartlets'
-  else null
-end;
+update public.products set pricing_mode = 'fixed'
+where id in (
+  'classic-tiramisu',
+  'traditional-portuguese-flan',
+  'chocoflan',
+  'new-york-style-cheesecake'
+);
 
 insert into public.offers(id, product_id, offer_key, label, quantity_units, amount_cents, sort_order) values
   ('coco-double-chocolate:single', 'coco-double-chocolate', 'single', 'Each', 1, 350, 10),
@@ -120,3 +92,15 @@ on conflict (id) do update set
   amount_cents = excluded.amount_cents,
   sort_order = excluded.sort_order,
   active = true;
+
+-- Retire the offers this revision replaces: the four desserts no longer take
+-- custom-quote requests, and brownies and blondies no longer sell in fours.
+update public.offers set active = false
+where id in (
+  'classic-tiramisu:quote',
+  'traditional-portuguese-flan:quote',
+  'chocoflan:quote',
+  'new-york-style-cheesecake:quote',
+  'classic-fudge-brownie:4-pack',
+  'funfetti-blondie:4-pack'
+);

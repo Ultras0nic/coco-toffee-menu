@@ -193,7 +193,7 @@ function normalizedPricing(item) {
     return { mode: "quote", offers: [{ id: "quote", key: "quote", fullId: `${item.id}:quote`, label: "Custom quote", units: 1, priceCents: null, compareAtCents: null }] };
   }
   if (item.id === "assorted-individual-tartlets") {
-    return { mode: "builder", mixGroup: "tartlets", offers: [{ id: "assorted-4", key: "assorted-4", fullId: `${item.id}:assorted-4`, label: "4-count assortment", units: 4, priceCents: 3075, compareAtCents: null }] };
+    return { mode: "builder", mixGroup: "tartlets", offers: [{ id: "assorted-4", key: "assorted-4", fullId: `${item.id}:assorted-4`, label: "4-count assortment", units: 4, priceCents: 2650, compareAtCents: null }] };
   }
   return null;
 }

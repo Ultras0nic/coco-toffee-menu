@@ -1,0 +1,32 @@
+name: Verify menu data
+
+# Runs the checks the deploy workflow runs, but before a merge rather than
+# after it. Deliberately read-only and separate from deploy-pages.yml so a pull
+# request can never reach the Pages publish step.
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: verify-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Verify menu data
+        run: npm test
+      - name: Build public site
+        run: npm run build

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "lastUpdated": "2026-09-09",
+  "lastUpdated": "2026-09-11",
   "assetVersion": "2026-09-01-1",
   "pricingCatalog": {
     "currency": "USD",
@@ -18,7 +18,7 @@
         "minUnitsPerProduct": 2
       },
       "brownies-blondies": {
-        "bundleQuantities": [4, 12],
+        "bundleQuantities": [6, 12],
         "priceMethod": "weighted-offer-rate",
         "roundUpToCents": 50,
         "exactFill": true
@@ -57,14 +57,14 @@
           "description": "Dark cocoa and fine Oreo cookie powder create a deep cookies-and-cream base, finished with Oreo pieces, creamy white chocolate and melted semi-sweet chocolate.",
           "texture": "Thick and fudgy with a brownie-like center and crisp cookie pieces.",
           "allergens": "Contains wheat, milk, egg and soy. Made in a home kitchen that also handles peanuts and tree nuts.",
-          "price": "$4.50 each · 6-pack $26 · dozen $51",
+          "price": "$3.50 each · 6-pack $20 · dozen $39",
           "pricing": {
             "mode": "fixed",
             "mixGroup": "cookies",
             "offers": [
-              { "id": "each", "label": "Each", "units": 1, "priceCents": 450, "compareAtCents": null },
-              { "id": "pack-6", "label": "6-pack", "units": 6, "priceCents": 2600, "compareAtCents": 2700 },
-              { "id": "dozen", "label": "Dozen", "units": 12, "priceCents": 5100, "compareAtCents": 5400 }
+              { "id": "each", "label": "Each", "units": 1, "priceCents": 350, "compareAtCents": null },
+              { "id": "pack-6", "label": "6-pack", "units": 6, "priceCents": 2000, "compareAtCents": 2100 },
+              { "id": "dozen", "label": "Dozen", "units": 12, "priceCents": 3900, "compareAtCents": 4200 }
             ]
           },
           "photo": "assets/menu/coco-double-chocolate.jpg?v=2026-09-01-1"
@@ -75,14 +75,14 @@
           "description": "Nutty brown butter and espresso meet semi-sweet and milk chocolate, with generous pieces of homemade crunchy caramelized toffee.",
           "texture": "Thick and chewy with melted chocolate and crisp toffee throughout.",
           "allergens": "Contains wheat, milk, egg and soy. Contains caffeine. Made in a home kitchen that also handles peanuts and tree nuts.",
-          "price": "$5.25 each · 6-pack $28.75 · dozen $57",
+          "price": "$3.50 each · 6-pack $20 · dozen $39",
           "pricing": {
             "mode": "fixed",
             "mixGroup": "cookies",
             "offers": [
-              { "id": "each", "label": "Each", "units": 1, "priceCents": 525, "compareAtCents": null },
-              { "id": "pack-6", "label": "6-pack", "units": 6, "priceCents": 2875, "compareAtCents": 3150 },
-              { "id": "dozen", "label": "Dozen", "units": 12, "priceCents": 5700, "compareAtCents": 6300 }
+              { "id": "each", "label": "Each", "units": 1, "priceCents": 350, "compareAtCents": null },
+              { "id": "pack-6", "label": "6-pack", "units": 6, "priceCents": 2000, "compareAtCents": 2100 },
+              { "id": "dozen", "label": "Dozen", "units": 12, "priceCents": 3900, "compareAtCents": 4200 }
             ]
           },
           "photo": "assets/menu/toffee-brown-butter-espresso.jpg?v=2026-09-01-1"
@@ -93,14 +93,14 @@
           "description": "A buttery, vanilla-forward cookie loaded with semi-sweet and milk chocolate for a rich chocolate flavor without excessive sweetness.",
           "texture": "Thick and chewy with golden edges, a soft center and pools of melted chocolate.",
           "allergens": "Contains wheat, milk, egg and soy. Made in a home kitchen that also handles peanuts and tree nuts.",
-          "price": "$4.25 each · 6-pack $23 · dozen $45",
+          "price": "$3.50 each · 6-pack $20 · dozen $39",
           "pricing": {
             "mode": "fixed",
             "mixGroup": "cookies",
             "offers": [
-              { "id": "each", "label": "Each", "units": 1, "priceCents": 425, "compareAtCents": null },
-              { "id": "pack-6", "label": "6-pack", "units": 6, "priceCents": 2300, "compareAtCents": 2550 },
-              { "id": "dozen", "label": "Dozen", "units": 12, "priceCents": 4500, "compareAtCents": 5100 }
+              { "id": "each", "label": "Each", "units": 1, "priceCents": 350, "compareAtCents": null },
+              { "id": "pack-6", "label": "6-pack", "units": 6, "priceCents": 2000, "compareAtCents": 2100 },
+              { "id": "dozen", "label": "Dozen", "units": 12, "priceCents": 3900, "compareAtCents": 4200 }
             ]
           },
           "photo": "assets/menu/classic-chocolate-chip-cookie.jpg?v=2026-09-01-1"
@@ -111,14 +111,14 @@
           "description": "Old-fashioned oats, tart dried cranberries and white chocolate are brightened with fresh orange zest and warm cinnamon.",
           "texture": "Thick and chewy with crisp edges, a soft center and a hearty oat crumb.",
           "allergens": "Contains wheat, milk, egg, soy and oats. Made in a home kitchen that also handles peanuts and tree nuts.",
-          "price": "$4.50 each · 6-pack $26 · dozen $51",
+          "price": "$3.50 each · 6-pack $20 · dozen $39",
           "pricing": {
             "mode": "fixed",
             "mixGroup": "cookies",
             "offers": [
-              { "id": "each", "label": "Each", "units": 1, "priceCents": 450, "compareAtCents": null },
-              { "id": "pack-6", "label": "6-pack", "units": 6, "priceCents": 2600, "compareAtCents": 2700 },
-              { "id": "dozen", "label": "Dozen", "units": 12, "priceCents": 5100, "compareAtCents": 5400 }
+              { "id": "each", "label": "Each", "units": 1, "priceCents": 350, "compareAtCents": null },
+              { "id": "pack-6", "label": "6-pack", "units": 6, "priceCents": 2000, "compareAtCents": 2100 },
+              { "id": "dozen", "label": "Dozen", "units": 12, "priceCents": 3900, "compareAtCents": 4200 }
             ]
           },
           "photo": "assets/menu/cranberry-white-chocolate-oatmeal.jpg?v=2026-09-01-1"
@@ -129,14 +129,14 @@
           "description": "Creamy white chocolate and roasted macadamia pieces fill a rich vanilla cookie designed for a premium bakery-style bite.",
           "texture": "Thick and chunky with a soft center, crisp golden edges and crunchy roasted nuts.",
           "allergens": "Contains wheat, milk, egg, soy and tree nuts (macadamia). Made in a home kitchen that also handles peanuts and other tree nuts.",
-          "price": "$5.50 each · 6-pack $32.50 · dozen $64.50",
+          "price": "$3.75 each · 6-pack $22 · dozen $42",
           "pricing": {
             "mode": "fixed",
             "mixGroup": "cookies",
             "offers": [
-              { "id": "each", "label": "Each", "units": 1, "priceCents": 550, "compareAtCents": null },
-              { "id": "pack-6", "label": "6-pack", "units": 6, "priceCents": 3250, "compareAtCents": 3300 },
-              { "id": "dozen", "label": "Dozen", "units": 12, "priceCents": 6450, "compareAtCents": 6600 }
+              { "id": "each", "label": "Each", "units": 1, "priceCents": 375, "compareAtCents": null },
+              { "id": "pack-6", "label": "6-pack", "units": 6, "priceCents": 2200, "compareAtCents": 2250 },
+              { "id": "dozen", "label": "Dozen", "units": 12, "priceCents": 4200, "compareAtCents": 4500 }
             ]
           },
           "photo": ""
@@ -147,14 +147,14 @@
           "description": "Graham-flavored cookie dough surrounds a gooey marshmallow center with milk and semi-sweet chocolate, visible graham pieces and a toasted graham base.",
           "texture": "Thick and soft-centered with gooey marshmallow, melted chocolate and crisp graham accents.",
           "allergens": "Contains wheat, milk, egg and soy. Made in a home kitchen that also handles peanuts and tree nuts.",
-          "price": "$4.50 each · 6-pack $26 · dozen $51",
+          "price": "$3.50 each · 6-pack $20 · dozen $39",
           "pricing": {
             "mode": "fixed",
             "mixGroup": "cookies",
             "offers": [
-              { "id": "each", "label": "Each", "units": 1, "priceCents": 450, "compareAtCents": null },
-              { "id": "pack-6", "label": "6-pack", "units": 6, "priceCents": 2600, "compareAtCents": 2700 },
-              { "id": "dozen", "label": "Dozen", "units": 12, "priceCents": 5100, "compareAtCents": 5400 }
+              { "id": "each", "label": "Each", "units": 1, "priceCents": 350, "compareAtCents": null },
+              { "id": "pack-6", "label": "6-pack", "units": 6, "priceCents": 2000, "compareAtCents": 2100 },
+              { "id": "dozen", "label": "Dozen", "units": 12, "priceCents": 3900, "compareAtCents": 4200 }
             ]
           },
           "photo": ""
@@ -165,14 +165,14 @@
           "description": "A peanut-butter-forward cookie with a light sugar coating and one decorative molded chocolate centerpiece.",
           "texture": "Thick, soft and chewy with a lightly crackled exterior.",
           "allergens": "Contains wheat, milk, egg, peanuts and soy. Made in a home kitchen that also handles tree nuts.",
-          "price": "$5 each · 6-pack $29 · dozen $57",
+          "price": "$3.50 each · 6-pack $20 · dozen $39",
           "pricing": {
             "mode": "fixed",
             "mixGroup": "cookies",
             "offers": [
-              { "id": "each", "label": "Each", "units": 1, "priceCents": 500, "compareAtCents": null },
-              { "id": "pack-6", "label": "6-pack", "units": 6, "priceCents": 2900, "compareAtCents": 3000 },
-              { "id": "dozen", "label": "Dozen", "units": 12, "priceCents": 5700, "compareAtCents": 6000 }
+              { "id": "each", "label": "Each", "units": 1, "priceCents": 350, "compareAtCents": null },
+              { "id": "pack-6", "label": "6-pack", "units": 6, "priceCents": 2000, "compareAtCents": 2100 },
+              { "id": "dozen", "label": "Dozen", "units": 12, "priceCents": 3900, "compareAtCents": 4200 }
             ]
           },
           "photo": ""
@@ -191,14 +191,14 @@
           "description": "Dark chocolate, Dutch-process cocoa, a touch of coffee and semi-sweet chocolate chips create a deeply chocolate brownie.",
           "texture": "Dense and fudgy with chewy edges and a shiny top.",
           "allergens": "Contains wheat, milk, egg and soy. Contains caffeine. Made in a home kitchen that also handles peanuts and tree nuts.",
-          "price": "$4.50 each · 4-pack $17 · dozen $51",
+          "price": "$3 each · 6-pack $17 · dozen $33",
           "pricing": {
             "mode": "fixed",
             "mixGroup": "brownies-blondies",
             "offers": [
-              { "id": "each", "label": "Each", "units": 1, "priceCents": 450, "compareAtCents": null },
-              { "id": "pack-4", "label": "4-pack", "units": 4, "priceCents": 1700, "compareAtCents": 1800 },
-              { "id": "dozen", "label": "Dozen", "units": 12, "priceCents": 5100, "compareAtCents": 5400 }
+              { "id": "each", "label": "Each", "units": 1, "priceCents": 300, "compareAtCents": null },
+              { "id": "pack-6", "label": "6-pack", "units": 6, "priceCents": 1700, "compareAtCents": 1800 },
+              { "id": "dozen", "label": "Dozen", "units": 12, "priceCents": 3300, "compareAtCents": 3600 }
             ]
           },
           "photo": ""
@@ -209,14 +209,14 @@
           "description": "A vanilla birthday-cake blondie built on white chocolate, filled with white chocolate chips and bright rainbow sprinkles.",
           "texture": "Thick, chewy, buttery and soft with a rich white-chocolate crumb.",
           "allergens": "Contains wheat, milk, egg and soy. Made in a home kitchen that also handles peanuts and tree nuts.",
-          "price": "$4.50 each · 4-pack $17 · dozen $51",
+          "price": "$3 each · 6-pack $17 · dozen $33",
           "pricing": {
             "mode": "fixed",
             "mixGroup": "brownies-blondies",
             "offers": [
-              { "id": "each", "label": "Each", "units": 1, "priceCents": 450, "compareAtCents": null },
-              { "id": "pack-4", "label": "4-pack", "units": 4, "priceCents": 1700, "compareAtCents": 1800 },
-              { "id": "dozen", "label": "Dozen", "units": 12, "priceCents": 5100, "compareAtCents": 5400 }
+              { "id": "each", "label": "Each", "units": 1, "priceCents": 300, "compareAtCents": null },
+              { "id": "pack-6", "label": "6-pack", "units": 6, "priceCents": 1700, "compareAtCents": 1800 },
+              { "id": "dozen", "label": "Dozen", "units": 12, "priceCents": 3300, "compareAtCents": 3600 }
             ]
           },
           "photo": ""
@@ -235,13 +235,13 @@
           "description": "A large bakery-style vanilla muffin with chocolate throughout and a tall golden dome.",
           "texture": "Moist and buttery with a tender crumb and melted chocolate chips.",
           "allergens": "Contains wheat, milk, egg and soy. Made in a home kitchen that also handles peanuts and tree nuts.",
-          "price": "$7.50 each · 6-pack $44",
+          "price": "$3 each · 6-pack $17",
           "pricing": {
             "mode": "fixed",
             "mixGroup": "muffins",
             "offers": [
-              { "id": "each", "label": "Each", "units": 1, "priceCents": 750, "compareAtCents": null },
-              { "id": "pack-6", "label": "6-pack", "units": 6, "priceCents": 4400, "compareAtCents": 4500 }
+              { "id": "each", "label": "Each", "units": 1, "priceCents": 300, "compareAtCents": null },
+              { "id": "pack-6", "label": "6-pack", "units": 6, "priceCents": 1700, "compareAtCents": 1800 }
             ]
           },
           "photo": ""
@@ -252,13 +252,13 @@
           "description": "Fresh blueberries fill a lightly lemon-scented vanilla muffin finished with a sparkling coarse-sugar top.",
           "texture": "Tall and tender with distinct berries, a moist crumb and a lightly crunchy top.",
           "allergens": "Contains wheat, milk and egg. Made in a home kitchen that also handles peanuts, tree nuts and soy.",
-          "price": "$7.75 each · 6-pack $44.25",
+          "price": "$3 each · 6-pack $17",
           "pricing": {
             "mode": "fixed",
             "mixGroup": "muffins",
             "offers": [
-              { "id": "each", "label": "Each", "units": 1, "priceCents": 775, "compareAtCents": null },
-              { "id": "pack-6", "label": "6-pack", "units": 6, "priceCents": 4425, "compareAtCents": 4650 }
+              { "id": "each", "label": "Each", "units": 1, "priceCents": 300, "compareAtCents": null },
+              { "id": "pack-6", "label": "6-pack", "units": 6, "priceCents": 1700, "compareAtCents": 1800 }
             ]
           },
           "photo": ""
@@ -269,13 +269,13 @@
           "description": "A sour-cream muffin layered with a cinnamon ribbon and topped generously with buttery bakery-style streusel.",
           "texture": "Moist and tender with a substantial crunchy crumb topping.",
           "allergens": "Contains wheat, milk and egg. Made in a home kitchen that also handles peanuts, tree nuts and soy.",
-          "price": "$7.75 each · 6-pack $44",
+          "price": "$3 each · 6-pack $17",
           "pricing": {
             "mode": "fixed",
             "mixGroup": "muffins",
             "offers": [
-              { "id": "each", "label": "Each", "units": 1, "priceCents": 775, "compareAtCents": null },
-              { "id": "pack-6", "label": "6-pack", "units": 6, "priceCents": 4400, "compareAtCents": 4650 }
+              { "id": "each", "label": "Each", "units": 1, "priceCents": 300, "compareAtCents": null },
+              { "id": "pack-6", "label": "6-pack", "units": 6, "priceCents": 1700, "compareAtCents": 1800 }
             ]
           },
           "photo": ""
@@ -286,12 +286,12 @@
           "description": "A large individual roll with a defined cinnamon-brown-sugar spiral and a generous layer of smooth vanilla butter icing.",
           "texture": "Tall, soft and fluffy with a moist, gooey center and lightly caramelized edges.",
           "allergens": "Contains wheat, milk and egg. Made in a home kitchen that also handles peanuts, tree nuts and soy.",
-          "price": "$11 each · 6-pack $62.25",
+          "price": "$4.50 each · 6-pack $26",
           "pricing": {
             "mode": "fixed",
             "offers": [
-              { "id": "each", "label": "Each", "units": 1, "priceCents": 1100, "compareAtCents": null },
-              { "id": "pack-6", "label": "6-pack", "units": 6, "priceCents": 6225, "compareAtCents": 6600 }
+              { "id": "each", "label": "Each", "units": 1, "priceCents": 450, "compareAtCents": null },
+              { "id": "pack-6", "label": "6-pack", "units": 6, "priceCents": 2600, "compareAtCents": 2700 }
             ]
           },
           "photo": "assets/menu/jumbo-cinnamon-roll.jpg?v=2026-09-01-1"
@@ -310,13 +310,13 @@
           "description": "A French-style individual quiche with smoky bacon, sweet caramelized onion, Gruyère and a silky seasoned custard.",
           "texture": "Thin crisp buttery pastry with a creamy custard that holds a clean shape.",
           "allergens": "Contains wheat, milk and egg. Made in a home kitchen that also handles peanuts, tree nuts and soy.",
-          "price": "$7 each · 6-pack $38.25 · dozen $76",
+          "price": "$4 each · 6-pack $23 · dozen $45",
           "pricing": {
             "mode": "fixed",
             "offers": [
-              { "id": "each", "label": "Each", "units": 1, "priceCents": 700, "compareAtCents": null },
-              { "id": "pack-6", "label": "6-pack", "units": 6, "priceCents": 3825, "compareAtCents": 4200 },
-              { "id": "dozen", "label": "Dozen", "units": 12, "priceCents": 7600, "compareAtCents": 8400 }
+              { "id": "each", "label": "Each", "units": 1, "priceCents": 400, "compareAtCents": null },
+              { "id": "pack-6", "label": "6-pack", "units": 6, "priceCents": 2300, "compareAtCents": 2400 },
+              { "id": "dozen", "label": "Dozen", "units": 12, "priceCents": 4500, "compareAtCents": 4800 }
             ]
           },
           "photo": ""
@@ -335,7 +335,7 @@
           "description": "An assortment of vanilla custard and fresh berry, lemon cream with vanilla cream, and chocolate hazelnut tartlets in crisp almond pâte sucrée shells.",
           "texture": "Thin crisp shells with silky fillings and distinct fruit, citrus and chocolate finishes.",
           "allergens": "The assortment contains wheat, milk, egg, soy and tree nuts (almond and hazelnut). Made in a home kitchen that also handles peanuts.",
-          "price": "4-count assortment from $30.75",
+          "price": "4-count assortment from $26.50",
           "pricing": {
             "mode": "builder",
             "mixGroup": "tartlets",
@@ -345,7 +345,7 @@
               "chocolate-hazelnut-tartlet"
             ],
             "offers": [
-              { "id": "assorted-4", "label": "4-count assortment", "units": 4, "priceCents": 3075, "compareAtCents": null }
+              { "id": "assorted-4", "label": "4-count assortment", "units": 4, "priceCents": 2650, "compareAtCents": null }
             ]
           },
           "photo": ""
@@ -356,13 +356,13 @@
           "description": "A crisp almond pâte sucrée shell filled with silky vanilla custard, generously topped with fresh berries and finished with a light glaze.",
           "texture": "Crisp pastry, smooth custard and fresh juicy berries.",
           "allergens": "Contains wheat, milk, egg and tree nuts (almond). Made in a home kitchen that also handles peanuts, other tree nuts and soy.",
-          "price": "$8.25 each · 4-pack $30.75",
+          "price": "$7 each · 4-pack $26.50",
           "pricing": {
             "mode": "fixed",
             "mixGroup": "tartlets",
             "offers": [
-              { "id": "each", "label": "Each", "units": 1, "priceCents": 825, "compareAtCents": null },
-              { "id": "pack-4", "label": "4-pack", "units": 4, "priceCents": 3075, "compareAtCents": 3300 }
+              { "id": "each", "label": "Each", "units": 1, "priceCents": 700, "compareAtCents": null },
+              { "id": "pack-4", "label": "4-pack", "units": 4, "priceCents": 2650, "compareAtCents": 2800 }
             ]
           },
           "photo": ""
@@ -373,13 +373,13 @@
           "description": "A crisp almond pâte sucrée shell filled with bright lemon cream and finished with a neat ring of stabilized vanilla mascarpone cream.",
           "texture": "Crisp pastry with silky lemon filling and light, creamy vanilla accents.",
           "allergens": "Contains wheat, milk, egg and tree nuts (almond). Made in a home kitchen that also handles peanuts, other tree nuts and soy.",
-          "price": "$11.50 each · 4-pack $43.75",
+          "price": "$7 each · 4-pack $26.50",
           "pricing": {
             "mode": "fixed",
             "mixGroup": "tartlets",
             "offers": [
-              { "id": "each", "label": "Each", "units": 1, "priceCents": 1150, "compareAtCents": null },
-              { "id": "pack-4", "label": "4-pack", "units": 4, "priceCents": 4375, "compareAtCents": 4600 }
+              { "id": "each", "label": "Each", "units": 1, "priceCents": 700, "compareAtCents": null },
+              { "id": "pack-4", "label": "4-pack", "units": 4, "priceCents": 2650, "compareAtCents": 2800 }
             ]
           },
           "photo": ""
@@ -390,13 +390,13 @@
           "description": "A crisp almond pâte sucrée shell with silky dark chocolate ganache, light hazelnut whipped ganache and toasted hazelnuts.",
           "texture": "Crisp pastry with smooth rich chocolate and airy hazelnut cream.",
           "allergens": "Contains wheat, milk, egg, soy and tree nuts (almond and hazelnut). Made in a home kitchen that also handles peanuts.",
-          "price": "$14.50 each · 4-pack $56",
+          "price": "$7 each · 4-pack $26.50",
           "pricing": {
             "mode": "fixed",
             "mixGroup": "tartlets",
             "offers": [
-              { "id": "each", "label": "Each", "units": 1, "priceCents": 1450, "compareAtCents": null },
-              { "id": "pack-4", "label": "4-pack", "units": 4, "priceCents": 5600, "compareAtCents": 5800 }
+              { "id": "each", "label": "Each", "units": 1, "priceCents": 700, "compareAtCents": null },
+              { "id": "pack-4", "label": "4-pack", "units": 4, "priceCents": 2650, "compareAtCents": 2800 }
             ]
           },
           "photo": ""
@@ -415,11 +415,12 @@
           "description": "Two layers of espresso-soaked ladyfingers and generous mascarpone cream with subtle vanilla-rum aroma and a chocolate finish.",
           "texture": "Light and silky with fully softened, never soggy ladyfingers and clean bakery-style slices.",
           "allergens": "Contains wheat, milk and egg. Contains caffeine and alcohol. Made in a home kitchen that also handles peanuts, tree nuts and soy.",
-          "price": "Custom quote · 5-serving pan from $50",
+          "price": "$7 per slice · 5-slice pan $30",
           "pricing": {
-            "mode": "quote",
+            "mode": "fixed",
             "offers": [
-              { "id": "quote", "label": "Custom quote", "units": null, "priceCents": null, "compareAtCents": null }
+              { "id": "each", "label": "Per slice", "units": 1, "priceCents": 700, "compareAtCents": null },
+              { "id": "whole", "label": "5-slice pan", "units": 5, "priceCents": 3000, "compareAtCents": 3500 }
             ]
           },
           "photo": ""
@@ -430,11 +431,12 @@
           "description": "A classic ring flan with a glossy deep-amber caramel top, abundant caramel sauce, rich egg-and-milk flavor and subtle lemon-vanilla aroma.",
           "texture": "Smooth and silky, firm enough to unmold and slice without becoming dense or rubbery.",
           "allergens": "Contains milk and egg. Made in a home kitchen that also handles wheat, peanuts, tree nuts and soy.",
-          "price": "Custom quote · whole flan from $50",
+          "price": "$4.50 per slice · whole flan $20",
           "pricing": {
-            "mode": "quote",
+            "mode": "fixed",
             "offers": [
-              { "id": "quote", "label": "Custom quote", "units": null, "priceCents": null, "compareAtCents": null }
+              { "id": "each", "label": "Per slice", "units": 1, "priceCents": 450, "compareAtCents": null },
+              { "id": "whole", "label": "Whole flan", "units": 5, "priceCents": 2000, "compareAtCents": 2250 }
             ]
           },
           "photo": ""
@@ -445,11 +447,12 @@
           "description": "Glossy caramel-topped Portuguese-style flan layered over moist dark chocolate cake for a balanced caramel-and-cocoa dessert.",
           "texture": "Silky creamy custard with clearly defined layers and a moist chocolate cake base.",
           "allergens": "Contains wheat, milk and egg. Contains caffeine. Made in a home kitchen that also handles peanuts, tree nuts and soy.",
-          "price": "Custom quote · whole dessert from $80",
+          "price": "$5 per slice · whole dessert $25",
           "pricing": {
-            "mode": "quote",
+            "mode": "fixed",
             "offers": [
-              { "id": "quote", "label": "Custom quote", "units": null, "priceCents": null, "compareAtCents": null }
+              { "id": "each", "label": "Per slice", "units": 1, "priceCents": 500, "compareAtCents": null },
+              { "id": "whole", "label": "Whole dessert", "units": 5, "priceCents": 2500, "compareAtCents": null }
             ]
           },
           "photo": ""
@@ -468,11 +471,11 @@
           "description": "A rich vanilla cheesecake with balanced cream-cheese tang and a thin graham cracker crust.",
           "texture": "Dense-creamy and smooth, with clean slices after chilling and a creamy finish at serving temperature.",
           "allergens": "Contains wheat, milk and egg. Made in a home kitchen that also handles peanuts, tree nuts and soy.",
-          "price": "Custom quote · 9-inch cake from $85",
+          "price": "$50 per whole 9-inch cheesecake · flavors and finishes on request",
           "pricing": {
-            "mode": "quote",
+            "mode": "fixed",
             "offers": [
-              { "id": "quote", "label": "Custom quote", "units": null, "priceCents": null, "compareAtCents": null }
+              { "id": "each", "label": "Whole 9-inch cheesecake", "units": 1, "priceCents": 5000, "compareAtCents": null }
             ]
           },
           "photo": ""
@@ -513,13 +516,13 @@
           "description": "Vanilla and vanilla bean create a full-flavored cupcake topped with a tall swirl of smooth vanilla buttercream.",
           "texture": "Soft, fine and moist with enough structure to support generous frosting.",
           "allergens": "Contains wheat, milk and egg. Made in a home kitchen that also handles peanuts, tree nuts and soy.",
-          "price": "$6.50 each · 6-pack $37 · dozen $72",
+          "price": "$1.25 each · 6-pack $7 · dozen $14",
           "pricing": {
             "mode": "fixed",
             "offers": [
-              { "id": "each", "label": "Each", "units": 1, "priceCents": 650, "compareAtCents": null },
-              { "id": "pack-6", "label": "6-pack", "units": 6, "priceCents": 3700, "compareAtCents": 3900 },
-              { "id": "dozen", "label": "Dozen", "units": 12, "priceCents": 7200, "compareAtCents": 7800 }
+              { "id": "each", "label": "Each", "units": 1, "priceCents": 125, "compareAtCents": null },
+              { "id": "pack-6", "label": "6-pack", "units": 6, "priceCents": 700, "compareAtCents": 750 },
+              { "id": "dozen", "label": "Dozen", "units": 12, "priceCents": 1400, "compareAtCents": 1500 }
             ]
           },
           "photo": ""
@@ -530,13 +533,13 @@
           "description": "Rich chocolate cupcakes topped with a generous swirl of smooth buttercream. Specialty fillings and custom decoration can be discussed for larger orders.",
           "texture": "Soft, moist and chocolate-forward with enough structure to support generous frosting.",
           "allergens": "Contains wheat, milk and egg. Contains caffeine. Made in a home kitchen that also handles peanuts, tree nuts and soy.",
-          "price": "$6.50 each · 6-pack $37 · dozen $72",
+          "price": "$1.25 each · 6-pack $7 · dozen $14",
           "pricing": {
             "mode": "fixed",
             "offers": [
-              { "id": "each", "label": "Each", "units": 1, "priceCents": 650, "compareAtCents": null },
-              { "id": "pack-6", "label": "6-pack", "units": 6, "priceCents": 3700, "compareAtCents": 3900 },
-              { "id": "dozen", "label": "Dozen", "units": 12, "priceCents": 7200, "compareAtCents": 7800 }
+              { "id": "each", "label": "Each", "units": 1, "priceCents": 125, "compareAtCents": null },
+              { "id": "pack-6", "label": "6-pack", "units": 6, "priceCents": 700, "compareAtCents": 750 },
+              { "id": "dozen", "label": "Dozen", "units": 12, "priceCents": 1400, "compareAtCents": 1500 }
             ]
           },
           "photo": ""
@@ -547,13 +550,13 @@
           "description": "Classic red velvet cupcakes with a light cocoa flavor and a generous swirl of cream cheese frosting. Custom decoration can be discussed for larger orders.",
           "texture": "Soft, moist and tender with a smooth, tangy frosting finish.",
           "allergens": "Contains wheat, milk and egg. Contains caffeine. Made in a home kitchen that also handles peanuts, tree nuts and soy.",
-          "price": "$7 each · 6-pack $40 · dozen $78",
+          "price": "$1.25 each · 6-pack $7 · dozen $14",
           "pricing": {
             "mode": "fixed",
             "offers": [
-              { "id": "each", "label": "Each", "units": 1, "priceCents": 700, "compareAtCents": null },
-              { "id": "pack-6", "label": "6-pack", "units": 6, "priceCents": 4000, "compareAtCents": 4200 },
-              { "id": "dozen", "label": "Dozen", "units": 12, "priceCents": 7800, "compareAtCents": 8400 }
+              { "id": "each", "label": "Each", "units": 1, "priceCents": 125, "compareAtCents": null },
+              { "id": "pack-6", "label": "6-pack", "units": 6, "priceCents": 700, "compareAtCents": 750 },
+              { "id": "dozen", "label": "Dozen", "units": 12, "priceCents": 1400, "compareAtCents": 1500 }
             ]
           },
           "photo": ""
@@ -564,13 +567,13 @@
           "description": "Spiced carrot cupcakes finished with vanilla-almond cream cheese frosting. No nuts or raisins are added to the cupcake batter.",
           "texture": "Soft, very moist and tender with a smooth, tangy frosting finish.",
           "allergens": "Contains wheat, milk and egg. Frosting includes almond extract. Made in a home kitchen that also handles peanuts, tree nuts and soy.",
-          "price": "$7 each · 6-pack $40 · dozen $78",
+          "price": "$1.25 each · 6-pack $7 · dozen $14",
           "pricing": {
             "mode": "fixed",
             "offers": [
-              { "id": "each", "label": "Each", "units": 1, "priceCents": 700, "compareAtCents": null },
-              { "id": "pack-6", "label": "6-pack", "units": 6, "priceCents": 4000, "compareAtCents": 4200 },
-              { "id": "dozen", "label": "Dozen", "units": 12, "priceCents": 7800, "compareAtCents": 8400 }
+              { "id": "each", "label": "Each", "units": 1, "priceCents": 125, "compareAtCents": null },
+              { "id": "pack-6", "label": "6-pack", "units": 6, "priceCents": 700, "compareAtCents": 750 },
+              { "id": "dozen", "label": "Dozen", "units": 12, "priceCents": 1400, "compareAtCents": 1500 }
             ]
           },
           "photo": ""
@@ -589,13 +592,13 @@
           "description": "Portuguese custard tarts with a crisp laminated shell, silky lemon-and-cinnamon-scented custard and characteristic dark caramelized spots.",
           "texture": "Shattering flaky pastry with a fully baked bottom and tender creamy custard.",
           "allergens": "Contains wheat, milk and egg. Made in a home kitchen that also handles peanuts, tree nuts and soy.",
-          "price": "$6.25 each · 6-pack $35 · dozen $69",
+          "price": "$1.75 each · 6-pack $8 · dozen $14",
           "pricing": {
             "mode": "fixed",
             "offers": [
-              { "id": "each", "label": "Each", "units": 1, "priceCents": 625, "compareAtCents": null },
-              { "id": "pack-6", "label": "6-pack", "units": 6, "priceCents": 3500, "compareAtCents": 3750 },
-              { "id": "dozen", "label": "Dozen", "units": 12, "priceCents": 6900, "compareAtCents": 7500 }
+              { "id": "each", "label": "Each", "units": 1, "priceCents": 175, "compareAtCents": null },
+              { "id": "pack-6", "label": "6-pack", "units": 6, "priceCents": 800, "compareAtCents": 1050 },
+              { "id": "dozen", "label": "Dozen", "units": 12, "priceCents": 1400, "compareAtCents": 2100 }
             ]
           },
           "photo": ""
