@@ -139,7 +139,7 @@
               { "id": "dozen", "label": "Dozen", "units": 12, "priceCents": 4200, "compareAtCents": 4500 }
             ]
           },
-          "photo": ""
+          "photo": "assets/menu/white-chocolate-macadamia.jpg?v=2026-09-01-1"
         },
         {
           "id": "smores-cookie",
@@ -201,7 +201,7 @@
               { "id": "dozen", "label": "Dozen", "units": 12, "priceCents": 3300, "compareAtCents": 3600 }
             ]
           },
-          "photo": ""
+          "photo": "assets/menu/classic-fudge-brownie.jpg?v=2026-09-01-1"
         },
         {
           "id": "funfetti-blondie",
@@ -219,7 +219,7 @@
               { "id": "dozen", "label": "Dozen", "units": 12, "priceCents": 3300, "compareAtCents": 3600 }
             ]
           },
-          "photo": ""
+          "photo": "assets/menu/funfetti-blondie.jpg?v=2026-09-01-1"
         }
       ]
     },
@@ -244,7 +244,7 @@
               { "id": "pack-6", "label": "6-pack", "units": 6, "priceCents": 1700, "compareAtCents": 1800 }
             ]
           },
-          "photo": ""
+          "photo": "assets/menu/chocolate-chip-jumbo-muffin.jpg?v=2026-09-01-1"
         },
         {
           "id": "blueberry-jumbo-muffin",
@@ -261,7 +261,7 @@
               { "id": "pack-6", "label": "6-pack", "units": 6, "priceCents": 1700, "compareAtCents": 1800 }
             ]
           },
-          "photo": ""
+          "photo": "assets/menu/blueberry-jumbo-muffin.jpg?v=2026-09-01-1"
         },
         {
           "id": "coffee-cake-jumbo-muffin",
