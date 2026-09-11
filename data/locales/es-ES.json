@@ -2,14 +2,14 @@
   "schemaVersion": 1,
   "locale": "es-ES",
   "categories": {
-    "cookies": { "name": "Galletas", "note": "Galletas grandes de estilo artesanal. La disponibilidad de temporada puede variar." },
-    "brownies-blondies": { "name": "Brownies y Blondies", "note": "Disponibles como cuadrados grandes de pastelería o en porciones más pequeñas." },
-    "muffins-cinnamon-rolls": { "name": "Muffins y Rollos de Canela", "note": "Muffins jumbo de pastelería y rollos de canela individuales grandes." },
-    "savory-baking": { "name": "Repostería Salada", "note": "Piezas saladas individuales disponibles por encargo." },
-    "tartlets": { "name": "Tartaletas", "note": "Disponibles en surtido o por sabor." },
-    "tiramisu-flans": { "name": "Tiramisú y Flanes", "note": "Los postres grandes pueden porcionarse para facilitar el servicio." },
-    "cakes-cupcakes": { "name": "Tartas y Cupcakes", "note": "Las tartas enteras están disponibles por encargo y pueden entregarse precortadas. Hay otros sabores, rellenos y decoraciones de cupcakes disponibles bajo petición." },
-    "portuguese-pastries": { "name": "Repostería Portuguesa", "note": "Dulces tradicionales elaborados en pequeños lotes." }
+    "cookies": { "name": "Galletas", "note": "Galletas grandes y generosas, de unos 115 g cada una. Dos llevan el nombre de Coco y Toffee, los conejillos de indias que dan nombre a la casa." },
+    "brownies-blondies": { "name": "Brownies y Blondies", "note": "Cuadrados ricos y tiernos, hechos para compartir (o no). Disponibles en cuadrados grandes de pastelería o en porciones más pequeñas para fiestas." },
+    "muffins-cinnamon-rolls": { "name": "Muffins y Rollos de Canela", "note": "Muffins jumbo y rollos de canela tiernos con glaseado, para mañanas tranquilas y un buen café." },
+    "savory-baking": { "name": "Salados", "note": "Para quien prefiere algo salado. Nuestra quiche se hornea en una masa mantecosa y hojaldrada. Hay más elaboraciones saladas por encargo." },
+    "tartlets": { "name": "Tartaletas", "note": "Tartaletas pequeñas con bases crujientes y mantecosas. Elige un surtido para probar un poco de todo o quédate con tu favorita." },
+    "tiramisu-flans": { "name": "Tiramisú y Flanes", "note": "Postres cremosos y reconfortantes, hechos para compartir. Pídelos enteros o dinos que te los porcionemos." },
+    "cakes-cupcakes": { "name": "Tartas y Cupcakes", "note": "Tartas y cupcakes para cumpleaños, reuniones o simplemente porque sí. Las tartas enteras necesitan aproximadamente una semana de antelación y pueden venir ya cortadas. Solo tienes que pedirlo si quieres otros sabores de cupcake, rellenos o decoraciones." },
+    "portuguese-pastries": { "name": "Repostería Portuguesa", "note": "Pastéis de nata crujientes y hojaldrados, con un centro de crema suave, inspirados en la repostería portuguesa que New Bedford conoce y adora." }
   },
   "products": {
     "coco-double-chocolate": { "name": "Galleta COCO de Chocolate Doble con Oreo", "description": "El cacao oscuro y el polvo fino de Oreo crean una base intensa de cookies & cream, acabada con trozos de Oreo, chocolate blanco cremoso y chocolate semidulce fundido.", "texture": "Gruesa y de centro tierno, similar a un brownie, con trozos crujientes de galleta.", "allergens": "Contiene trigo, leche, huevo y soja. Elaborado en una cocina doméstica donde también se manipulan cacahuetes y frutos de cáscara." },

@@ -2,14 +2,14 @@
   "schemaVersion": 1,
   "locale": "zh-Hans",
   "categories": {
-    "cookies": { "name": "曲奇", "note": "大号烘焙坊风格曲奇，季节性口味供应情况可能有所变化。" },
-    "brownies-blondies": { "name": "布朗尼与金发布朗尼", "note": "可做成大号烘焙坊方块或较小份量。" },
-    "muffins-cinnamon-rolls": { "name": "玛芬与肉桂卷", "note": "大号烘焙坊玛芬和大号单人份肉桂卷。" },
-    "savory-baking": { "name": "咸味烘焙", "note": "单人份咸味点心接受定制预订。" },
-    "tartlets": { "name": "小挞", "note": "可选择什锦搭配或单一口味。" },
-    "tiramisu-flans": { "name": "提拉米苏与焦糖布丁", "note": "大份甜点可提前分切，方便享用。" },
-    "cakes-cupcakes": { "name": "蛋糕与纸杯蛋糕", "note": "整只蛋糕接受定制，并可提前分切。其他纸杯蛋糕口味、夹心和装饰可按需商议。" },
-    "portuguese-pastries": { "name": "葡萄牙糕点", "note": "传统糕点，小批量制作。" }
+    "cookies": { "name": "曲奇", "note": "分量十足的大颗曲奇，每块约 115 克。其中两款以 Coco 和 Toffee 命名——正是店名背后的两只小豚鼠。" },
+    "brownies-blondies": { "name": "布朗尼与金发布朗尼", "note": "浓郁有嚼劲的方块点心，适合分享（不分也行）。有烘焙房大方块和适合派对的小块两种。" },
+    "muffins-cinnamon-rolls": { "name": "玛芬与肉桂卷", "note": "超大玛芬和松软的糖霜肉桂卷，配一杯好咖啡，慢慢享受清晨时光。" },
+    "savory-baking": { "name": "咸点", "note": "给想来点咸口的你。我们的乳蛋饼用黄油酥皮烘焙而成。更多咸味烘焙可接受定制订购。" },
+    "tartlets": { "name": "小挞", "note": "小巧的挞，外壳酥脆浓香。可以选择拼盘尝遍各种口味，也可以只挑你最爱的那一款。" },
+    "tiramisu-flans": { "name": "提拉米苏与焦糖布丁", "note": "绵密暖心的甜点，适合分享。可整份订购，也可以请我们代为分切。" },
+    "cakes-cupcakes": { "name": "蛋糕与纸杯蛋糕", "note": "生日、聚会，或者只是想吃——都有合适的蛋糕和纸杯蛋糕。整只蛋糕需提前约一周预订，可预先切片。想要其他纸杯蛋糕口味、夹心或装饰，尽管告诉我们。" },
+    "portuguese-pastries": { "name": "葡萄牙糕点", "note": "酥脆多层的葡式蛋挞，内里是顺滑的蛋奶馅，灵感来自 New Bedford 熟悉并喜爱的葡萄牙烘焙传统。" }
   },
   "products": {
     "coco-double-chocolate": { "name": "COCO 双重巧克力奥利奥曲奇", "description": "深色可可粉和细腻奥利奥碎打造浓郁的曲奇奶油风味，再加入奥利奥块、香滑白巧克力和融化的半甜巧克力。", "texture": "厚实软心，中心如布朗尼般绵密，并带有酥脆曲奇颗粒。", "allergens": "含小麦、牛奶、鸡蛋和大豆。本产品在家庭厨房制作，该厨房也处理花生和树坚果。" },
