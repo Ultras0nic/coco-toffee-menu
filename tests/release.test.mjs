@@ -24,6 +24,7 @@ test("localized storefront modules use a release cache version", async () => {
     readFile(new URL("app.js", root), "utf8"),
   ]);
   assert.match(html, /app\.js\?v=\d{4}-\d{2}-\d{2}-\d+/);
+  assert.match(html, /styles\.css\?v=\d{4}-\d{2}-\d{2}-\d+/);
   assert.match(app, /i18n\.mjs\?v=\d{4}-\d{2}-\d{2}-\d+/);
 });
 

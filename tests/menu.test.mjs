@@ -758,6 +758,16 @@ test("category stamps render responsively without entering the sticky navigation
   assert.match(css, /@media \(forced-colors: active\)[^]*?\.category-illustration\s*{\s*display: none/);
 });
 
+test("the header keeps language selection top-right and category notes visually secondary", async () => {
+  const html = await readFile(new URL("../index.html", import.meta.url), "utf8");
+  const css = await readFile(new URL("../styles.css", import.meta.url), "utf8");
+  assert.doesNotMatch(html, /Hover for a quick preview and click for full details/);
+  assert.match(css, /\.menu-header\s*{[^}]*position: relative/s);
+  assert.match(css, /\.language-control\s*{[^}]*position: absolute[^}]*top: 18px[^}]*right: 0/s);
+  assert.match(css, /@media \(max-width: 820px\), \(hover: none\), \(pointer: coarse\)[^]*?\.language-control > span\s*{\s*display: none/s);
+  assert.match(css, /\.category-note\s*{[^}]*color: var\(--muted\)[^}]*font-weight: 500/s);
+});
+
 test("the warm slogan marquee sits between the menu header and category navigation", async () => {
   const html = await readFile(new URL("../index.html", import.meta.url), "utf8");
   const app = await readFile(new URL("../app.js", import.meta.url), "utf8");
