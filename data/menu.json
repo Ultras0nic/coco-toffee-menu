@@ -226,7 +226,7 @@
     {
       "id": "muffins-cinnamon-rolls",
       "name": "Muffins & Cinnamon Rolls",
-      "note": "Jumbo muffins and soft, iced cinnamon rolls, made for slow mornings and good coffee.",
+      "note": "Jumbo muffins and soft cinnamon rolls, made for slow mornings and good coffee.",
       "illustration": { "src": "assets/categories/category-muffins-cinnamon-rolls.webp", "width": 640, "height": 591 },
       "items": [
         {
