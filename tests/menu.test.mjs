@@ -85,11 +85,11 @@ test("the supplied product photos are assigned to the requested products", () =>
       ].map((id) => [id, items.get(id)]),
     ),
     {
-      "coco-double-chocolate": "assets/menu/coco-double-chocolate.jpg?v=2026-09-11-1",
-      "toffee-brown-butter-espresso": "assets/menu/toffee-brown-butter-espresso.jpg?v=2026-09-11-1",
-      "cranberry-white-chocolate-oatmeal": "assets/menu/cranberry-white-chocolate-oatmeal.jpg?v=2026-09-11-1",
-      "classic-chocolate-chip": "assets/menu/classic-chocolate-chip-cookie.jpg?v=2026-09-11-1",
-      "jumbo-cinnamon-roll": "assets/menu/jumbo-cinnamon-roll.jpg?v=2026-09-11-1",
+      "coco-double-chocolate": "assets/menu/coco-double-chocolate.jpg?v=2026-09-11-2",
+      "toffee-brown-butter-espresso": "assets/menu/toffee-brown-butter-espresso.jpg?v=2026-09-11-2",
+      "cranberry-white-chocolate-oatmeal": "assets/menu/cranberry-white-chocolate-oatmeal.jpg?v=2026-09-11-2",
+      "classic-chocolate-chip": "assets/menu/classic-chocolate-chip-cookie.jpg?v=2026-09-11-2",
+      "jumbo-cinnamon-roll": "assets/menu/jumbo-cinnamon-roll.jpg?v=2026-09-11-2",
     },
   );
 });
