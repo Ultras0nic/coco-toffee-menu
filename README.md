@@ -16,12 +16,12 @@ menu layout while adding accessible product detail cards.
 - Pickup/delivery request forms and a contact form
 - An owner-only review interface and Supabase/Resend email integration
 - Automated content validation
-- GitHub Pages deployment workflow
+- Cloudflare Pages deployment, with menu data verified on every pull request
 - The public menu works without service credentials; unconfigured forms provide an honest email/copy fallback
 
 ## Service activation
 
-The storefront is a static GitHub Pages site. Automatic submission, owner sign-in and owner email
+The storefront is a static site served by Cloudflare Pages. Automatic submission, owner sign-in and owner email
 alerts require the separately deployed Supabase functions and configured providers. See
 [`supabase/README.md`](supabase/README.md) for the deployment checklist.
 
@@ -65,7 +65,7 @@ Put the matching photo in `assets/menu/`. If the photo is missing, the website a
 the designed **Photo coming soon** placeholder.
 
 When replacing a photo without changing its filename, increment `assetVersion` in `data/menu.json`.
-This ensures browsers and the GitHub Pages CDN request the new image instead of a cached copy.
+This ensures browsers and the CDN request the new image instead of a cached copy.
 
 ## Preview and verify
 
@@ -79,16 +79,24 @@ npm run build
 
 The local preview opens at `http://127.0.0.1:4173`. The public build is written to `dist/`.
 
-## Publish free with GitHub Pages
+## Publish free with Cloudflare Pages
 
-1. Create a public GitHub repository, for example `coco-toffee-menu`.
-2. Push this repository to its `main` branch.
-3. On GitHub, open **Settings > Pages**.
-4. Under **Build and deployment**, select **GitHub Actions**.
-5. Open the **Actions** tab and run **Deploy Coco & Toffee menu**, or push a new commit.
-6. GitHub will show the free public URL after deployment succeeds.
+The site is served at <https://cocoandtoffee.pages.dev>.
 
-The workflow publishes only the allow-listed website files from `dist/`, including
+1. In the Cloudflare dashboard, open **Workers & Pages > Create > Pages** and connect this
+   GitHub repository.
+2. Set the production branch to `main`.
+3. Set **Build command** to `npm run build` and **Build output directory** to `dist`.
+4. Save and deploy. Cloudflare rebuilds on every push to `main`.
+
+Cloudflare builds from the GitHub repository, so the repository stays in use even though GitHub
+Pages does not. Every asset path in this project is relative, so the same build works whether it is
+served from a domain root or a subpath; no configuration changes when the address changes.
+
+To change the public address, update the five `hreflang` tags in `index.html`. They tell search
+engines which URL is canonical, and nothing else in the project hardcodes the domain.
+
+The build publishes only the allow-listed website files from `dist/`, including
 `data/menu.json` and the owner-interface assets. Backend code is deployed separately.
 The GitHub repository itself is public: excluding a file from `dist/` does not make it private.
 Keep credentials, production costs, and internal quote guides outside this repository.
