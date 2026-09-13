@@ -1,4 +1,4 @@
-import { cp, mkdir, rm, writeFile } from "node:fs/promises";
+import { cp, mkdir, rm } from "node:fs/promises";
 import { resolve } from "node:path";
 
 const root = resolve(import.meta.dirname, "..");
@@ -18,6 +18,4 @@ for (const file of publicFiles) {
 
 await cp(resolve(root, "assets"), resolve(dist, "assets"), { recursive: true });
 await cp(resolve(root, "data"), resolve(dist, "data"), { recursive: true });
-await writeFile(resolve(dist, ".nojekyll"), "");
-
 console.log(`Built ${publicFiles.length} site files and public assets in dist/.`);
