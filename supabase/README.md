@@ -53,7 +53,7 @@ Configure an alert for queue rows that remain `failed`, have 10 attempts, or are
 
 ## Turnstile, origins, and rate limits
 
-Create a Cloudflare Turnstile site for `ultras0nic.github.io`. Put the public site key in `index.html` and its secret only in Supabase. `TURNSTILE_ALLOWED_HOSTNAMES` is checked after Cloudflare validates the token. `ALLOWED_ORIGINS` should contain only the production origin plus explicit local development origins when needed.
+Create a Cloudflare Turnstile widget listing every hostname the storefront is served from, currently `cocoandtoffee.pages.dev`. Put the public site key in `index.html` and its secret only in Supabase. `TURNSTILE_ALLOWED_HOSTNAMES` is checked after Cloudflare validates the token. `ALLOWED_ORIGINS` should contain only the production origin plus explicit local development origins when needed.
 
 The database-backed rate limiter protects order and contact submission. Leave `TURNSTILE_BYPASS_FOR_LOCAL=false` in production.
 
