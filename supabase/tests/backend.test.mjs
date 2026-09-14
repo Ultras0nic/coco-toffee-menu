@@ -87,8 +87,11 @@ test("owner access is magic-link only and payment controls are disabled for requ
   assert.match(ownerJs, /create_user: false/);
   assert.doesNotMatch(ownerJs, /grant_type=password/);
   assert.match(ownerJs, /const PAYMENTS_ENABLED = config\.paymentsEnabled === true/);
-  assert.match(ownerJs, /Reply by email/);
+  assert.match(ownerJs, /https:\/\/mail\.google\.com\/mail\//);
+  assert.match(ownerJs, /Reply in Gmail/);
+  assert.match(ownerJs, /Automatic customer email is off/);
   assert.match(ownerConfig, /paymentsEnabled:\s*false/);
+  assert.match(ownerConfig, /customerEmailEnabled:\s*false/);
   assert.match(ownerApi, /owner\.email !== OWNER_EMAIL/);
   assert.match(ownerApi, /optionalEnv\("PAYMENTS_ENABLED", "false"\) !== "true"/);
   assert.doesNotMatch(functionConfig, /\[functions\.stripe-webhook\]/);

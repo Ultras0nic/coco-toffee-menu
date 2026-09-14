@@ -35,6 +35,21 @@ test("public build is allow-listed and includes owner assets without server file
   const config = await readFile(new URL("owner-config.js", root), "utf8");
   assert.doesNotMatch(config, /(?:sk_live_|sk_test_|sb_secret_|re_[A-Za-z0-9]{20})/);
   assert.match(config, /paymentsEnabled:\s*false/);
+  assert.match(config, /customerEmailEnabled:\s*false/);
+});
+
+test("owner replies open a prefilled Gmail web compose and disclose suppressed customer mail", async () => {
+  const [ownerHtml, ownerJs, ownerCss] = await Promise.all([
+    readFile(new URL("owner.html", root), "utf8"),
+    readFile(new URL("owner.js", root), "utf8"),
+    readFile(new URL("owner.css", root), "utf8"),
+  ]);
+  assert.match(ownerHtml, /owner\.js\?v=2026-09-13-2/);
+  assert.match(ownerJs, /function gmailComposeHref/);
+  assert.match(ownerJs, /url\.searchParams\.set\("to", recipient\)/);
+  assert.match(ownerJs, /target="_blank" rel="noopener noreferrer">Reply in Gmail/);
+  assert.match(ownerJs, /Automatic customer email is not active/);
+  assert.match(ownerCss, /\.notice-warning\s*\{/);
 });
 
 test("unconfigured storefront does not pretend requests were sent", async () => {
