@@ -3,6 +3,20 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script>
+      // A hostname with a trailing dot is a separate origin to the browser, so
+      // Turnstile refuses to run and a saved cart does not carry over. Move
+      // those visitors to the canonical host before anything else loads.
+      (function () {
+        var host = location.hostname;
+        var canonical = host.replace(/\.+$/, "");
+        if (canonical && canonical !== host) {
+          var target = new URL(location.href);
+          target.hostname = canonical;
+          location.replace(target.href);
+        }
+      })();
+    </script>
     <meta name="robots" content="noindex,nofollow,noarchive" />
     <meta name="referrer" content="same-origin" />
     <title>Coco &amp; Toffee Owner Inbox</title>
