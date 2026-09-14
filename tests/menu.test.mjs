@@ -687,6 +687,23 @@ test("every configured product photo points to a published asset", async () => {
   }
 });
 
+test("both pages send trailing-dot hostnames to the canonical origin", async () => {
+  for (const page of ["../index.html", "../owner.html"]) {
+    const html = await readFile(new URL(page, import.meta.url), "utf8");
+    assert.match(html, /location\.hostname/);
+    assert.match(html, /canonical !== host/);
+    assert.match(html, /location\.replace\(/);
+  }
+
+  // A trailing-dot host is a separate origin, so the guard has to run before
+  // the app script, the cart read, and the Turnstile widget.
+  const html = await readFile(new URL("../index.html", import.meta.url), "utf8");
+  assert.ok(
+    html.indexOf("canonical !== host") < html.indexOf("app.js"),
+    "canonical host guard must run before app.js loads",
+  );
+});
+
 test("ordering checklist preserves all requested fields", () => {
   assert.equal(selectionChecklist.length, 6);
 });
