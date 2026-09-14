@@ -1,5 +1,6 @@
 import type { SupabaseClient } from "npm:@supabase/supabase-js@2";
-import { OWNER_EMAIL, optionalEnv, requireEnv, SITE_URL } from "./config.ts";
+import { OWNER_EMAIL, optionalEnv, ownerInboxUrl, requireEnv } from "./config.ts";
+import { sendTelegramNotification, telegramConfigured } from "./telegram.ts";
 
 export async function enqueueOrderNotifications(
   client: SupabaseClient,
@@ -9,9 +10,20 @@ export async function enqueueOrderNotifications(
   event: "received" | "payment_link" | "paid" | "rejected",
 ): Promise<void> {
   const rows = [
-    { dedupe_key: `order:${orderId}:${event}:owner`, order_id: orderId, recipient: OWNER_EMAIL, template: `owner_order_${event}` },
-    { dedupe_key: `order:${orderId}:${event}:customer`, order_id: orderId, recipient: customerEmail, template: `customer_order_${event}` },
+    { dedupe_key: `order:${orderId}:${event}:owner`, order_id: orderId, recipient: OWNER_EMAIL, template: `owner_order_${event}`, channel: "email" },
+    { dedupe_key: `order:${orderId}:${event}:customer`, order_id: orderId, recipient: customerEmail, template: `customer_order_${event}`, channel: "email" },
   ];
+  // Telegram is owner-only and opt-in: with no bot configured the queue looks
+  // exactly as it did before.
+  if (telegramConfigured()) {
+    rows.push({
+      dedupe_key: `order:${orderId}:${event}:owner:telegram`,
+      order_id: orderId,
+      recipient: "owner-telegram",
+      template: `owner_order_${event}`,
+      channel: "telegram",
+    });
+  }
   const { error } = await client.from("notification_outbox").upsert(rows, { onConflict: "dedupe_key", ignoreDuplicates: true });
   if (error) console.error(JSON.stringify({ event: "notification_enqueue_failed", orderId, publicCode, code: error.code }));
 }
@@ -22,9 +34,18 @@ export async function enqueueContactNotifications(
   customerEmail: string,
 ): Promise<void> {
   const rows = [
-    { dedupe_key: `contact:${messageId}:owner`, contact_message_id: messageId, recipient: OWNER_EMAIL, template: "owner_contact_received" },
-    { dedupe_key: `contact:${messageId}:customer`, contact_message_id: messageId, recipient: customerEmail, template: "customer_contact_received" },
+    { dedupe_key: `contact:${messageId}:owner`, contact_message_id: messageId, recipient: OWNER_EMAIL, template: "owner_contact_received", channel: "email" },
+    { dedupe_key: `contact:${messageId}:customer`, contact_message_id: messageId, recipient: customerEmail, template: "customer_contact_received", channel: "email" },
   ];
+  if (telegramConfigured()) {
+    rows.push({
+      dedupe_key: `contact:${messageId}:owner:telegram`,
+      contact_message_id: messageId,
+      recipient: "owner-telegram",
+      template: "owner_contact_received",
+      channel: "telegram",
+    });
+  }
   const { error } = await client.from("notification_outbox").upsert(rows, { onConflict: "dedupe_key", ignoreDuplicates: true });
   if (error) console.error(JSON.stringify({ event: "notification_enqueue_failed", messageId, code: error.code }));
 }
@@ -54,6 +75,8 @@ function cancellationTerms(): string {
 }
 
 export async function sendQueuedNotification(client: SupabaseClient, notification: Record<string, unknown>): Promise<string> {
+  if (notification.channel === "telegram") return await sendTelegramNotification(client, notification);
+
   let subject = "Coco & Toffee update";
   let html = "";
   if (notification.order_id) {
@@ -123,8 +146,4 @@ export async function sendQueuedNotification(client: SupabaseClient, notificatio
   const result = await response.json();
   if (!response.ok || !result.id) throw new Error(`Resend failed (${response.status})`);
   return result.id;
-}
-
-export function ownerInboxUrl(): string {
-  return optionalEnv("OWNER_INBOX_URL", `${SITE_URL}/owner.html`);
 }

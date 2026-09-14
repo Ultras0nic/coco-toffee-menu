@@ -55,6 +55,22 @@ Configure an alert for queue rows that remain `failed`, have 10 attempts, or are
 
 Create a Cloudflare Turnstile widget for `cocoandtoffee.pages.dev`. Put the public site key in `index.html` and its secret only in Supabase. `TURNSTILE_ALLOWED_HOSTNAMES` is checked after Cloudflare validates the token. `ALLOWED_ORIGINS` should contain only the production origin plus explicit local development origins when needed.
 
+## Telegram owner alerts (optional)
+
+Set `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID` to also receive each order and
+inquiry as a Telegram message. Leave either blank and email stays the only
+channel; no Telegram rows are queued and nothing else changes.
+
+1. Message `@BotFather`, send `/newbot`, and copy the token. Keep the token in
+   Supabase secrets only, never in this repository.
+2. Send any message to your new bot so it is allowed to reply to you.
+3. Open `https://api.telegram.org/bot<TOKEN>/getUpdates` and read
+   `result[].message.chat.id`. That is `TELEGRAM_CHAT_ID`. For a group, add the
+   bot to the group first; group ids are negative.
+
+Telegram alerts are owner-only. Customers never receive them, and the message
+carries no payment link or cancellation terms; those stay in email.
+
 The database-backed rate limiter protects order and contact submission. Leave `TURNSTILE_BYPASS_FOR_LOCAL=false` in production.
 
 ## Release verification

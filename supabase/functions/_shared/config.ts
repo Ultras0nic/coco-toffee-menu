@@ -10,3 +10,7 @@ export function optionalEnv(name: string, fallback = ""): string {
 
 export const OWNER_EMAIL = optionalEnv("OWNER_EMAIL", "jericholi334677@gmail.com").toLowerCase();
 export const SITE_URL = optionalEnv("SITE_URL", "https://cocoandtoffee.pages.dev").replace(/\/$/, "");
+
+export function ownerInboxUrl(): string {
+  return optionalEnv("OWNER_INBOX_URL", `${SITE_URL}/owner.html`);
+}
