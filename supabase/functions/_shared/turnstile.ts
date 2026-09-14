@@ -18,7 +18,7 @@ export async function verifyTurnstile(token: string, remoteIp: string): Promise<
   if (!response.ok) return false;
   const result = await response.json();
   if (result.success !== true) return false;
-  const allowedHostnames = optionalEnv("TURNSTILE_ALLOWED_HOSTNAMES", "cocoandtoffee.pages.dev,ultras0nic.github.io,localhost,127.0.0.1")
+  const allowedHostnames = optionalEnv("TURNSTILE_ALLOWED_HOSTNAMES", "cocoandtoffee.pages.dev,localhost,127.0.0.1")
     .split(",").map((hostname) => hostname.trim().toLowerCase()).filter(Boolean);
   return typeof result.hostname === "string" && allowedHostnames.includes(result.hostname.toLowerCase());
 }

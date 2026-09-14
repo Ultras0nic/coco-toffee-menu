@@ -2,7 +2,7 @@ import { optionalEnv } from "./config.ts";
 
 const configuredOrigins = optionalEnv(
   "ALLOWED_ORIGINS",
-  "https://cocoandtoffee.pages.dev,https://ultras0nic.github.io,http://127.0.0.1:4173,http://localhost:4173",
+  "https://cocoandtoffee.pages.dev,http://127.0.0.1:4173,http://localhost:4173",
 ).split(",").map((origin) => origin.trim()).filter(Boolean);
 
 export function corsHeaders(request: Request): Record<string, string> {
