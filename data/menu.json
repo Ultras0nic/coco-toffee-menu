@@ -38,7 +38,7 @@
     }
   },
   "editingInstructions": [
-    "Edit this file to update the local preview and GitHub Pages website.",
+    "Edit this file to update the local preview and Cloudflare Pages website.",
     "Keep every id unique and stable so saved product links continue to work.",
     "Add approved photos to assets/menu and put the relative file path in photo.",
     "Increment assetVersion whenever an existing photo file is replaced so browsers load the new image.",

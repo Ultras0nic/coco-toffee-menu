@@ -93,7 +93,9 @@ async function api(path, options = {}) {
 }
 
 async function requestMagicLink() {
-  const redirectTo = `${location.origin}${location.pathname}`;
+  // Cloudflare Pages may display this route as /owner, but Supabase should
+  // always receive the exact allow-listed callback URL.
+  const redirectTo = new URL("owner.html", `${location.origin}/`).href;
   const response = await fetch(`${config.supabaseUrl}/auth/v1/otp?redirect_to=${encodeURIComponent(redirectTo)}`, {
     method: "POST",
     headers: { apikey: config.supabaseAnonKey, "Content-Type": "application/json" },

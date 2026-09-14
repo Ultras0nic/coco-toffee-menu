@@ -110,3 +110,22 @@ test("private setup and secrets are not inside public content folders", async ()
   const menu = await readFile(new URL("data/menu.json", root), "utf8");
   assert.doesNotMatch(menu, /PRIVATE_QUOTE_GUIDE|fullCostCents|private_quote_start|service_role|STRIPE_SECRET/);
 });
+
+test("Cloudflare Pages is the only production website host", async () => {
+  const [html, owner, readme, envExample, backendReadme, workflows] = await Promise.all([
+    readFile(new URL("index.html", root), "utf8"),
+    readFile(new URL("owner.js", root), "utf8"),
+    readFile(new URL("README.md", root), "utf8"),
+    readFile(new URL("supabase/.env.example", root), "utf8"),
+    readFile(new URL("supabase/README.md", root), "utf8"),
+    readdir(new URL(".github/workflows/", root)),
+  ]);
+  for (const source of [html, readme, envExample, backendReadme]) {
+    assert.doesNotMatch(source, /ultras0nic\.github\.io/i);
+  }
+  assert.match(html, /https:\/\/cocoandtoffee\.pages\.dev\//);
+  assert.match(owner, /new URL\("owner\.html", `\$\{location\.origin\}\/`\)\.href/);
+  assert.doesNotMatch(owner, /location\.origin\}\$\{location\.pathname/);
+  assert.match(envExample, /OWNER_INBOX_URL=https:\/\/cocoandtoffee\.pages\.dev\/owner\.html/);
+  assert.deepEqual(workflows.sort(), ["ci.yml"]);
+});
