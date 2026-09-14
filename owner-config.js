@@ -5,4 +5,5 @@ window.COCO_OWNER_CONFIG = {
   supabaseAnonKey: "sb_publishable_6NxoM7DVZok0gNb6IkIlCg_ByIVjyWz",
   functionsBaseUrl: "https://syoqhpsjjmkdkgpvrqlz.supabase.co/functions/v1",
   paymentsEnabled: false,
+  customerEmailEnabled: false,
 };

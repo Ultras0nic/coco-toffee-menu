@@ -1,6 +1,7 @@
 const config = window.COCO_OWNER_CONFIG || {};
 const OWNER_EMAIL = String(config.ownerEmail || "jericholi334677@gmail.com").trim().toLowerCase();
 const PAYMENTS_ENABLED = config.paymentsEnabled === true;
+const CUSTOMER_EMAIL_ENABLED = config.customerEmailEnabled === true;
 const SESSION_KEY = "coco-owner-session";
 const loginPanel = document.querySelector("#login-panel");
 const inboxPanel = document.querySelector("#inbox-panel");
@@ -134,10 +135,28 @@ function fulfillmentText(order) {
   return `${fulfillment.type || "Not provided"} · requested ${fulfillment.requestedDate || "no date"} · ${fulfillment.requestedWindow ?? fulfillment.preferredTime ?? "flexible time"} · ${location}`;
 }
 
+function gmailComposeHref(recipient, subject, body) {
+  const url = new URL("https://mail.google.com/mail/");
+  url.searchParams.set("view", "cm");
+  url.searchParams.set("fs", "1");
+  url.searchParams.set("to", recipient);
+  url.searchParams.set("su", subject);
+  url.searchParams.set("body", body);
+  return url.href;
+}
+
 function orderReplyHref(order) {
   const subject = `Re: Coco & Toffee order ${order.public_code}`;
-  const body = `Hi ${order.customer_name},\n\nThank you for your Coco & Toffee order request ${order.public_code}.\n\n`;
-  return `mailto:${encodeURIComponent(order.customer_email)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  const status = String(order.status || "pending review").replaceAll("_", " ");
+  const ownerMessage = order.owner_note ? `\n${order.owner_note}\n` : "\n";
+  const body = `Hi ${order.customer_name},\n\nThank you for your Coco & Toffee order request ${order.public_code}. Its current status is: ${status}.${ownerMessage}\nBest,\nCoco & Toffee`;
+  return gmailComposeHref(order.customer_email, subject, body);
+}
+
+function contactReplyHref(message) {
+  const subject = `Re: Coco & Toffee inquiry ${message.public_code}`;
+  const body = `Hi ${message.customer_name},\n\nThank you for contacting Coco & Toffee.\n\n\nBest,\nCoco & Toffee`;
+  return gmailComposeHref(message.customer_email, subject, body);
 }
 
 function renderOrder(order) {
@@ -147,6 +166,8 @@ function renderOrder(order) {
     return `<li><strong>${escapeHtml(item.product_name)}</strong> — ${escapeHtml(item.offer_label)} × ${escapeHtml(item.pack_quantity)}${item.line_total_cents == null ? " · quote" : ` · ${money(item.line_total_cents)}`}${components ? `<small>${components}</small>` : ""}</li>`;
   }).join("");
   const failedNotifications = (order.notification_outbox || []).filter((item) => item.status === "failed");
+  const suppressedCustomerNotifications = (order.notification_outbox || []).filter((item) =>
+    item.status === "suppressed" && String(item.template || "").startsWith("customer_"));
   const canReview = ["quote_requested", "pending_approval", "changes_requested", "payment_setup_pending", "payment_failed", "payment_expired"].includes(order.status);
   const canCreatePayment = canReview && PAYMENTS_ENABLED;
   const hasQuote = (order.order_items || []).some((item) => item.amount_cents == null);
@@ -177,6 +198,7 @@ function renderOrder(order) {
     ${order.owner_note ? `<p><strong>Owner message:</strong> ${escapeHtml(order.owner_note)}</p>` : ""}
     ${PAYMENTS_ENABLED && order.checkout_expires_at ? `<p><strong>Payment link expires:</strong> ${escapeHtml(new Date(order.checkout_expires_at).toLocaleString())}</p>` : ""}
     ${failedNotifications.length ? `<p class="notice-error">${failedNotifications.length} email notification(s) need retry.</p>` : ""}
+    ${suppressedCustomerNotifications.length ? `<p class="notice-warning">Automatic customer email is not active. Use Reply in Gmail to send this update.</p>` : ""}
     ${canReview ? `<div class="approval-grid">
       ${canCreatePayment && hasQuote ? `<label>Approved food total ($)<input data-role="quote-total" type="number" min="${(quoteGuideMinimum / 100).toFixed(2)}" step="0.01" value="${quoteValue.toFixed(2)}" required /><small>Private starting guide plus fixed items: ${money(quoteGuideMinimum)}</small></label>` : ""}
       ${canCreatePayment ? `<label>Approved date<input data-role="approved-date" type="date" min="${localMinimumDate(leadDays)}" value="${escapeHtml(approvedDate)}" required /></label>
@@ -186,7 +208,7 @@ function renderOrder(order) {
       <label class="full-field">Message to customer<textarea data-role="owner-note" maxlength="2000" rows="3" placeholder="Required when requesting changes or declining">${escapeHtml(order.owner_note || "")}</textarea></label>
     </div>` : ""}
     <div class="actions">
-      <a class="button-link" href="${escapeHtml(orderReplyHref(order))}">Reply by email</a>
+      <a class="button-link" href="${escapeHtml(orderReplyHref(order))}" target="_blank" rel="noopener noreferrer">Reply in Gmail</a>
       ${canCreatePayment ? `<button data-action="approve">Approve &amp; create payment link</button>` : ""}
       ${canReview ? `<button class="secondary" data-action="request_changes">Request changes</button><button class="danger" data-action="decline">Decline</button>` : ""}
       ${order.status === "confirmed" ? `<button data-action="fulfill">Mark fulfilled</button>` : ""}
@@ -200,7 +222,7 @@ function renderContact(message) {
     <div class="order-heading"><h2>Inquiry ${escapeHtml(message.public_code)}</h2><span class="status-pill">${escapeHtml(message.status)}</span></div>
     <div class="order-meta"><span><strong>From:</strong> ${escapeHtml(message.customer_name)}</span><span><strong>Email:</strong> <a href="mailto:${escapeHtml(message.customer_email)}">${escapeHtml(message.customer_email)}</a></span><span><strong>Phone:</strong> ${escapeHtml(message.customer_phone || "Not provided")}</span><span><strong>Customer language:</strong> ${escapeHtml(message.customer_locale || "en")}</span><span><strong>Received:</strong> ${escapeHtml(new Date(message.created_at).toLocaleString())}</span></div>
     <p><strong>Topic:</strong> ${escapeHtml(message.subject || "General question")}</p><p class="message-body">${escapeHtml(message.message)}</p>
-    <div class="actions"><a class="button-link" href="mailto:${escapeHtml(message.customer_email)}?subject=${encodeURIComponent(`Re: Coco & Toffee inquiry ${message.public_code}`)}">Reply by email</a><button data-contact-status="reviewed">Mark reviewed</button><button class="secondary" data-contact-status="closed">Close</button><button class="danger" data-contact-status="spam">Spam</button></div>
+    <div class="actions"><a class="button-link" href="${escapeHtml(contactReplyHref(message))}" target="_blank" rel="noopener noreferrer">Reply in Gmail</a><button data-contact-status="reviewed">Mark reviewed</button><button class="secondary" data-contact-status="closed">Close</button><button class="danger" data-contact-status="spam">Spam</button></div>
   </article>`;
 }
 
@@ -257,6 +279,9 @@ async function ownerAction(button) {
   try {
     await api("owner-orders", { method: "PATCH", body: JSON.stringify(body) });
     await loadInbox();
+    if (!CUSTOMER_EMAIL_ENABLED && ["request_changes", "decline"].includes(action)) {
+      statusNode.textContent = "Order status saved. Automatic customer email is off; use Reply in Gmail on the order card to send the message.";
+    }
   } catch (error) {
     statusNode.textContent = error.message;
     button.disabled = false;

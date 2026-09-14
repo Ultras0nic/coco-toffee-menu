@@ -16,6 +16,7 @@ label { display: grid; gap: .35rem; font-family: system-ui, sans-serif; }
 input, select, textarea { width: 100%; border: 1px solid #8d7964; border-radius: .3rem; padding: .6rem; background: white; color: #20170f; }
 .notice { min-height: 1.5rem; padding: .6rem 0; }
 .notice-error { color: #742d24; font-weight: 700; }
+.notice-warning { color: #6b4b1f; font-weight: 700; }
 .orders { display: grid; gap: 1rem; }
 .order-meta, .line-items, .notification-list, .message-body { font-family: system-ui, sans-serif; font-size: .93rem; }
 .order-meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); gap: .4rem 1rem; }
