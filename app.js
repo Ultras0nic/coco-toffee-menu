@@ -338,6 +338,9 @@ function showProductPeek(button) {
   const top = Math.max(padding, Math.min(rect.top + rect.height / 2 - height / 2, window.innerHeight - height - padding));
   el["product-peek"].style.setProperty("--peek-left", `${left}px`);
   el["product-peek"].style.setProperty("--peek-top", `${top}px`);
+  // Grow the peek out of the side that faces the hovered item.
+  const origin = left >= rect.right ? "left center" : left + width <= rect.left ? "right center" : "center top";
+  el["product-peek"].style.setProperty("--peek-origin", origin);
   el["product-peek"].classList.add("is-visible");
 }
 
@@ -524,7 +527,7 @@ function closePreview() {
 }
 
 function setScrim(show) {
-  el["mobile-scrim"].hidden = !show;
+  el["mobile-scrim"].classList.toggle("is-visible", show);
   document.body.classList.toggle("preview-open", show);
 }
 

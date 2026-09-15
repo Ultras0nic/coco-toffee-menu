@@ -107,9 +107,9 @@ secrets only. `owner-config.js` holds public values only.
   ones the owner may want to verify.
 - Work on a branch, open a PR, let the `verify` check pass, then merge. `main`
   has a ruleset requiring that check.
-- Cloudflare builds every PR as a preview, which spends the 500/month build
-  budget. Turning preview deployments off is still on the owner's to-do list,
-  along with build watch paths.
+- Cloudflare preview deployments are off (owner confirmed 2026-09-15; PR #21
+  got no Cloudflare check), so PRs do not spend the 500/month build budget.
+  Only merges to `main` build. Build watch paths are not confirmed set up.
 
 ## State as of 2026-09-15
 
