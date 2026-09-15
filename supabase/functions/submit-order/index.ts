@@ -1,6 +1,7 @@
 import { isAllowedOrigin, optionsResponse } from "../_shared/cors.ts";
 import { serviceClient } from "../_shared/db.ts";
 import { failure, json, readJson } from "../_shared/http.ts";
+import { startNotificationWorker } from "../_shared/notification-worker.ts";
 import { normalizeCart, normalizeFulfillment, ValidationError } from "../_shared/order-validation.mjs";
 import { allowRequest } from "../_shared/rate-limit.ts";
 import { verifyTurnstile } from "../_shared/turnstile.ts";
@@ -80,6 +81,7 @@ Deno.serve(async (request) => {
       throw error;
     }
 
+    if (!data.duplicate) startNotificationWorker();
     return json(request, {
       ok: true,
       orderId: data.id,
