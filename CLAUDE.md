@@ -26,6 +26,15 @@ row. An earlier change added Telegram to helper functions in
 silently did nothing. Those helpers are now deleted. If you need to change what
 gets queued, change the trigger with a new migration.
 
+**Nothing delivers a queued row except `process-notifications`.** Cron sweeps it
+every five minutes. `submit-order` and `contact` call `startNotificationWorker()`
+after storing a new request so the owner alert goes out within seconds; remove
+that and alerts lag by up to five minutes.
+
+**Never slice a Telegram HTML message.** Cutting through a tag or entity makes
+Telegram reject it, and the row retries until the attempt cap. Shorten raw
+customer text before escaping, as `_shared/telegram.ts` does.
+
 **`data/menu.json` is English only.** `data/locales/{pt-PT,es-ES,zh-Hans}.json`
 hold their own copies of every product and category string. Editing menu.json
 alone leaves three languages showing the old text, and the tests do not catch
@@ -89,7 +98,9 @@ secrets only. `owner-config.js` holds public values only.
 
 ## Conventions
 
-- `npm test` then `npm run build` before any push. 62 pass, 1 skip is healthy.
+- `npm test` then `npm run build` before any push. 63 pass, 1 skip is healthy.
+  On the owner's machine the private file exists, so the margin audit runs
+  instead of skipping, and it currently fails on `coco-double-chocolate/each`.
 - The skip is a margin audit needing `commerce-private-setup.json`, which is not
   in the repo and not in CI. **No live price has ever been checked against
   cost.** Cupcakes at $1.25, pastéis at 6/$8 and layer cakes from $70 are the
@@ -105,9 +116,11 @@ secrets only. `owner-config.js` holds public values only.
 Live and working: menu in four languages, order bag, order and contact forms,
 Turnstile, owner inbox, Resend email.
 
-Telegram alerts are merged but **not yet live**. Remaining, all on the owner's
-machine: `db push` to apply migrations `202609140001`, `202609140002` and
-`202609150001`, then `functions deploy` to ship the Telegram code, then a test
+Telegram alerts are merged but **not yet live**. Checked from the owner's
+machine on 2026-09-15: `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID` are set in
+Supabase secrets, but migrations `202609140001`, `202609140002` and
+`202609150001` were not applied and every Edge Function was still the
+2026-09-11 build. Remaining: `db push`, then `functions deploy`, then a test
 order. Verify with:
 
 ```sql

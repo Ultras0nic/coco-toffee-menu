@@ -157,3 +157,30 @@ test("versioned customer locale storage remains compatible with legacy requests"
   assert.match(owner, /Customer language:/);
   assert.match(notifications, /Customer language:/);
 });
+
+test("owner Telegram alerts are queued by the trigger, sent promptly, and never sliced mid-HTML", async () => {
+  const [trigger, telegram, worker, notifications, order, contact, starter] = await Promise.all([
+    read("supabase/migrations/202609150001_queue_telegram_owner_alerts.sql"),
+    read("supabase/functions/_shared/telegram.ts"),
+    read("supabase/functions/process-notifications/index.ts"),
+    read("supabase/functions/_shared/notifications.ts"),
+    read("supabase/functions/submit-order/index.ts"),
+    read("supabase/functions/contact/index.ts"),
+    read("supabase/functions/_shared/notification-worker.ts"),
+  ]);
+  assert.match(trigger, /':owner:telegram',new\.id,'owner-telegram','owner_contact_received','telegram'/);
+  assert.match(trigger, /':owner:telegram',new\.id,'owner-telegram','owner_order_'\|\|v_event,'telegram'/);
+  assert.doesNotMatch(trigger, /customer_[a-z_']+,'telegram'/);
+  assert.match(notifications, /channel === "telegram"\) return await sendTelegramNotification/);
+  assert.match(worker, /suppressed:no-telegram-bot/);
+  assert.match(telegram, /result\.ok !== true/);
+  // Cutting the finished HTML can split a tag or entity, which Telegram rejects.
+  assert.doesNotMatch(telegram, /body\.slice\(/);
+  assert.match(telegram, /escape\(shorten\(message\.message/);
+  // total_cents is never null, so a quote request must be detected by status.
+  assert.doesNotMatch(telegram, /order\.total_cents == null/);
+  assert.match(order, /if \(!data\.duplicate\) startNotificationWorker\(\)/);
+  assert.match(contact, /startNotificationWorker\(\);\s*return json\(request, \{ ok: true, messageId: data\.id/);
+  assert.match(starter, /functions\/v1\/process-notifications/);
+  assert.match(starter, /EdgeRuntime\?\.waitUntil/);
+});

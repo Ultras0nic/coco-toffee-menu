@@ -44,7 +44,7 @@ test("owner replies open a prefilled Gmail web compose and disclose suppressed c
     readFile(new URL("owner.js", root), "utf8"),
     readFile(new URL("owner.css", root), "utf8"),
   ]);
-  assert.match(ownerHtml, /owner\.js\?v=2026-09-13-2/);
+  assert.match(ownerHtml, /owner\.js\?v=2026-09-15-1/);
   assert.match(ownerJs, /function gmailComposeHref/);
   assert.match(ownerJs, /url\.searchParams\.set\("to", recipient\)/);
   assert.match(ownerJs, /target="_blank" rel="noopener noreferrer">Reply in Gmail/);

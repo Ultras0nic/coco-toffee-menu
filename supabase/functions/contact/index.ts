@@ -1,6 +1,7 @@
 import { isAllowedOrigin, optionsResponse } from "../_shared/cors.ts";
 import { serviceClient } from "../_shared/db.ts";
 import { failure, json, readJson } from "../_shared/http.ts";
+import { startNotificationWorker } from "../_shared/notification-worker.ts";
 import { allowRequest } from "../_shared/rate-limit.ts";
 import { verifyTurnstile } from "../_shared/turnstile.ts";
 import { cleanText, clientIp, normalizeCustomerLocale, sha256, stableStringify, validEmail, validIdempotencyKey } from "../_shared/validation.ts";
@@ -63,6 +64,7 @@ Deno.serve(async (request) => {
       }
       throw error;
     }
+    startNotificationWorker();
     return json(request, { ok: true, messageId: data.id, publicCode: data.public_code, status: "received" }, 201);
   } catch (error) {
     if (error instanceof SyntaxError) return failure(request, 400, "BAD_REQUEST", "Invalid JSON request");

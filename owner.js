@@ -197,7 +197,7 @@ function renderOrder(order) {
     <p><strong>Customer notes:</strong> ${escapeHtml(order.notes || "None")}</p>
     ${order.owner_note ? `<p><strong>Owner message:</strong> ${escapeHtml(order.owner_note)}</p>` : ""}
     ${PAYMENTS_ENABLED && order.checkout_expires_at ? `<p><strong>Payment link expires:</strong> ${escapeHtml(new Date(order.checkout_expires_at).toLocaleString())}</p>` : ""}
-    ${failedNotifications.length ? `<p class="notice-error">${failedNotifications.length} email notification(s) need retry.</p>` : ""}
+    ${failedNotifications.length ? `<p class="notice-error">${failedNotifications.length} notification(s) need retry.</p>` : ""}
     ${suppressedCustomerNotifications.length ? `<p class="notice-warning">Automatic customer email is not active. Use Reply in Gmail to send this update.</p>` : ""}
     ${canReview ? `<div class="approval-grid">
       ${canCreatePayment && hasQuote ? `<label>Approved food total ($)<input data-role="quote-total" type="number" min="${(quoteGuideMinimum / 100).toFixed(2)}" step="0.01" value="${quoteValue.toFixed(2)}" required /><small>Private starting guide plus fixed items: ${money(quoteGuideMinimum)}</small></label>` : ""}
@@ -318,7 +318,7 @@ ordersNode.addEventListener("click", (event) => {
 });
 document.querySelector("#refresh-orders").addEventListener("click", loadInbox);
 document.querySelector("#retry-notifications").addEventListener("click", async () => {
-  try { const result = await api("process-notifications", { method: "POST", body: "{}" }); statusNode.textContent = `${result.sent} email(s) sent; ${result.suppressed || 0} customer email(s) held until a sending domain is ready; ${result.failed} will retry automatically.`; await loadInbox(); }
+  try { const result = await api("process-notifications", { method: "POST", body: "{}" }); statusNode.textContent = `${result.sent} notification(s) sent; ${result.suppressed || 0} held (customer email waits for a sending domain); ${result.failed} will retry automatically.`; await loadInbox(); }
   catch (error) { statusNode.textContent = error.message; }
 });
 statusFilter.addEventListener("change", loadInbox);
