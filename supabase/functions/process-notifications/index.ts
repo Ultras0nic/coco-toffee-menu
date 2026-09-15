@@ -3,6 +3,7 @@ import { isAllowedOrigin, optionsResponse } from "../_shared/cors.ts";
 import { authenticatedOwner, serviceClient } from "../_shared/db.ts";
 import { failure, json } from "../_shared/http.ts";
 import { sendQueuedNotification } from "../_shared/notifications.ts";
+import { telegramConfigured } from "../_shared/telegram.ts";
 
 Deno.serve(async (request) => {
   if (request.method === "OPTIONS") return optionsResponse(request);
@@ -26,10 +27,13 @@ Deno.serve(async (request) => {
   for (const notification of queued || []) {
     try {
       const isCustomerNotification = String(notification.template || "").startsWith("customer_");
-      if (isCustomerNotification && !customerEmailEnabled) {
+      // The trigger cannot read Edge Function secrets, so it always queues the
+      // telegram row and it is suppressed here when no bot is configured.
+      const isUnconfiguredTelegram = notification.channel === "telegram" && !telegramConfigured();
+      if ((isCustomerNotification && !customerEmailEnabled) || isUnconfiguredTelegram) {
         const { error: suppressError } = await client.from("notification_outbox").update({
           status: "suppressed",
-          provider_message_id: "suppressed:no-verified-domain",
+          provider_message_id: isUnconfiguredTelegram ? "suppressed:no-telegram-bot" : "suppressed:no-verified-domain",
           last_error: null,
           claimed_at: null,
           claim_token: null,
