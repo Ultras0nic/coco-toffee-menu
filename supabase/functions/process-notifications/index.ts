@@ -3,7 +3,17 @@ import { isAllowedOrigin, optionsResponse } from "../_shared/cors.ts";
 import { authenticatedOwner, serviceClient } from "../_shared/db.ts";
 import { failure, json } from "../_shared/http.ts";
 import { sendQueuedNotification } from "../_shared/notifications.ts";
-import { telegramConfigured } from "../_shared/telegram.ts";
+import { deleteTelegramNotification, telegramConfigured } from "../_shared/telegram.ts";
+
+const URGENT_TEMPLATE = "owner_order_unacknowledged";
+
+async function urgentOrderHandled(client: ReturnType<typeof serviceClient>, notification: Record<string, unknown>): Promise<boolean> {
+  if (notification.template !== URGENT_TEMPLATE || !notification.order_id) return false;
+  const { data, error } = await client.from("orders").select("owner_acknowledged_at,status")
+    .eq("id", notification.order_id).maybeSingle();
+  if (error) throw error;
+  return !data || Boolean(data.owner_acknowledged_at) || !["quote_requested", "pending_approval"].includes(data.status);
+}
 
 Deno.serve(async (request) => {
   if (request.method === "OPTIONS") return optionsResponse(request);
@@ -30,10 +40,13 @@ Deno.serve(async (request) => {
       // The trigger cannot read Edge Function secrets, so it always queues the
       // telegram row and it is suppressed here when no bot is configured.
       const isUnconfiguredTelegram = notification.channel === "telegram" && !telegramConfigured();
-      if ((isCustomerNotification && !customerEmailEnabled) || isUnconfiguredTelegram) {
+      const isHandledUrgentReminder = await urgentOrderHandled(client, notification);
+      if ((isCustomerNotification && !customerEmailEnabled) || isUnconfiguredTelegram || isHandledUrgentReminder) {
         const { error: suppressError } = await client.from("notification_outbox").update({
           status: "suppressed",
-          provider_message_id: isUnconfiguredTelegram ? "suppressed:no-telegram-bot" : "suppressed:no-verified-domain",
+          provider_message_id: isUnconfiguredTelegram ? "suppressed:no-telegram-bot"
+            : isHandledUrgentReminder ? "suppressed:order-acknowledged"
+            : "suppressed:no-verified-domain",
           last_error: null,
           claimed_at: null,
           claim_token: null,
@@ -43,6 +56,26 @@ Deno.serve(async (request) => {
         continue;
       }
       const messageId = await sendQueuedNotification(client, notification);
+      if (notification.template === URGENT_TEMPLATE && await urgentOrderHandled(client, notification)) {
+        let deleted = false;
+        try {
+          deleted = await deleteTelegramNotification(messageId);
+        } catch (deleteError) {
+          console.error(JSON.stringify({
+            event: "urgent_telegram_delete_failed",
+            orderId: notification.order_id,
+            message: deleteError instanceof Error ? deleteError.message : "unknown",
+          }));
+        }
+        await client.from("notification_outbox").update({
+          status: deleted ? "suppressed" : "sent", provider_message_id: messageId, sent_at: new Date().toISOString(),
+          last_error: deleted ? null : "Order was acknowledged, but Telegram deletion must be retried",
+          claimed_at: null, claim_token: null,
+        }).eq("id", notification.id).eq("claim_token", notification.claim_token).eq("status", "sending");
+        if (deleted) suppressed += 1;
+        else sent += 1;
+        continue;
+      }
       await client.from("notification_outbox").update({
         status: "sent", provider_message_id: messageId, sent_at: new Date().toISOString(), last_error: null,
         claimed_at: null, claim_token: null,

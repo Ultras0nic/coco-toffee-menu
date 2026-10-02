@@ -37,7 +37,9 @@ async function orderText(client: SupabaseClient, orderId: unknown, template: str
     .select("*, order_items(*)").eq("id", orderId).single();
   if (error || !order) throw new Error("Order is unavailable for notification");
 
-  const event = template.replace(/^owner_order_/, "").replaceAll("_", " ");
+  const event = template === "owner_order_unacknowledged"
+    ? "URGENT — order not acknowledged"
+    : template.replace(/^owner_order_/, "").replaceAll("_", " ");
   const fulfillment = order.fulfillment && typeof order.fulfillment === "object" ? order.fulfillment : {};
   const items: Array<Record<string, unknown>> = order.order_items || [];
   const lines = items.slice(0, ORDER_LINE_LIMIT).map((item) => {
@@ -64,6 +66,35 @@ async function orderText(client: SupabaseClient, orderId: unknown, template: str
     `<b>Total:</b> ${escape(total)}`,
     `<a href="${escape(ownerInboxUrl())}">Open owner inbox</a>`,
   ].join("\n");
+}
+
+function telegramMessageId(providerMessageId: unknown): number | null {
+  const match = /^telegram:(\d+)$/.exec(String(providerMessageId || ""));
+  if (!match) return null;
+  const messageId = Number(match[1]);
+  return Number.isSafeInteger(messageId) && messageId > 0 ? messageId : null;
+}
+
+export async function deleteTelegramNotification(providerMessageId: unknown): Promise<boolean> {
+  const messageId = telegramMessageId(providerMessageId);
+  if (!messageId) return false;
+  const response = await fetch(
+    `https://api.telegram.org/bot${requireEnv("TELEGRAM_BOT_TOKEN")}/deleteMessage`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        chat_id: requireEnv("TELEGRAM_CHAT_ID"),
+        message_id: messageId,
+      }),
+      signal: AbortSignal.timeout(10_000),
+    },
+  );
+  const result = await response.json();
+  if (response.ok && result.ok === true) return true;
+  const description = String(result.description || "unknown");
+  if (/message to delete not found/i.test(description)) return true;
+  throw new Error(`Telegram delete failed (${response.status}): ${description.slice(0, 200)}`);
 }
 
 async function contactText(client: SupabaseClient, messageId: unknown): Promise<string> {

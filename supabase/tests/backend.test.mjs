@@ -184,3 +184,23 @@ test("owner Telegram alerts are queued by the trigger, sent promptly, and never 
   assert.match(starter, /functions\/v1\/process-notifications/);
   assert.match(starter, /EdgeRuntime\?\.waitUntil/);
 });
+
+test("unacknowledged-order Telegram reminders wait three minutes and are removed when handled", async () => {
+  const [migration, telegram, worker, ownerApi] = await Promise.all([
+    read("supabase/migrations/202610010001_order_acknowledgement_reminder.sql"),
+    read("supabase/functions/_shared/telegram.ts"),
+    read("supabase/functions/process-notifications/index.ts"),
+    read("supabase/functions/owner-orders/index.ts"),
+  ]);
+  assert.match(migration, /owner_acknowledged_at timestamptz/);
+  assert.match(migration, /now\(\) \+ interval '3 minutes'/);
+  assert.match(migration, /'\* \* \* \* \*'/);
+  assert.match(migration, /where exists \(/);
+  assert.match(telegram, /deleteMessage/);
+  assert.match(telegram, /URGENT — order not acknowledged/);
+  assert.match(worker, /urgentOrderHandled/);
+  assert.match(worker, /suppressed:order-acknowledged/);
+  assert.match(ownerApi, /await acknowledgeOrders\(client, data \|\| \[\]\)/);
+  assert.match(ownerApi, /await acknowledgeOrder\(client, order\.id\)/);
+  assert.match(ownerApi, /deleteUrgentTelegramMessage/);
+});

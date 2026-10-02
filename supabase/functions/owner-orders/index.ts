@@ -1,9 +1,82 @@
 import { isAllowedOrigin, optionsResponse } from "../_shared/cors.ts";
-import { OWNER_EMAIL, optionalEnv } from "../_shared/config.ts";
+import { OWNER_EMAIL, optionalEnv, requireEnv } from "../_shared/config.ts";
 import { authenticatedOwner, serviceClient } from "../_shared/db.ts";
 import { failure, json, readJson } from "../_shared/http.ts";
 import { createCheckoutSession } from "../_shared/stripe.ts";
 import { cleanText, sha256, stableStringify } from "../_shared/validation.ts";
+
+const URGENT_TEMPLATE = "owner_order_unacknowledged";
+
+async function deleteUrgentTelegramMessage(providerMessageId: unknown): Promise<boolean> {
+  const match = /^telegram:(\d+)$/.exec(String(providerMessageId || ""));
+  if (!match) return false;
+  const response = await fetch(
+    `https://api.telegram.org/bot${requireEnv("TELEGRAM_BOT_TOKEN")}/deleteMessage`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        chat_id: requireEnv("TELEGRAM_CHAT_ID"),
+        message_id: Number(match[1]),
+      }),
+      signal: AbortSignal.timeout(10_000),
+    },
+  );
+  const result = await response.json();
+  if (response.ok && result.ok === true) return true;
+  const description = String(result.description || "unknown");
+  if (/message to delete not found/i.test(description)) return true;
+  throw new Error(`Telegram delete failed (${response.status}): ${description.slice(0, 200)}`);
+}
+
+async function acknowledgeOrder(client: ReturnType<typeof serviceClient>, orderId: string): Promise<void> {
+  const acknowledgedAt = new Date().toISOString();
+  const { error: acknowledgeError } = await client.from("orders")
+    .update({ owner_acknowledged_at: acknowledgedAt })
+    .eq("id", orderId)
+    .is("owner_acknowledged_at", null);
+  if (acknowledgeError) throw acknowledgeError;
+
+  const { data: reminders, error: reminderError } = await client.from("notification_outbox")
+    .select("id,status,provider_message_id")
+    .eq("order_id", orderId)
+    .eq("channel", "telegram")
+    .eq("template", URGENT_TEMPLATE)
+    .in("status", ["pending", "failed", "sent"]);
+  if (reminderError) throw reminderError;
+
+  for (const reminder of reminders || []) {
+    if (reminder.status === "sent") {
+      try {
+        await deleteUrgentTelegramMessage(reminder.provider_message_id);
+      } catch (error) {
+        console.error(JSON.stringify({
+          event: "urgent_telegram_delete_failed",
+          orderId,
+          message: error instanceof Error ? error.message : "unknown",
+        }));
+        continue;
+      }
+    }
+    const { error: suppressError } = await client.from("notification_outbox").update({
+      status: "suppressed",
+      last_error: null,
+      claimed_at: null,
+      claim_token: null,
+    }).eq("id", reminder.id).eq("status", reminder.status);
+    if (suppressError) throw suppressError;
+  }
+}
+
+async function acknowledgeOrders(client: ReturnType<typeof serviceClient>, orders: Array<Record<string, unknown>>): Promise<void> {
+  const results = await Promise.allSettled(orders.map((order) => acknowledgeOrder(client, String(order.id))));
+  for (const result of results) {
+    if (result.status === "rejected") console.error(JSON.stringify({
+      event: "order_acknowledgement_failed",
+      message: result.reason instanceof Error ? result.reason.message : "unknown",
+    }));
+  }
+}
 
 function privateQuoteGuide(): Record<string, number> {
   const guide = JSON.parse(optionalEnv("PRIVATE_QUOTE_GUIDE_JSON", "{}"));
@@ -35,6 +108,7 @@ Deno.serve(async (request) => {
       if (status) query = query.eq("status", status);
       const { data, error } = await query;
       if (error) throw error;
+      await acknowledgeOrders(client, data || []);
       return json(request, { ok: true, orders: data, privateQuoteGuide: privateQuoteGuide() });
     }
     if (request.method !== "PATCH") return failure(request, 405, "BAD_REQUEST", "Method not allowed");
@@ -56,6 +130,7 @@ Deno.serve(async (request) => {
     if (!/^[0-9a-f-]{36}$/i.test(orderId)) return failure(request, 422, "VALIDATION_FAILED", "Invalid order ID");
     const { data: order, error } = await client.from("orders").select("*,order_items(*)").eq("id", orderId).single();
     if (error || !order) return failure(request, 404, "NOT_FOUND", "Order not found");
+    await acknowledgeOrder(client, order.id);
 
     if (["decline", "request_changes", "fulfill", "cancel"].includes(action)) {
       const target = action === "decline" ? "declined" : action === "fulfill" ? "fulfilled" : action === "cancel" ? "cancelled" : "changes_requested";
